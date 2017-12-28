@@ -1,0 +1,111 @@
+This was the original code used to modify the Taieri adjacency matrices in order to parameterize the gravel model with biomass estimates
+
+Keeping just until I make sure new code works
+
+
+
+
+recoderFunc <- function(data, oldvalue, newvalue) {
+  # convert any factors to characters
+  if (is.factor(data))     data     <- as.character(data)
+  if (is.factor(oldvalue)) oldvalue <- as.character(oldvalue)
+  if (is.factor(newvalue)) newvalue <- as.character(newvalue)
+  # create the return vector
+  newvec <- data
+  # put recoded values into the correct position in the return vector
+  for (i in unique(oldvalue)) newvec[data == i] <- newvalue[oldvalue == i]
+  newvec}
+
+# read in estimated Taieri dry weights 
+taieri <- readRDS("estimated dw taieri webs.rds")
+taieri.list <- split(taieri, list(taieri$site))
+
+upper.dir <- "C:\\Users\\Justin\\Google Drive\\Data\\Predicting NZ Food Webs\\Adjacency_matrix"
+full.name <- list.files(upper.dir, full.names = T)
+a.names <- list.files(upper.dir)
+
+web.list <- NULL
+for (i in 1:length(a.names)){
+  j <- read.csv(full.name[i], header = T)
+  web.list[i] <- list(j)
+  rm(j)
+}
+
+names(web.list) <- c(a.names[1:length(a.names)])
+
+# step 2####
+# i think i can eliminate the next two steps by modifying the "read.csv()" fxn in the for loop above
+##remove "X" column
+web.list <- llply(web.list, function(x) { x["X"] <- NULL; x })
+#summary(web.list)
+
+##add rownames to elements within list
+web.list <- llply(web.list,function (x){
+  row.names(x) <- colnames(x);x})
+
+web.list.names <- llply(web.list,
+                        function(x){
+                          colnames(x)
+                        })
+
+# fix names, typos, misnomers, etc. 
+translate <- read.csv("translation.csv") #add translation file
+# translate list of names
+web.list.names.cor <- llply(web.list.names,
+   function (x){
+    recoderFunc(x, translate$Wrong, translate$Corrected)})
+# rename old webs with corrected names
+for (i in 1:length(web.list)){
+  colnames(web.list[[i]]) <- web.list.names.cor[[i]]
+}
+## coerce elements to matrices to allow for duplicate rownames
+web.list <- llply(web.list,
+              function(x) {
+                as.matrix(x)})
+##add rownames to elements within list
+web.list <- llply(web.list,
+              function (x){
+                row.names(x) <- colnames(x);x})
+
+
+
+# genera ####
+# species to genus translation
+sp.gen <- read_csv("species genus category ffg.csv")
+
+
+#make list of "old" names
+old.names <- web.list %>%
+  llply( function (x){colnames(x)}) 
+
+#make list of new names with recoderFunc
+new.names <- old.names %>% 
+  llply(function (x) {
+    recoderFunc(x, sp.gen$Species, sp.gen$Genus)
+    })
+
+#rename colnames in tt1 list of x tabs
+for (i in 1:length(web.list)){
+  colnames(web.list[[i]]) <- new.names[[i]]
+}
+
+# make webs matrix (for duplicate row names)
+web.list <- llply(web.list,
+                  function (x){
+                    as.matrix(x)
+                  })
+
+#make rownames match colnames
+web.list <- llply(web.list,
+                  function (x){
+                    rownames(x) <- colnames(x);x
+                  })
+
+#need to re-compile with duplicated generic names
+web.list <- web.list %>% 
+  llply(function (x){
+    as.data.frame(as.table(x)) %>%
+    xtabs(Freq ~ Var1 + Var2, .)})
+
+web.list <- web.list %>% 
+  llply(function (x){x[x>1] <- 1; x})
