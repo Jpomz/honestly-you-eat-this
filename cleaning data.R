@@ -71,7 +71,7 @@ new.names <- generic.names %>%
     recoderFunc(x, basal.gen$Genus, basal.gen$Category)
   })
 # should give warning that number of items to replace is not multiple of replacement length 
-# look at new names to make sure replacement is correct
+# This is because only replacing the basal.gen names
 
 
 # change dimnames of adj.list to new corrected names
@@ -80,46 +80,39 @@ for (i in 1:length(adj.list)){
                                   new.names[[i]])
 }
 
-# compile duplicate names
+# combine observations in duplicate names
 adj.list <- adj.list %>% 
   llply(function (x){
-    # convert to data.frame to get frequencies
+    # convert to table, data.frame; get frequencies
     y <- as.data.frame(as.table(x)) %>%
       xtabs(Freq ~ Var1 + Var2, .)
-    # convert all values > 1 in table 
+    # convert all values > 1 in table to 1
     y[y>1] <- 1
     # convert back to matrix
     as.matrix(as.data.frame.matrix(y))
     })
 
 # remove basal categories to make pred-prey interactions only 
-
-# vector of basal categories
-# or taxa that are unknown 
+# vector of basal categories, or taxa that are unknown 
 basal.cat <- c("Detritus", "Terrestrial.invertebrates", "Macrophyte", "Diatom", "Algae", "Moss", "Meiofauna", "Pelicypod", "Amphora", "Plant.material")
-# integer vector of col/row numbers to remove for basal categories
-rm.basal.col.num <- llply(adj.list, function (x){
-  which(colnames(x) %in% basal.cat)
-})
+# # integer vector of col/row numbers to remove for basal categories
+# rm.basal.col.num <- llply(adj.list, function (x){
+#   which(colnames(x) %in% basal.cat)
+# })
 
 # remove basal resources from adj_matr
 for (i in 1:length(adj.list)){
-  adj.list[[i]] <-  adj.list[[i]][-rm.basal.col.num[[i]], -rm.basal.col.num[[i]]]
+  basal.col <- which(colnames(x) %in% basal.cat)
+  adj.list[[i]] <-  adj.list[[i]][-basal.col,
+                                  -basal.col]
 }
+
 # removing probable data errors
-# eg, non-predatory taxa shown to be consuming prey
-# potamopyrgus eating austrosim, deleatidum etc
-# deleatidium consuming animal prey
-# the mouthparts and habits of these animals make it extremely unlikely that they are consuming animals
+# eg, non-predatory taxa shown to be consuming prey potamopyrgus eating austrosim, deleatidum etc deleatidium consuming animal prey the mouthparts and habits of these animals make it extremely unlikely that they are consuming animals
 errors <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Coloburiscus", "Deleatidium", "Nesameletus", "Oxyethira", "Potamopyrgus", "Zephlebia")
 
-# make a list of columns which match forbidden taxa
-forbid.col.list <- adj.list %>%
-  llply(function (x){
-    which(colnames(x) %in% errors)
-  })
 
-# make forbidden taxa in columns = 0
+# make non=predatory taxa columns == 0
 for (i in 1:length(adj.list)){
   x <- adj.list[[i]]
   forbid <- which(colnames(x) %in% errors)
