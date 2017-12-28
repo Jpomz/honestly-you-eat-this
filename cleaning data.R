@@ -30,7 +30,7 @@ recoderFunc <- function(data, oldvalue, newvalue) {
 # make list of adj_matr
 adj.list <- NULL
 for(f in list.files(path="All Thompson 2004", full.names=T)){
-  A = read.csv(f, h=T, row.names=1)
+  A = as.matrix(read.csv(f, h=T, row.names=1))
   row.names(A) <- colnames(A)
   adj.list[f] <- list(A)
 }
@@ -51,4 +51,45 @@ adj.list.names <- llply(adj.list,
 translate <- read_csv("translation.csv") 
 # species to genus / category data
 sp.gen <- read_csv("species genus category ffg.csv")
+
+# translate list of names
+names.cor <- llply(adj.list.names, function (x){
+  recoderFunc(x, translate$Wrong, translate$Corrected)})
+#make list of generic names with recoderFunc
+generic.names <- llply(names.cor, function (x) {
+    recoderFunc(x, sp.gen$Species, sp.gen$Genus)
+  })
+
+# basal categories ####
+# truncate sp.gen to basal resources
+basal.gen <- sp.gen %>% 
+  filter(ffg == "producer")
+# truncate sp.gen 
+# convert basal genera to category
+new.names <- generic.names %>%
+  llply(function (x){ 
+    recoderFunc(x, basal.gen$Genus, basal.gen$Category)
+  })
+# should give warning that number of items to replace is not multiple of replacement length 
+# look at new names to make sure replacement is correct
+
+
+# change dimnames of adj.list to new corrected names
+for (i in 1:length(adj.list)){
+  dimnames(adj.list[[i]]) <- list(new.names[[i]],
+                                  new.names[[i]])
+}
+
+# compile duplicate names
+test <- adj.list %>% 
+  llply(function (x){
+    # convert to data.frame to get frequencies
+    y <- as.data.frame(as.table(x)) %>%
+      xtabs(Freq ~ Var1 + Var2, .)
+    # convert all values > 1 in table 
+    y[y>1] <- 1
+    # convert back to matrix
+    as.matrix(as.data.frame.matrix(y))
+    })
+
 
