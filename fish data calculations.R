@@ -17,13 +17,19 @@
 # libraries 
 library(tidyverse)
 # functions
-#log10(w) = log(a) + b * log(l)
+# calculate dry weight of fish based on length measure
+# Jellyman 2013
 get_fish_dw <- function(l, a, b){
   x = log(a) + (b * log(l))
   dw = exp(1)^x
   dw
 }
-
+# calculate equilibrium biomass based on body mass
+# Tang 2014
+get_xstar <- function(mi, x0 = -1.16, gamma = -0.675){
+  xstar = 10^(x0 + 3 * gamma)*mi^(1 + gamma)
+  return(xstar)
+}
 
 #downloaded fish data
 fish <- read_csv("Taieri NZ Fish datbase.csv")
@@ -66,9 +72,17 @@ fish.list <- as.list(fish.summary)
 dw.list <- NULL
 for(i in 2:length(fish.list)){
   dw.list[[i]] = data.frame(taxa = fish.list[[1]],
-    dw = get_fish_dw(fish.list[[i]], a, b))
-
+# calculate body mass 
+          dw = get_fish_dw(fish.list[[i]], a, b))
+# calculate equilibrium biomass: get_xstar()
+# and numerical abundance = xstar / bodymass
+  dw.list[[i]] <- dw.list[[i]] %>%
+    mutate(dw.kg = dw / 10^3, # convert g to kg
+           xstar = get_xstar(mi = dw.kg),
+           no.m2 = xstar / dw.kg) %>%
+    select(taxa, dw, no.m2)
 }
 names(dw.list) <- names(fish.list)
 dw.list[[1]] <- NULL
 
+saveRDS(dw.list, "estimated fish bodymass and abundance.RDS")
