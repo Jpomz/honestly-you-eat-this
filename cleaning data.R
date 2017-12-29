@@ -1,4 +1,7 @@
 # Cleaning data
+# 29 Dec 2017
+# Justin Pomeranz
+# jfpomeranz@gmail.com
 
 # # This script takes the raw Taieri adjacency matrices (obtained from Ross Thompson November 2016 at New Zealand Ecological Society meeting, Hamilton NZ) and translates the names to the generic level (family / subfamily for coleoptera, Diptera, etc). It converts basal resources to categorical names (e.g. diatoms, algae, etc)
 
