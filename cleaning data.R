@@ -108,7 +108,8 @@ basal.cat <- c("Detritus", "Terrestrial.invertebrates", "Macrophyte", "Diatom", 
 
 # remove basal resources from adj_matr
 for (i in 1:length(adj.list)){
-  basal.col <- which(colnames(x) %in% basal.cat)
+  basal.col <- which(colnames(adj.list[[i]]) %in%
+                       basal.cat)
   adj.list[[i]] <-  adj.list[[i]][-basal.col,
                                   -basal.col]
 }
