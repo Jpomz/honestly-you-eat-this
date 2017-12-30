@@ -67,20 +67,35 @@ b <- c(3.641, 4.082, 3.616, 3.05)
   
 # make a list from fish summary columns
 fish.list <- as.list(fish.summary)
+# data frame of sites with fish
+fish.sites <- data.frame(site =c("Berwick",
+          "Blackrock", "Broad", "Canton", "Dempsters",
+          "German", "Kyeburn", "Little", "NorthCol",
+          "Powder", "Venlaw", "Sutton","Catlins",
+          "Dempsters", "German", "Healy", "Little",
+          "Narrowdale", "Stony", "Venlaw", "Dempsters",
+          "Little", "Dempsters"),
+             taxa = c(rep("Salmo",12),
+                    rep("Galaxias", 8),
+                    rep("Anguilla", 2),
+                    rep("Gobiomorphus", 1)),
+             stringsAsFactors = F)
 
 # make an empty list for dry weight calculations
 dw.list <- NULL
 for(i in 2:length(fish.list)){
-  dw.list[[i]] = data.frame(taxa = c("Anguilla", "Galaxias", "Gobiomrphus", "Salmo"),
+  dw.list[[i]] = data.frame(taxa = c("Anguilla", "Galaxias", "Gobiomorphus", "Salmo"),
 # calculate body mass 
-          dw = get_fish_dw(fish.list[[i]], a, b))
+          dw = get_fish_dw(fish.list[[i]], a, b),
+      stringsAsFactors = F)
 # calculate equilibrium biomass: get_xstar()
 # and numerical abundance = xstar / bodymass
   dw.list[[i]] <- dw.list[[i]] %>%
     mutate(dw.kg = dw / 10^3, # convert g to kg
            xstar = get_xstar(mi = dw.kg),
            no.m2 = xstar / dw.kg) %>%
-    select(taxa, dw, no.m2)
+    select(taxa, dw, no.m2) %>%
+    right_join(fish.sites, by = "taxa")
 }
 names(dw.list) <- names(fish.list)
 dw.list[[1]] <- NULL
