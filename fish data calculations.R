@@ -101,3 +101,5 @@ names(dw.list) <- names(fish.list)
 dw.list[[1]] <- NULL
 
 saveRDS(dw.list, "estimated fish bodymass and abundance.RDS")
+
+
