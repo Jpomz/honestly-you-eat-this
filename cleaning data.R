@@ -29,7 +29,7 @@ recoderFunc <- function(data, oldvalue, newvalue) {
   newvec
   }
 
-
+# Adjacency matrices ####
 # read in original adj_matr
 # make list of adj_matr
 adj.list <- NULL
@@ -77,13 +77,14 @@ new.names <- generic.names %>%
 # should give warning that number of items to replace is not multiple of replacement length 
 # This is because only replacing the basal.gen names
 
-
+# correct names ####
 # change dimnames of adj.list to new corrected names
 for (i in 1:length(adj.list)){
   dimnames(adj.list[[i]]) <- list(new.names[[i]],
                                   new.names[[i]])
 }
 
+# combine duplicate names in A ####
 # combine observations in duplicate names
 adj.list <- adj.list %>% 
   llply(function (x){
@@ -96,6 +97,7 @@ adj.list <- adj.list %>%
     as.matrix(as.data.frame.matrix(y))
     })
 
+# remove basal ####
 # remove basal categories to make pred-prey interactions only 
 # vector of basal categories, or taxa that are unknown 
 basal.cat <- c("Detritus", "Terrestrial.invertebrates", "Macrophyte", "Diatom", "Algae", "Moss", "Meiofauna", "Pelicypod", "Amphora", "Plant.material")
@@ -111,10 +113,9 @@ for (i in 1:length(adj.list)){
                                   -basal.col]
 }
 
-# removing probable data errors
+# remove data errors ####
 # eg, non-predatory taxa shown to be consuming prey potamopyrgus eating austrosim, deleatidum etc deleatidium consuming animal prey the mouthparts and habits of these animals make it extremely unlikely that they are consuming animals
 errors <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Coloburiscus", "Deleatidium", "Nesameletus", "Oxyethira", "Potamopyrgus", "Zephlebia")
-
 
 # make non=predatory taxa columns == 0
 for (i in 1:length(adj.list)){
@@ -125,3 +126,40 @@ for (i in 1:length(adj.list)){
 }
 
 saveRDS(adj.list, "observed pred-prey.RDS")
+
+# Community Data ####
+taieri.comm <- read_csv("Taieri_community_data.csv")
+#replacing " " with a "." to match old tranlsation file which read spaces in as a period
+taieri.comm$taxa <- gsub(" ", "\\.", taieri.comm$taxa)
+
+# correct taxa names
+taieri.comm$taxa <- recoderFunc(taieri.comm$taxa,
+            translate$Wrong, translate$Corrected)
+# taxa --> genus
+taieri.comm$taxa <- recoderFunc(taieri.comm$taxa, sp.gen$Species, sp.gen$Genus)
+
+# combine genus names that are now duplicated
+taieri.comm <- taieri.comm %>% 
+  group_by(site, taxa) %>% 
+  summarize(no.m2 = sum(no.m2),
+            avg.mm.bl = mean(avg.mm.BL, na.rm = T))
+
+# estimate biomass ####
+# read in formula
+# file from Helen, modified containing all variable values
+formula <- read_csv("C:\\Users\\Justin\\Documents\\Data\\Length DW conversion\\FWsurvey\\invert_meas_CJP\\length_weight_formulas.csv")[,c(4,5,6,7)] %>% distinct
+
+# merge tables
+taieri.comm <- left_join(taieri.comm, formula, by = c("taxa" = "Name"))
+
+# dry weight ####
+# estimate sp average dry weight in grams
+taieri.comm <- taieri.comm %>% 
+  mutate(log = ln_a + (b * log(avg.mm.bl,
+                               base = base)), 
+         dw = (base^log)/1000) %>% 
+  select(site, taxa, no.m2, avg.mm.bl, dw)
+
+saveRDS(taieri.comm, "estimated invert bodymass.RDS")
+
+
