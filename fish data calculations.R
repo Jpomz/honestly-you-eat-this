@@ -71,7 +71,7 @@ fish.list <- as.list(fish.summary)
 # make an empty list for dry weight calculations
 dw.list <- NULL
 for(i in 2:length(fish.list)){
-  dw.list[[i]] = data.frame(taxa = fish.list[[1]],
+  dw.list[[i]] = data.frame(taxa = c("Anguilla", "Galaxias", "Gobiomrphus", "Salmo"),
 # calculate body mass 
           dw = get_fish_dw(fish.list[[i]], a, b))
 # calculate equilibrium biomass: get_xstar()
