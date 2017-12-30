@@ -4,6 +4,7 @@
 # jfpomeranz@gmail.com
 
 # # This script takes the raw Taieri adjacency matrices (obtained from Ross Thompson November 2016 at New Zealand Ecological Society meeting, Hamilton NZ) and translates the names to the generic level (family / subfamily for coleoptera, Diptera, etc). It converts basal resources to categorical names (e.g. diatoms, algae, etc)
+# also cleans up names in Taieri_community_data.csv and calculates dry weight (dw in grams) for genera
 
 # load plyr first to not mask tidyverrse functions
 library(plyr)
