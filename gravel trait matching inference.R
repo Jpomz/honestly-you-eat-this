@@ -84,6 +84,20 @@ for(f in 1:length(dw)){
 }
 names(dw.pairs) <- names(dw)
 
+#training data ####
+# list of lists
+training.list <- NULL
+for (f in 1:length(dw.pairs)){
+  temp <- NULL
+  for (web in 1:length(dw.pairs[[f]])){
+    dat <- ldply(dw.pairs[[f]][-web])
+    temp[[web]] <- dat
+  }
+  training.list[[f]] <- temp
+  names(training.list[[f]]) <- names(dw.pairs[[f]])
+}
+names(training.list) <- names(dw.pairs)
+
 
 
 
