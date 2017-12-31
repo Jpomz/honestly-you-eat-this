@@ -48,7 +48,6 @@ for(web in 1:length(obs.A)){
         prey = c(prey, genus[i]) # add row taxa to prey
       }
     }
-    
   }
   pred <- as.matrix(pred) # convert vec to matrix in order to add colname
   colnames(pred) <- "taxa"
@@ -169,4 +168,39 @@ for (f in 1:length(pars.list)){
   web.pars[[f]] <- temp
 }
 names(pars.list) <- names(training.list)
+
+# infer links ####
+
+# calculate food web links for taieri
+# predation matrix
+web.links.inf <- NULL
+for (f in 1:length(web.pars)){
+  temp <- NULL
+  for (web in 1:length(web.pars[[f]])){
+    x = web.pars[[f]][[web]]
+    temp[[web]] <- L_fn(x[,"n"],
+                        x[,"c"],
+                        x[,"low"],
+                        x[,"high"])
+    }
+    names(temp) <- names(web.pars[[f]])
+    web.links.inf[[f]] <- temp
+}
+names(web.links.inf) <- names(web.pars)
+
+# sum of links per web
+# maybe I can use this to "pick" fish size??
+# sum.links <- data.frame(
+#   min.min =sapply(web.links.inf[[1]], sum),
+#   mean.min = sapply(web.links.inf[[2]],sum),
+#   mean.max = sapply(web.links.inf[[3]],sum),
+#   max.max = sapply(web.links.inf[[4]], sum))
+
+
+# add taxa names to predation matrices
+for (i in 1:length(web.links.inf)){
+  dimnames(web.links.inf[[i]]) <- list(
+    web.pars[[i]]$taxa,
+    web.pars[[i]]$taxa)
+}
 
