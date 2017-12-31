@@ -21,7 +21,7 @@ fish <- readRDS("estimated fish bodymass and abundance.RDS")
 # rbind invert to each element in fish and then split each list into list of sites
 dw <- llply(fish, function (x){
   y = rbind(x, invert)
-  #y = y[!is.na(y$dw),]
+  y = y[order(y$dw),]
   y = split(y, list(y$site))
   y
 })
@@ -158,8 +158,7 @@ web.pars <- NULL
 for (f in 1:length(pars.list)){
   temp <- NULL
   for (web in 1:length(pars.list[[f]])){
-    Ball <- sort(c(dw.pairs[[f]][[web]][,1],
-                   dw.pairs[[f]][[web]][,2]))
+    Ball <- sort(dw[[f]][[web]]$dw)
     temp[[web]] <- get_pars_Niche(
       pars.list[[f]][[web]],
       Ball = log10(Ball))
@@ -190,11 +189,11 @@ names(web.links.inf) <- names(web.pars)
 
 # sum of links per web
 # maybe I can use this to "pick" fish size??
-# sum.links <- data.frame(
-#   min.min =sapply(web.links.inf[[1]], sum),
-#   mean.min = sapply(web.links.inf[[2]],sum),
-#   mean.max = sapply(web.links.inf[[3]],sum),
-#   max.max = sapply(web.links.inf[[4]], sum))
+sum.links <- data.frame(
+  min.min =sapply(web.links.inf[[1]], sum),
+  mean.min = sapply(web.links.inf[[2]],sum),
+  mean.max = sapply(web.links.inf[[3]],sum),
+  max.max = sapply(web.links.inf[[4]], sum))
 
 
 # add taxa names to predation matrices
