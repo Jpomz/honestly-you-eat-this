@@ -100,25 +100,24 @@ for (f in 1:length(dw.pairs)){
 names(training.list) <- names(dw.pairs)
 
 # Gravel model ####
+# get parameters based on training lists
 pars.list <- NULL
 for (f in 1:length(training.list)){
   temp <- NULL
   for (web in 1:length(training.list[[f]])){
     Bprey <- log10(training.list[[f]][[web]]$prey)
     Bpred <- log10(training.list[[f]][[web]]$pred)
-    temp[[web]] <- reg_fn(Bprey,
-                          Bpred,
+    temp[[web]] <- reg_fn(Bprey, Bpred,
                           quartil = c(0.03,0.97))
   }
   pars.list[[f]] <- temp
   names(pars.list[[f]]) <- names(training.list[[f]])
 }
 names(pars.list) <- names(training.list)
-llply(pars.list, function (x){
-  mean(x)
-})
 
+# coef plot ####
 # plot parameters for 4 different fish sizes
+# funciton to extract parameters
 pull_params <- function(dat){
   data.frame(B0hi = dat[[1]][1],
              B0center = dat[[2]][1],
@@ -128,6 +127,7 @@ pull_params <- function(dat){
              B1lo = dat[[3]][2])
   }
 
+# list of params for 4 fish sizes
 param.coef.list <- NULL
 for (f in 1:length(pars.list)){
   param.coef.list[[f]] <- ldply(pars.list[[f]],
@@ -135,19 +135,26 @@ for (f in 1:length(pars.list)){
       pull_params(x)
     })
 }
+
+# mean/SD of paramters for 4 fish sizes
 param.summary.list <- llply(param.coef.list,
                             function (x){
   data.frame(mean = apply(x[,-1],2, mean),
              sd = apply(x[,-1], 2, sd),
              coef = colnames(x)[-1])
 })
+# add names for plotting below
 names(param.summary.list) <- names(pars.list)
 
+# plot mean coef +- SD
 ggplot(ldply(param.summary.list), aes(x = coef, y = mean, color = .id)) +
   geom_point() +
   geom_errorbar(aes(ymin = mean -sd,
                     ymax = mean +sd))
 
+
+# web params ####
+# calculate web paramters using get_pars_Niche()
 web.pars <- NULL
 for (f in 1:length(pars.list)){
   temp <- NULL
