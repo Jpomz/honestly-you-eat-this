@@ -195,11 +195,12 @@ sum.links <- data.frame(
   mean.max = sapply(web.links.inf[[3]],sum),
   max.max = sapply(web.links.inf[[4]], sum))
 
-
 # add taxa names to predation matrices
-for (i in 1:length(web.links.inf)){
-  dimnames(web.links.inf[[i]]) <- list(
-    web.pars[[i]]$taxa,
+for (f in 1:length(web.links.inf)){
+  for (web in 1:length(web.links.inf[[f]])){
+    dimnames(web.links.inf[[f]][[web]]) <- list(
+    dw[[f]][[web]]$taxa,
     web.pars[[i]]$taxa)
+  }
 }
 
