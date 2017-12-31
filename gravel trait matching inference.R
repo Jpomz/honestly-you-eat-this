@@ -6,6 +6,7 @@
 # paramterize Niche model using method presented in Gravel et al. 2013 Methods in Eco Evo. Inferring food web structure from predator-prey body size relationships
 
 library(plyr)
+library(ggplot2)
 #library(tidyverse)
 
 # gravel functions
@@ -49,7 +50,7 @@ for(web in 1:length(obs.A)){
     }
     
   }
-  pred <- as.matrix(pred)
+  pred <- as.matrix(pred) # convert vec to matrix in order to add colname
   colnames(pred) <- "taxa"
   prey <- as.matrix(prey)
   colnames(prey) <- "taxa"
@@ -98,6 +99,67 @@ for (f in 1:length(dw.pairs)){
 }
 names(training.list) <- names(dw.pairs)
 
+# Gravel model ####
+pars.list <- NULL
+for (f in 1:length(training.list)){
+  temp <- NULL
+  for (web in 1:length(training.list[[f]])){
+    Bprey <- log10(training.list[[f]][[web]]$prey)
+    Bpred <- log10(training.list[[f]][[web]]$pred)
+    temp[[web]] <- reg_fn(Bprey,
+                          Bpred,
+                          quartil = c(0.03,0.97))
+  }
+  pars.list[[f]] <- temp
+  names(pars.list[[f]]) <- names(training.list[[f]])
+}
+names(pars.list) <- names(training.list)
+llply(pars.list, function (x){
+  mean(x)
+})
 
+# plot parameters for 4 different fish sizes
+pull_params <- function(dat){
+  data.frame(B0hi = dat[[1]][1],
+             B0center = dat[[2]][1],
+             B0lo = dat[[3]][1],
+             B1hi = dat[[1]][2],
+             B1center = dat[[2]][2],
+             B1lo = dat[[3]][2])
+  }
 
+param.coef.list <- NULL
+for (f in 1:length(pars.list)){
+  param.coef.list[[f]] <- ldply(pars.list[[f]],
+              function (x){
+      pull_params(x)
+    })
+}
+param.summary.list <- llply(param.coef.list,
+                            function (x){
+  data.frame(mean = apply(x[,-1],2, mean),
+             sd = apply(x[,-1], 2, sd),
+             coef = colnames(x)[-1])
+})
+names(param.summary.list) <- names(pars.list)
+
+ggplot(ldply(param.summary.list), aes(x = coef, y = mean, color = .id)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = mean -sd,
+                    ymax = mean +sd))
+
+web.pars <- NULL
+for (f in 1:length(pars.list)){
+  temp <- NULL
+  for (web in 1:length(pars.list[[f]])){
+    Ball <- sort(c(dw.pairs[[f]][[web]][,1],
+                   dw.pairs[[f]][[web]][,2]))
+    temp[[web]] <- get_pars_Niche(
+      pars.list[[f]][[web]],
+      Ball = log10(Ball))
+  }
+  names(temp) <- names(pars.list[[f]])
+  web.pars[[f]] <- temp
+}
+names(pars.list) <- names(training.list)
 
