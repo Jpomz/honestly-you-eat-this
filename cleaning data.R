@@ -159,7 +159,7 @@ taieri.comm <- taieri.comm %>%
   mutate(log = ln_a + (b * log(avg.mm.bl,
                                base = base)), 
          dw = (base^log)/1000) %>% 
-  select(site, taxa, no.m2, avg.mm.bl, dw)
+  select(site, taxa, no.m2, dw)
 
 saveRDS(taieri.comm, "estimated invert bodymass.RDS")
 
