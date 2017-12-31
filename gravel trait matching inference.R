@@ -21,6 +21,7 @@ fish <- readRDS("estimated fish bodymass and abundance.RDS")
 # rbind invert to each element in fish and then split each list into list of sites
 dw <- llply(fish, function (x){
   y = rbind(x, invert)
+  y = y[!is.na(y$dw),]
   y = y[order(y$dw),]
   y = split(y, list(y$site))
   y
