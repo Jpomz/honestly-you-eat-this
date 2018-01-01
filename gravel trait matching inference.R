@@ -47,7 +47,7 @@ invert <- readRDS("estimated invert bodymass.RDS")
 fish <- readRDS("estimated fish bodymass and abundance.RDS")
 # rbind invert to each element in fish, filter out na(dw), order by dw and then split each list into list of sites
 dw <- llply(fish, function (x){
-  y = rbind(x, invert)
+  y = bind_rows(x, invert)
   y = y[!is.na(y$dw),]
   y = y[order(y$dw),]
   y = split(y, list(y$site))
@@ -202,6 +202,7 @@ sum.links <- data.frame(
   mean.min = sapply(web.links.inf[[2]],sum),
   mean.max = sapply(web.links.inf[[3]],sum),
   max.max = sapply(web.links.inf[[4]], sum))
+sum.links <- 
 
 # add taxa names to inferred matrices
 for (f in 1:length(web.links.inf)){
