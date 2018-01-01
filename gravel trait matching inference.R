@@ -128,21 +128,8 @@ names(training.list) <- names(dw.pairs)
 
 # Gravel model ####
 # get parameters based on training lists
-pars.list <- NULL
-for (f in 1:length(training.list)){
-  temp <- NULL
-  for (web in 1:length(training.list[[f]])){
-    Bprey <- log10(training.list[[f]][[web]]$prey)
-    Bpred <- log10(training.list[[f]][[web]]$pred)
-    temp[[web]] <- reg_fn(Bprey, Bpred,
-                          quartil = c(0.03,0.97))
-  }
-  pars.list[[f]] <- temp
-  names(pars.list[[f]]) <- names(training.list[[f]])
-}
-names(pars.list) <- names(training.list)
-# solution to above without using nested for loops
-test <- map(training.list, map, function(x){
+# solution without using nested for loops
+pars.list <- map(training.list, map, function(x){
   Bprey = log10(x$prey)
   Bpred = log10(x$pred)
   out <- reg_fn(Bprey, Bpred, quartil = c(0.03, 0.97))
@@ -160,13 +147,10 @@ pull_params <- function(dat){
   }
 
 # list of params for 4 fish sizes
-param.coef.list <- NULL
-for (f in 1:length(pars.list)){
-  param.coef.list[[f]] <- ldply(pars.list[[f]],
-              function (x){
-      pull_params(x)
-    })
-}
+param.coef.list <- map(pars.list, ldply,
+                       function (x){
+                         pull_params(x)
+})
 
 # mean/SD of paramters for 4 fish sizes
 param.summary.list <- llply(param.coef.list,
