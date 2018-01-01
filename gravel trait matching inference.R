@@ -257,12 +257,10 @@ for(f in 1:length(web.links.inf)){
   tss.step2[[f]] <-temp
 }
 
-unlist(lapply(tss.step1, mean))
-unlist(lapply(tss.step2, mean))
-unlist(lapply(tss.step1, sd))
-unlist(lapply(tss.step2, sd))
 
-get_rel_ab <- function(vec){
+# calculate relative abundance matrices
+get_rel_ab <- function(vec, taxa){
+  stopifnot(length(vec) == length(taxa))
   rel.ab <- vec / sum(vec)
   Nij <- matrix(0, length(vec), length(vec))
   for (i in 1:length(vec)){
@@ -270,14 +268,59 @@ get_rel_ab <- function(vec){
       Nij[i,j] <- rel.ab[i]*rel.ab[j]
     }
   }
+  dimnames(Nij) <- list(taxa, taxa)
   Nij
 }
-
+# function to remove interactions < threshold
 rm_neutral <- function(Nij, threshold){
     Nij[Nij > threshold] <-  1
     Nij[Nij < 1] <-  0 
     Nij
 }
+
+threshold <- c(1e-01, 1e-02, 1e-03, 1e-04, 1e-05, 1e-06, 1e-07,  5.9e-02, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 3e-02, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07)
+
+tss.neutral <- NULL
+for (f in 1:length(web.links.inf)){
+  t.temp <- NULL
+  for (t in 1:length(threshold)){
+    web.temp <- NULL
+    for(web in 1:length(web.links.inf[[f]])){
+      index <- dim.index[[f]][[web]]
+      Nij <- get_rel_ab(vec = dw[[f]][[web]]$dw,
+                        taxa = dw[[f]][[web]]$taxa)
+      Nij <- rm_neutral(Nij, threshold[t])
+      Nij <- Nij[index, index]
+      inf <- web.links.inf[[f]][[web]][index, index]
+      obs <- obs.A[[web]][index, index]
+      for(name in (colnames(inf)[colnames(inf) %in%                   taxa.forbid])){
+        inf[,name] <- 0
+      }
+      inf <- inf * Nij
+      web.temp[[web]] <- tss(obs, inf)
+    }
+    t.temp[[t]] <- web.temp
+  }
+  names(t.temp) <- threshold
+  tss.neutral[[f]] <- t.temp
+}
+names(tss.neutral) <- names(web.links.inf)
+mean(tss.neutral[[1]][[2]])
+
+test <- map(tss.neutral, ldply, mean)
+test <- llply(test, function (x){
+  arrange(x, desc(V1))
+}
+)
+test <- ldply(test)
+test$size <- c(rep("min.min", 19), rep("mean.min", 19),rep("mean.max", 19),rep("max.max", 19))
+ggplot(test, aes(x = log10(as.numeric(.id)), y = V1, color = size)) +
+  geom_point() +
+  geom_line()
+
+unlist(lapply(tss.step1, mean))
+unlist(lapply(tss.step2, mean))
+
 out <- NULL
 for(t in 1:length(threshold)){
   out[[t]] <- rm_neutral(nij.test, threshold[t])
