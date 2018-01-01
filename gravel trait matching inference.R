@@ -6,8 +6,7 @@
 # paramterize Niche model using method presented in Gravel et al. 2013 Methods in Eco Evo. Inferring food web structure from predator-prey body size relationships
 
 library(plyr)
-library(ggplot2)
-#library(tidyverse)
+library(tidyverse)
 
 # gravel functions
 # from Gravel et al. 2013 supplementary information
@@ -142,7 +141,12 @@ for (f in 1:length(training.list)){
   names(pars.list[[f]]) <- names(training.list[[f]])
 }
 names(pars.list) <- names(training.list)
-
+# solution to above without using nested for loops
+test <- map(training.list, map, function(x){
+  Bprey = log10(x$prey)
+  Bpred = log10(x$pred)
+  out <- reg_fn(Bprey, Bpred, quartil = c(0.03, 0.97))
+})
 # coef plot ####
 # plot parameters for 4 different fish sizes
 # funciton to extract parameters
@@ -316,9 +320,14 @@ for(t in 1:length(threshold)){
   out[[t]] <- rm_neutral(nij.test, threshold[t])
 }
 
-laply(test2, function(x) laply(x, function(x) rm_neutral, threshold2[x]))
+# apply function to 1 nested list
+vec <- rnorm(5, 25, 10)
+vecs <- rep(list(vec), 5)
+map(vecs, get_rel_ab)
+vecs2 <- rep(list(vecs),2)
+vecs2.out <- map(vecs2, map, get_rel_ab)
 
-# playing around with applying fxn to nested lists
+# playing around with applying fxn to 2 nested lists
 Nij <- matrix(rnorm(25, 1e-4, 1e-5), ncol = 5 )
 Nij2 <- matrix(rnorm(25, 1e-4, 1e-5), ncol = 5 )
 test2 <- list(rep(list(Nij), 5), rep(list(Nij2), 5)) 
