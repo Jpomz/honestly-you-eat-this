@@ -189,12 +189,11 @@ web.links.inf  <- map(web.pars, map, function (x){
 
 # sum of links per web
 # maybe I can use this to "pick" fish size??
-sum.links <- data.frame(
-  min.min =sapply(web.links.inf[[1]], sum),
-  mean.min = sapply(web.links.inf[[2]],sum),
-  mean.max = sapply(web.links.inf[[3]],sum),
-  max.max = sapply(web.links.inf[[4]], sum))
-sum.links <- 
+sum_fn <- function (x){
+  sapply(x, sum)
+}
+sum.links <- ldply(web.links.inf, function (x){
+  sum_fn(x)})
 
 # add taxa names to inferred matrices
 for (f in 1:length(web.links.inf)){
