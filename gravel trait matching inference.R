@@ -255,4 +255,41 @@ for(f in 1:length(web.links.inf)){
 }
 names(dim.index) <- names(web.links.inf)
 
-# calculate TSS
+# TSS ####
+# step1, biomass inference
+tss.step1 <- NULL
+for(f in 1:length(web.links.inf)){
+  temp <- NULL
+  for(web in 1:length(web.links.inf[[f]])){
+    index <- dim.index[[f]][[web]]
+    obs <- obs.A[[web]][index, index]
+    inf <- web.links.inf[[f]][[web]][index, index]
+    temp[[web]] <- tss(obs, inf)
+  }
+  tss.step1[[f]] <-temp
+}
+
+
+# step2, prune niche forbidden links
+# e.g. taxa that cannot eat prey due to mouthparts, scrapers, filter feeders, etc
+taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
+
+tss.step2 <- NULL
+for(f in 1:length(web.links.inf)){
+  temp <- NULL
+  for(web in 1:length(web.links.inf[[f]])){
+    index <- dim.index[[f]][[web]]
+    obs <- obs.A[[web]][index, index]
+    inf <- web.links.inf[[f]][[web]][index, index]
+    for(name in (colnames(inf)[colnames(inf) %in%
+                               taxa.forbid])){
+      inf[,name] <- 0
+    }
+    temp[[web]] <- tss(obs, inf)
+  }
+  tss.step2[[f]] <-temp
+}
+
+unlist(lapply(tss.step1, mean))
+unlist(lapply(tss.step2, mean))
+
