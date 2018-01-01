@@ -311,3 +311,9 @@ rm_neutral <- function(Nij, threshold){
     Nij[Nij < 1] <-  0 
     Nij
 }
+out <- NULL
+for(t in 1:length(threshold)){
+  out[[t]] <- rm_neutral(nij.test, threshold[t])
+}
+
+
