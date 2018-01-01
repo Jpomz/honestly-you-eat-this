@@ -171,20 +171,11 @@ ggplot(ldply(param.summary.list), aes(x = coef, y = mean, color = .id)) +
 
 # web params ####
 # calculate web paramters using get_pars_Niche()
-web.pars <- NULL
-for (f in 1:length(pars.list)){
-  temp <- NULL
-  for (web in 1:length(pars.list[[f]])){
-    Ball <- dw[[f]][[web]]$dw
-    temp[[web]] <- get_pars_Niche(
-      pars.list[[f]][[web]],
-      Ball = log10(Ball))
-  }
-  names(temp) <- names(pars.list[[f]])
-  web.pars[[f]] <- temp
-}
-names(web.pars) <- names(training.list)
-
+Ball <- map(dw, map, function (x){
+  log10(x$dw)
+})
+web.pars <- map2(pars.list, Ball,
+                 map2, get_pars_Niche)
 # infer links ####
 
 # calculate food web links for taieri
