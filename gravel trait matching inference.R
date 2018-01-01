@@ -316,4 +316,12 @@ for(t in 1:length(threshold)){
   out[[t]] <- rm_neutral(nij.test, threshold[t])
 }
 
+laply(test2, function(x) laply(x, function(x) rm_neutral, threshold2[x]))
 
+# playing around with applying fxn to nested lists
+Nij <- matrix(rnorm(25, 1e-4, 1e-5), ncol = 5 )
+Nij2 <- matrix(rnorm(25, 1e-4, 1e-5), ncol = 5 )
+test2 <- list(rep(list(Nij), 5), rep(list(Nij2), 5)) 
+threshold <- rnorm(5, 9e-5, 8e06)
+thresh2 <- rep(list(threshold), 2)
+out <- map2(test2, thresh2, map2, rm_neutral)
