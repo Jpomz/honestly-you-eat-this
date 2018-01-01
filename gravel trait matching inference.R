@@ -18,7 +18,7 @@ source("gravel_functions.R")
 invert <- readRDS("estimated invert bodymass.RDS")
 # fish biomass and abundance
 fish <- readRDS("estimated fish bodymass and abundance.RDS")
-# rbind invert to each element in fish and then split each list into list of sites
+# rbind invert to each element in fish, filter out na(dw), order by dw and then split each list into list of sites
 dw <- llply(fish, function (x){
   y = rbind(x, invert)
   y = y[!is.na(y$dw),]
@@ -159,7 +159,7 @@ web.pars <- NULL
 for (f in 1:length(pars.list)){
   temp <- NULL
   for (web in 1:length(pars.list[[f]])){
-    Ball <- sort(dw[[f]][[web]]$dw)
+    Ball <- dw[[f]][[web]]$dw
     temp[[web]] <- get_pars_Niche(
       pars.list[[f]][[web]],
       Ball = log10(Ball))
@@ -201,7 +201,7 @@ for (f in 1:length(web.links.inf)){
   for (web in 1:length(web.links.inf[[f]])){
     dimnames(web.links.inf[[f]][[web]]) <- list(
     dw[[f]][[web]]$taxa,
-    web.pars[[i]]$taxa)
+    dw[[f]][[web]]$taxa)
   }
 }
 
