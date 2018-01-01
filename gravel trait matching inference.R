@@ -186,6 +186,13 @@ web.links.inf  <- map(web.pars, map, function (x){
        x[,"low"],
        x[,"high"])
 })
+# add taxa names to inferred matrices
+web.links.inf <- map2(web.links.inf, dw, map2,
+                      function (x, y){
+                        dimnames(x) <- list(y$taxa, y$taxa)
+                        x
+                      })
+
 
 # sum of links per web
 # maybe I can use this to "pick" fish size??
@@ -195,12 +202,6 @@ sum_fn <- function (x){
 sum.links <- ldply(web.links.inf, function (x){
   sum_fn(x)})
 
-# add taxa names to inferred matrices
-web.links.inf <- map2(web.links.inf, dw, map2,
-             function (x, y){
-  dimnames(x) <- list(y$taxa, y$taxa)
-  x
-})
 
 # taxa index ####
 # make index of taxa names to match matrices
@@ -219,6 +220,7 @@ dim.index <- map2(rep(list(obs.A),
                   get_dim_index)
 names(dim.index) <- names(web.links.inf)
 
+
 # TSS ####
 # step1, biomass inference
 tss.step1 <- NULL
@@ -232,6 +234,7 @@ for(f in 1:length(web.links.inf)){
   }
   tss.step1[[f]] <-temp
 }
+
 
 
 # step2, prune niche forbidden links
