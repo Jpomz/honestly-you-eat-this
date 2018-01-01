@@ -196,13 +196,11 @@ sum.links <- ldply(web.links.inf, function (x){
   sum_fn(x)})
 
 # add taxa names to inferred matrices
-for (f in 1:length(web.links.inf)){
-  for (web in 1:length(web.links.inf[[f])){
-    dimnames(web.links.inf[[f]][[web]]) <- list(
-    dw[[f]][[web]]$taxa,
-    dw[[f]][[web]]$taxa)
-  }
-}
+web.links.inf <- map2(web.links.inf, dw, map2,
+             function (x, y){
+  dimnames(x) <- list(y$taxa, y$taxa)
+  x
+})
 
 # taxa index ####
 # make index of taxa names to match matrices
