@@ -13,6 +13,47 @@ library(ggplot2)
 # from Gravel et al. 2013 supplementary information
 source("gravel_functions.R")
 
+tss <- function (observed, inferred){
+  # make sure adjacency matrices are same dimensions and have same colnames
+  stopifnot(dim(observed) == dim(inferred), 
+            identical(colnames(observed), colnames(inferred)))
+  
+  # subtract inferred from observed
+  minus <- observed - inferred
+  # multiply observed and inferred
+  multiply <- observed * inferred
+  # change values of 1 in multiplied matrix to 2
+  multiply[multiply == 1] <- 2
+  # add minus and multiply matrices
+  prediction <- minus + multiply
+  # prediction outcome matrix now has all 4 possibilities repreented as different integer values
+  # 2 = true positive (a); links both obserevd & predicted
+  # -1 = false positive (b); predicted but not observed
+  # 1 = false negative (c); observed but not predicted
+  # 0 = true negative (d); not predicted, not observed
+  tss.vars <- data.frame(
+    a = length(prediction[prediction==2]),
+    b = length(prediction[prediction==-1]), 
+    c = length(prediction[prediction==1]), 
+    d = length(prediction[prediction==0]),
+    S = ncol(prediction)
+  )
+  # calculate TSS
+  # TSS = (a*d - b*c)/((a+c)*(b+d))
+  # also decompose TSS to see proportion of positive and negative predictions
+  # abar = proportion of links correctly predicted
+  # dbar = proportion of links correctly not predicted
+  # bc = proportion of links incorrectly predicted
+  tss <- tss.vars %>%
+    mutate(tss =(a*d - b*c)/((a+c)*(b+d)),
+           abar = a/S**2,
+           dbar = d / S**2,
+           bbar = b / S**2,
+           cbar = c / S**2,
+           bc = (b + c) / S**2)
+  tss
+}
+
 # data ####
 # invertebrate biomass and abundance
 invert <- readRDS("estimated invert bodymass.RDS")
@@ -167,7 +208,7 @@ for (f in 1:length(pars.list)){
   names(temp) <- names(pars.list[[f]])
   web.pars[[f]] <- temp
 }
-names(pars.list) <- names(training.list)
+names(web.pars) <- names(training.list)
 
 # infer links ####
 
@@ -196,7 +237,7 @@ sum.links <- data.frame(
   mean.max = sapply(web.links.inf[[3]],sum),
   max.max = sapply(web.links.inf[[4]], sum))
 
-# add taxa names to predation matrices
+# add taxa names to inferred matrices
 for (f in 1:length(web.links.inf)){
   for (web in 1:length(web.links.inf[[f]])){
     dimnames(web.links.inf[[f]][[web]]) <- list(
@@ -205,3 +246,26 @@ for (f in 1:length(web.links.inf)){
   }
 }
 
+# taxa index ####
+# make index of taxa names to match matrices
+get_dim_index <- function(object, target){
+  # subset object to names in target
+  index <- intersect(rownames(target),
+                     rownames(object))
+  index
+}
+
+# taxa names index
+dim.index <- NULL
+for(f in 1:length(web.links.inf)){
+  temp <- NULL
+  for(web in 1:length(web.links.inf[[f]])){
+    temp[[web]] <- get_dim_index(obs.A[[web]],
+                          web.links.inf[[f]][[web]])
+  }
+  names(temp) <- names(web.links.inf[[f]])
+  dim.index[[f]] <- temp
+}
+names(dim.index) <- names(web.links.inf)
+
+# calculate TSS
