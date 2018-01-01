@@ -180,20 +180,12 @@ web.pars <- map2(pars.list, Ball,
 
 # calculate food web links for taieri
 # predation matrix
-web.links.inf <- NULL
-for (f in 1:length(web.pars)){
-  temp <- NULL
-  for (web in 1:length(web.pars[[f]])){
-    x = web.pars[[f]][[web]]
-    temp[[web]] <- L_fn(x[,"n"],
-                        x[,"c"],
-                        x[,"low"],
-                        x[,"high"])
-    }
-    names(temp) <- names(web.pars[[f]])
-    web.links.inf[[f]] <- temp
-}
-names(web.links.inf) <- names(web.pars)
+web.links.inf  <- map(web.pars, map, function (x){
+  L_fn(x[,"n"],
+       x[,"c"],
+       x[,"low"],
+       x[,"high"])
+})
 
 # sum of links per web
 # maybe I can use this to "pick" fish size??
@@ -206,7 +198,7 @@ sum.links <-
 
 # add taxa names to inferred matrices
 for (f in 1:length(web.links.inf)){
-  for (web in 1:length(web.links.inf[[f]])){
+  for (web in 1:length(web.links.inf[[f])){
     dimnames(web.links.inf[[f]][[web]]) <- list(
     dw[[f]][[web]]$taxa,
     dw[[f]][[web]]$taxa)
