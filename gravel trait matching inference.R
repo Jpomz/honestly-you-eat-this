@@ -212,16 +212,11 @@ get_dim_index <- function(object, target){
 }
 
 # taxa names index
-dim.index <- NULL
-for(f in 1:length(web.links.inf)){
-  temp <- NULL
-  for(web in 1:length(web.links.inf[[f]])){
-    temp[[web]] <- get_dim_index(obs.A[[web]],
-                          web.links.inf[[f]][[web]])
-  }
-  names(temp) <- names(web.links.inf[[f]])
-  dim.index[[f]] <- temp
-}
+dim.index <- map2(rep(list(obs.A),
+                      length(web.links.inf)),
+                  web.links.inf,
+                  map2,
+                  get_dim_index)
 names(dim.index) <- names(web.links.inf)
 
 # TSS ####
