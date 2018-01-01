@@ -292,4 +292,22 @@ for(f in 1:length(web.links.inf)){
 
 unlist(lapply(tss.step1, mean))
 unlist(lapply(tss.step2, mean))
+unlist(lapply(tss.step1, sd))
+unlist(lapply(tss.step2, sd))
 
+get_rel_ab <- function(vec){
+  rel.ab <- vec / sum(vec)
+  Nij <- matrix(0, length(vec), length(vec))
+  for (i in 1:length(vec)){
+    for (j in 1:length(vec)){
+      Nij[i,j] <- rel.ab[i]*rel.ab[j]
+    }
+  }
+  Nij
+}
+
+rm_neutral <- function(Nij, threshold){
+    Nij[Nij > threshold] <-  1
+    Nij[Nij < 1] <-  0 
+    Nij
+}
