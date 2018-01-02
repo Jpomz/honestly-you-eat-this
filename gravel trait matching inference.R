@@ -115,7 +115,7 @@ names(training.list) <- names(dw.pairs)
 pars.list <- map(training.list, function(x){
   Bprey = log10(x$prey)
   Bpred = log10(x$pred)
-  out <- reg_fn(Bprey, Bpred, quartil = c(0.03, 0.97))
+  out <- reg_fn(Bprey, Bpred, quartil = c(0.01, 0.97))
 })
 # web params ####
 # calculate web paramters using get_pars_Niche()
