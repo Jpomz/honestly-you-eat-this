@@ -196,7 +196,7 @@ tss.niche <- pmap(list(obs = obs.A,
 # neutral forbidden
 ab.vec <- llply(dw, function (x){x$dw})
 ab.taxa <- llply(dw, function (x){x$taxa})
-threshold <- c(1e-03, 1e-04, 1e-05, 1e-06, 1e-07, 1e-08, 1e-09, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 5.9e-08, 5.9e-9, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07, 3e-8, 3e-9, 1e-10, 3e-10, 5.9e-10, 1e-11, 3e-11, 5.9e-11, 1e-12, 3e-12, 5.9e-12, 1e-13, 3e-13, 5.9e-13,1e-14, 3e-14, 5.9e-14,1e-15, 3e-15, 5.9e-15, 1e-2, 3e-2, 5.9e-2)
+threshold <- c(1e-03, 1e-04, 1e-05, 1e-06, 1e-07, 1e-08, 1e-09, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 5.9e-08, 5.9e-9, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07, 3e-8, 3e-9, 1e-10, 3e-10, 5.9e-10, 1e-11, 3e-11, 5.9e-11, 1e-12, 3e-12, 5.9e-12, 1e-13, 1e-2, 3e-2, 5.9e-2)
 
 inf.neutral <- map(threshold, function (x){
   map(map2(ab.vec, ab.taxa, get_rel_ab),
@@ -212,8 +212,23 @@ tss.neutral <- ldply(flatten(tss.neutral))
 tss.neutral$threshold <- rep(threshold, each = 17)
 ggplot(tss.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
   geom_point() +
-  stat_smooth(alpha = 0.2)
+  stat_smooth(alpha = 0.2) +
+  theme_classic()
 tss.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
+
+# neutral and niche forbidden
+tss.niche.neutral <- map(inf.neutral, function (x){
+  pmap(list(obs = obs.A,
+            inf = map(x,rm_niche, taxa = taxa.forbid)),
+       match_matr_tss)
+})
+tss.niche.neutral <- ldply(flatten(tss.niche.neutral))
+tss.niche.neutral$threshold <- rep(threshold, each = 17)
+ggplot(tss.niche.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
+  geom_point() +
+  stat_smooth(alpha = 0.2)+
+  theme_classic()
+tss.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
 
 tss.niche.neutral <- map(threshold,
                          function (x){
