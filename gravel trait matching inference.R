@@ -198,10 +198,10 @@ ab.vec <- llply(dw, function (x){x$dw})
 ab.taxa <- llply(dw, function (x){x$taxa})
 threshold <- c(1e-03, 1e-04, 1e-05, 1e-06, 1e-07, 1e-08, 1e-09, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 5.9e-08, 5.9e-9, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07, 3e-8, 3e-9, 1e-10, 3e-10, 5.9e-10, 1e-11, 3e-11, 5.9e-11, 1e-12, 3e-12, 5.9e-12, 1e-13, 1e-2, 3e-2, 5.9e-2)
 
+rel.ab.matr <- map2(ab.vec, ab.taxa, get_rel_ab)
+
 inf.neutral <- map(threshold, function (x){
-  map(map2(ab.vec, ab.taxa, get_rel_ab),
-                      rm_neutral,
-                      threshold = x)})
+  map(rel.ab.matr, rm_neutral, threshold = x)})
 
 tss.neutral <- map(inf.neutral, function (x){
   pmap(list(obs = obs.A,
@@ -213,7 +213,9 @@ tss.neutral$threshold <- rep(threshold, each = 17)
 ggplot(tss.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
   geom_point() +
   stat_smooth(alpha = 0.2) +
+  ggtitle("Neutral forbidden") +
   theme_classic()
+
 tss.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
 
 # neutral and niche forbidden
@@ -230,25 +232,48 @@ ggplot(tss.niche.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
   theme_classic()
 tss.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
 
-tss.niche.neutral <- map(threshold,
-                         function (x){
-  pmap(list(obs = obs.A,
-            inf = map(map(map2(ab.vec, ab.taxa,
-                           get_rel_ab),
-                      rm_niche,
-                      taxa = taxa.forbid),
-                      rm_neutral,
-                      threshold = x)),
-       match_matr_tss)
-})
-
-
-
 # fish abundance "correction"
 f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
-for(fv in (colnames(Nij)[colnames(Nij) %in%                   f.vec])){
-  Nij[,fv] <- Nij[,fv]*1e10
+f_ab_corr <- function(Nij, taxa, cf){
+  for(f in (colnames(Nij)[colnames(Nij) %in% taxa])){
+  Nij[,f] <- Nij[,f]*cf
+  }
+  Nij
 }
-Nij
 
+rel.ab.fish <- map(rel.ab.matr,
+            f_ab_corr, taxa = f.vec, cf = 1e5)
 
+fish.neutral <- map(threshold, function (x){
+  map(rel.ab.fish, rm_neutral, threshold = x)})
+
+tss.fish.neutral <- map(fish.neutral, function (x){
+  pmap(list(obs = obs.A,
+            inf = x),
+       match_matr_tss)
+})
+tss.fish.neutral <- ldply(flatten(tss.fish.neutral))
+tss.fish.neutral$threshold <- rep(threshold, each = 17)
+ggplot(tss.fish.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
+  geom_point() +
+  stat_smooth(alpha = 0.2) +
+  ggtitle("Neutral forbidden, Fish correction") +
+  theme_classic()
+tss.fish.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
+
+# fish + niche + neutral
+tss.fish.niche.neutral <- map(fish.neutral,
+                              function (x){
+  pmap(list(obs = obs.A,
+            inf = map(x,rm_niche, taxa = taxa.forbid)),
+       match_matr_tss)
+})
+tss.fish.niche.neutral <- ldply(flatten(tss.fish.niche.neutral))
+tss.fish.niche.neutral$threshold <- rep(threshold, each = 17)
+ggplot(tss.fish.niche.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
+  geom_point() +
+  stat_smooth(alpha = 0.2) +
+  ggtitle("Neutral + Niche forbidden, Fish correction") +
+  theme_classic()
+
+tss.fish.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
