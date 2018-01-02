@@ -278,7 +278,7 @@ rm_neutral <- function(Nij, threshold){
     Nij
 }
 
-threshold <- c(1e-01, 1e-02, 1e-03, 1e-04, 1e-05, 1e-06, 1e-07,  5.9e-02, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 3e-02, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07)
+threshold <- c(1e-03, 1e-04, 1e-05, 1e-06, 1e-07, 1e-08, 1e-09, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 5.9e-08, 5.9e-9, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07, 3e-8, 3e-9, 1e-10, 3e-10, 5.9e-10, 1e-11, 3e-11, 5.9e-11, 1e-12, 3e-12, 5.9e-12, 1e-13, 3e-13, 5.9e-13,1e-14, 3e-14, 5.9e-14,1e-15, 3e-15, 5.9e-15, 1e-2, 3e-2, 5.9e-2)
 
 tss.neutral <- NULL
 for (f in 1:length(web.links.inf)){
@@ -305,18 +305,17 @@ for (f in 1:length(web.links.inf)){
   tss.neutral[[f]] <- t.temp
 }
 names(tss.neutral) <- names(web.links.inf)
-mean(tss.neutral[[1]][[2]])
 
-test <- map(tss.neutral, ldply, mean)
-test <- llply(test, function (x){
-  arrange(x, desc(V1))
-}
-)
-test <- ldply(test)
-test$size <- c(rep("min.min", 19), rep("mean.min", 19),rep("mean.max", 19),rep("max.max", 19))
-ggplot(test, aes(x = log10(as.numeric(.id)), y = V1, color = size)) +
-  geom_point() +
-  geom_line()
+tss.neutral.summary <- map(tss.neutral, ldply, c(mean, sd))
+
+tss.neutral.summary <- ldply(tss.neutral.summary)
+tss.neutral.summary$size <- c(rep("min.min", length(threshold)), rep("mean.min", length(threshold)),rep("mean.max", length(threshold)),rep("max.max", length(threshold)))
+
+ggplot(tss.neutral.summary, aes(x = log10(as.numeric(.id)), y = V1, color = size)) +
+  geom_point() 
+  # geom_line() +
+  # geom_errorbar(aes(ymin = V1 - V2,
+  #               ymax = V2 +V2))
 
 unlist(lapply(tss.step1, mean))
 unlist(lapply(tss.step2, mean))
