@@ -139,16 +139,13 @@ web.links.inf <- map2(web.links.inf, dw,
             dimnames(x) <- list(y$taxa, y$taxa)
             x
                       })
-
-
 # sum of links per web
 sum.links <- sapply(web.links.inf, sum)
-
 
 # TSS ####
 # function to calc TSS from matrices matched by row/colnames
 # be careful to select appropriate obs and inf
-match_matr_tss <- function (obs, inf, niche.forbid = FALSE, forbidden.taxa = NA){
+match_matr_tss <- function (obs, inf, niche.forbid = FALSE, forbidden.taxa = NULL){
   # colnames(inf) have already been size-sorted
   index = intersect(rownames(inf), rownames(obs))
   obs = obs[index, index]
@@ -168,8 +165,6 @@ match_matr_tss <- function (obs, inf, niche.forbid = FALSE, forbidden.taxa = NA)
 # step1, biomass inference
 tss.step1 <- map2(obs.A, web.links.inf,
                   match_matr_tss)
-
- 
 
 # step2, prune niche forbidden links
 # e.g. taxa that cannot eat prey due to mouthparts, scrapers, filter feeders, etc
