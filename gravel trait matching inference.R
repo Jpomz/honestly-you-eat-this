@@ -214,44 +214,18 @@ test <- map(threshold, function (x){
                  ab.threshold = x)
   }
 )
+
+#***************************************************************
+# clean up "test" object, select local and global thresholds
+# try and correct for fish abundance
+
+#***************************************************************
 test <- ldply(flatten(test))
 test$threshold <- rep(threshold, each = 17)
 ggplot(test, aes(x = log10(threshold), y = V1, color = .id)) +
   geom_point() +
   stat_smooth(alpha = 0.2)
 test %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
-
-tss.neutral <- NULL
-  for (t in 1:length(threshold)){
-    web.temp <- NULL
-    for(web in 1:length(web.links.inf)){
-      Nij <- get_rel_ab(vec = dw[[web]]$dw,
-                        taxa = dw[[web]]$taxa)
-      Nij <- rm_neutral(Nij, threshold[t])
-      Nij <- Nij[index, index]
-      inf <- web.links.inf[[web]][index, index]
-      obs <- obs.A[[web]][index, index]
-      for(name in (colnames(inf)[colnames(inf) %in%                   taxa.forbid])){
-        inf[,name] <- 0
-      }
-      inf <- inf * Nij
-      web.temp[[web]] <- tss(obs, inf)
-    }
-    tss.neutral[[t]] <- web.temp
-  }
-names(tss.neutral) <- threshold
-
-tss.neutral.summary <- map(tss.neutral, ldply, c(mean, sd))
-
-tss.neutral.summary <- ldply(tss.neutral.summary)
-tss.neutral.summary$size <- c(rep("min.min", length(threshold)), rep("mean.min", length(threshold)),rep("mean.max", length(threshold)),rep("max.max", length(threshold)))
-
-ggplot(tss.neutral.summary, aes(x = log10(as.numeric(.id)), y = V1, color = size)) +
-  geom_point() +
-  stat_smooth(alpha = 0.2) +
-  # geom_line() +
-  # geom_errorbar(aes(ymin = V1 - V2,
-  #               ymax = V1 +V2))
 
 # fish abundance "correction"
 fish.corr <- NULL
