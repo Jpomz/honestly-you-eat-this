@@ -312,10 +312,53 @@ tss.neutral.summary <- ldply(tss.neutral.summary)
 tss.neutral.summary$size <- c(rep("min.min", length(threshold)), rep("mean.min", length(threshold)),rep("mean.max", length(threshold)),rep("max.max", length(threshold)))
 
 ggplot(tss.neutral.summary, aes(x = log10(as.numeric(.id)), y = V1, color = size)) +
-  geom_point() 
+  geom_point() +
+  stat_smooth(alpha = 0.2) +
   # geom_line() +
   # geom_errorbar(aes(ymin = V1 - V2,
-  #               ymax = V2 +V2))
+  #               ymax = V1 +V2))
+
+# fish abundance "correction"
+fish.corr <- NULL
+for (f in 1:length(web.links.inf)){
+  t.temp <- NULL
+  for (t in 1:length(threshold)){
+    web.temp <- NULL
+    for(web in 1:length(web.links.inf[[f]])){
+      index <- dim.index[[f]][[web]]
+      Nij <- get_rel_ab(vec = dw[[f]][[web]]$dw,
+                        taxa = dw[[f]][[web]]$taxa)
+      f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
+      for(fv in (colnames(Nij)[colnames(Nij) %in%                   f.vec])){
+        Nij[,fv] <- Nij[,fv]*1e10
+      }
+      Nij <- rm_neutral(Nij, threshold[t])
+      Nij <- Nij[index, index]
+      inf <- web.links.inf[[f]][[web]][index, index]
+      obs <- obs.A[[web]][index, index]
+      for(name in (colnames(inf)[colnames(inf) %in%                   taxa.forbid])){
+        inf[,name] <- 0
+      }
+      inf <- inf * Nij
+      web.temp[[web]] <- tss(obs, inf)
+    }
+    t.temp[[t]] <- web.temp
+  }
+  names(t.temp) <- threshold
+  fish.corr[[f]] <- t.temp
+}
+names(fish.corr) <- names(web.links.inf)
+
+fish.corr.summary <- map(fish.corr, ldply, c(mean, sd))
+
+fish.corr.summary <- ldply(fish.corr.summary)
+fish.corr.summary$size <- c(rep("min.min", length(threshold)), rep("mean.min", length(threshold)),rep("mean.max", length(threshold)),rep("max.max", length(threshold)))
+
+ggplot(fish.corr.summary, aes(x = log10(as.numeric(.id)), y = V1, color = size)) +
+   geom_point() #+
+  # geom_errorbar(aes(ymin = V1 - V2,
+  #               ymax = V1 +V2))
+
 
 unlist(lapply(tss.step1, mean))
 unlist(lapply(tss.step2, mean))
