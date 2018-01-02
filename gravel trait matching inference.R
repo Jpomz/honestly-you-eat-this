@@ -145,18 +145,22 @@ sum.links <- sapply(web.links.inf, sum)
 # TSS ####
 # function to calc TSS from matrices matched by row/colnames
 # be careful to select appropriate obs and inf
-match_matr_tss <- function (obs, inf, niche.forbid = FALSE, forbidden.taxa = NULL){
+match_matr_tss <- function (obs, inf, forbidden.taxa = NULL, ab.vec = NULL, ab.taxa = NULL, ab.threshold = NULL){
   # colnames(inf) have already been size-sorted
   index = intersect(rownames(inf), rownames(obs))
   obs = obs[index, index]
   inf = inf[index, index]
-  if (niche.forbid == TRUE){
     if(is.character(forbidden.taxa)){
       for(name in (colnames(inf)[colnames(inf) %in% forbidden.taxa])){
       inf[,name] <- 0
       }
+      # else(warning("\n***************\nNo forbidden taxa supplied\nTSS calculated for unmodified inf object\n***************"))
     }
-      else(warning("\n***************\nNo forbidden taxa supplied\nTSS calculated for unmodified inf object\n***************"))
+  if(is.numeric(ab.vec)){
+    Nij = get_rel_ab(ab.vec, ab.taxa)
+    Nij = rm_neutral(Nij, ab.threshold)
+    Nij = Nij[index, index]
+    inf = inf * Nij
   }
   result = get_tss(obs, inf)
   result
@@ -173,7 +177,6 @@ taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium
 tss.step2 <- pmap(list(obs = obs.A,
                   inf = web.links.inf),
                   match_matr_tss,
-                  niche.forbid = TRUE,
                   forbidden.taxa = taxa.forbid)
 
 
@@ -199,18 +202,34 @@ rm_neutral <- function(Nij, threshold){
 
 threshold <- c(1e-03, 1e-04, 1e-05, 1e-06, 1e-07, 1e-08, 1e-09, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 5.9e-08, 5.9e-9, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07, 3e-8, 3e-9, 1e-10, 3e-10, 5.9e-10, 1e-11, 3e-11, 5.9e-11, 1e-12, 3e-12, 5.9e-12, 1e-13, 3e-13, 5.9e-13,1e-14, 3e-14, 5.9e-14,1e-15, 3e-15, 5.9e-15, 1e-2, 3e-2, 5.9e-2)
 
+ab.vec <- llply(dw, function (x){x$dw})
+ab.taxa <- llply(dw, function (x){x$taxa})
+test <- map(threshold, function (x){
+                 pmap(list(obs = obs.A,
+                      inf = web.links.inf,
+                      ab.vec = ab.vec,
+                      ab.taxa = ab.taxa),
+                 match_matr_tss,
+                 forbidden.taxa = taxa.forbid,
+                 ab.threshold = x)
+  }
+)
+test <- ldply(flatten(test))
+test$threshold <- rep(threshold, each = 17)
+ggplot(test, aes(x = log10(threshold), y = V1, color = .id)) +
+  geom_point() +
+  stat_smooth(alpha = 0.2)
+test %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
+
 tss.neutral <- NULL
-for (f in 1:length(web.links.inf)){
-  t.temp <- NULL
   for (t in 1:length(threshold)){
     web.temp <- NULL
-    for(web in 1:length(web.links.inf[[f]])){
-      index <- dim.index[[f]][[web]]
-      Nij <- get_rel_ab(vec = dw[[f]][[web]]$dw,
-                        taxa = dw[[f]][[web]]$taxa)
+    for(web in 1:length(web.links.inf)){
+      Nij <- get_rel_ab(vec = dw[[web]]$dw,
+                        taxa = dw[[web]]$taxa)
       Nij <- rm_neutral(Nij, threshold[t])
       Nij <- Nij[index, index]
-      inf <- web.links.inf[[f]][[web]][index, index]
+      inf <- web.links.inf[[web]][index, index]
       obs <- obs.A[[web]][index, index]
       for(name in (colnames(inf)[colnames(inf) %in%                   taxa.forbid])){
         inf[,name] <- 0
@@ -218,12 +237,9 @@ for (f in 1:length(web.links.inf)){
       inf <- inf * Nij
       web.temp[[web]] <- tss(obs, inf)
     }
-    t.temp[[t]] <- web.temp
+    tss.neutral[[t]] <- web.temp
   }
-  names(t.temp) <- threshold
-  tss.neutral[[f]] <- t.temp
-}
-names(tss.neutral) <- names(web.links.inf)
+names(tss.neutral) <- threshold
 
 tss.neutral.summary <- map(tss.neutral, ldply, c(mean, sd))
 
