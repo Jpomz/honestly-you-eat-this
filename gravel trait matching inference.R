@@ -143,44 +143,7 @@ web.links.inf <- map2(web.links.inf, dw,
 sum.links <- sapply(web.links.inf, sum)
 
 # TSS ####
-# function to calc TSS from matrices matched by row/colnames
-# be careful to select appropriate obs and inf
-match_matr_tss <- function (obs, inf, forbidden.taxa = NULL, ab.vec = NULL, ab.taxa = NULL, ab.threshold = NULL){
-  # colnames(inf) have already been size-sorted
-  index = intersect(rownames(inf), rownames(obs))
-  obs = obs[index, index]
-  inf = inf[index, index]
-    if(is.character(forbidden.taxa)){
-      for(name in (colnames(inf)[colnames(inf) %in% forbidden.taxa])){
-      inf[,name] <- 0
-      }
-      # else(warning("\n***************\nNo forbidden taxa supplied\nTSS calculated for unmodified inf object\n***************"))
-    }
-  if(is.numeric(ab.vec)){
-    Nij = get_rel_ab(ab.vec, ab.taxa)
-    Nij = rm_neutral(Nij, ab.threshold)
-    Nij = Nij[index, index]
-    inf = inf * Nij
-  }
-  result = get_tss(obs, inf)
-  result
-}
-
-# step1, biomass inference
-tss.step1 <- map2(obs.A, web.links.inf,
-                  match_matr_tss)
-
-# step2, prune niche forbidden links
-# e.g. taxa that cannot eat prey due to mouthparts, scrapers, filter feeders, etc
-taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
-
-tss.step2 <- pmap(list(obs = obs.A,
-                  inf = web.links.inf),
-                  match_matr_tss,
-                  forbidden.taxa = taxa.forbid)
-
-
-# calculate relative abundance matrices
+# function to calculate relative abundance matrices
 get_rel_ab <- function(vec, taxa){
   stopifnot(length(vec) == length(taxa))
   rel.ab <- vec / sum(vec)
@@ -193,17 +156,69 @@ get_rel_ab <- function(vec, taxa){
   dimnames(Nij) <- list(taxa, taxa)
   Nij
 }
-# function to remove interactions < threshold
+# function to remove rel.abundance products < threshold
 rm_neutral <- function(Nij, threshold){
-    Nij[Nij > threshold] <-  1
-    Nij[Nij < 1] <-  0 
-    Nij
+  Nij[Nij > threshold] <-  1
+  Nij[Nij < 1] <-  0 
+  Nij
 }
 
-threshold <- c(1e-03, 1e-04, 1e-05, 1e-06, 1e-07, 1e-08, 1e-09, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 5.9e-08, 5.9e-9, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07, 3e-8, 3e-9, 1e-10, 3e-10, 5.9e-10, 1e-11, 3e-11, 5.9e-11, 1e-12, 3e-12, 5.9e-12, 1e-13, 3e-13, 5.9e-13,1e-14, 3e-14, 5.9e-14,1e-15, 3e-15, 5.9e-15, 1e-2, 3e-2, 5.9e-2)
+rm_niche <- function(inf, taxa){
+  for(name in (
+    colnames(inf)[colnames(inf) %in% taxa])){
+        inf[,name] <- 0
+  }
+  inf
+}
+# function to calc TSS from matrices matched by row/colnames
+# be careful to select appropriate obs and inf
+match_matr_tss <- function (obs, inf){
+  # colnames(inf) have already been size-sorted
+  index = intersect(rownames(inf), rownames(obs))
+  obs = obs[index, index]
+  inf = inf[index, index]
+  result = get_tss(obs, inf)
+  result
+}
 
+# step1, biomass inference
+tss.initial <- map2(obs.A, web.links.inf,
+                  match_matr_tss)
+# niche forbidden
+taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
+tss.niche <- pmap(list(obs = obs.A,
+                       inf = map(web.links.inf,
+                                 rm_niche,
+                                 taxa = taxa.forbid)),
+                       match_matr_tss)
+# neutral forbidden
 ab.vec <- llply(dw, function (x){x$dw})
 ab.taxa <- llply(dw, function (x){x$taxa})
+threshold <- c(1e-03, 1e-04, 1e-05, 1e-06, 1e-07, 1e-08, 1e-09, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 5.9e-08, 5.9e-9, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07, 3e-8, 3e-9, 1e-10, 3e-10, 5.9e-10, 1e-11, 3e-11, 5.9e-11, 1e-12, 3e-12, 5.9e-12, 1e-13, 3e-13, 5.9e-13,1e-14, 3e-14, 5.9e-14,1e-15, 3e-15, 5.9e-15, 1e-2, 3e-2, 5.9e-2)
+
+tss.neutral <- map(threshold, function (x){
+  pmap(list(obs = obs.A,
+            inf = map(map2(ab.vec, ab.taxa,
+                           get_rel_ab),
+                      rm_neutral,
+                      threshold = x)),
+             match_matr_tss)
+})
+ldply(flatten(tss.neutral))
+
+tss.niche.neutral <- map(threshold,
+                         function (x){
+  pmap(list(obs = obs.A,
+            inf = map(map(map2(ab.vec, ab.taxa,
+                           get_rel_ab),
+                      rm_niche,
+                      taxa = taxa.forbid),
+                      rm_neutral,
+                      threshold = x)),
+       match_matr_tss)
+})
+
+
 test <- map(threshold, function (x){
                  pmap(list(obs = obs.A,
                       inf = web.links.inf,
