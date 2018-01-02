@@ -229,6 +229,7 @@ tss.niche.neutral$threshold <- rep(threshold, each = 17)
 ggplot(tss.niche.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
   geom_point() +
   stat_smooth(alpha = 0.2)+
+  ggtitle("Niche and Neutral Forbidden") +
   theme_classic()
 tss.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
 
@@ -277,3 +278,5 @@ ggplot(tss.fish.niche.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
   theme_classic()
 
 tss.fish.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
+
+tss.fish.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% .$V1 %>% mean
