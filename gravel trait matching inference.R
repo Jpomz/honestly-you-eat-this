@@ -243,90 +243,12 @@ tss.niche.neutral <- map(threshold,
 })
 
 
-test <- map(threshold, function (x){
-                 pmap(list(obs = obs.A,
-                      inf = web.links.inf,
-                      ab.vec = ab.vec,
-                      ab.taxa = ab.taxa),
-                 match_matr_tss,
-                 forbidden.taxa = taxa.forbid,
-                 ab.threshold = x)
-  }
-)
-
-#***************************************************************
-# clean up "test" object, select local and global thresholds
-# try and correct for fish abundance
-
-#***************************************************************
-test <- ldply(flatten(test))
-test$threshold <- rep(threshold, each = 17)
-ggplot(test, aes(x = log10(threshold), y = V1, color = .id)) +
-  geom_point() +
-  stat_smooth(alpha = 0.2)
-test %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
 
 # fish abundance "correction"
-fish.corr <- NULL
-for (f in 1:length(web.links.inf)){
-  t.temp <- NULL
-  for (t in 1:length(threshold)){
-    web.temp <- NULL
-    for(web in 1:length(web.links.inf[[f]])){
-      index <- dim.index[[f]][[web]]
-      Nij <- get_rel_ab(vec = dw[[f]][[web]]$dw,
-                        taxa = dw[[f]][[web]]$taxa)
-      f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
-      for(fv in (colnames(Nij)[colnames(Nij) %in%                   f.vec])){
-        Nij[,fv] <- Nij[,fv]*1e10
-      }
-      Nij <- rm_neutral(Nij, threshold[t])
-      Nij <- Nij[index, index]
-      inf <- web.links.inf[[f]][[web]][index, index]
-      obs <- obs.A[[web]][index, index]
-      for(name in (colnames(inf)[colnames(inf) %in%                   taxa.forbid])){
-        inf[,name] <- 0
-      }
-      inf <- inf * Nij
-      web.temp[[web]] <- tss(obs, inf)
-    }
-    t.temp[[t]] <- web.temp
-  }
-  names(t.temp) <- threshold
-  fish.corr[[f]] <- t.temp
+f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
+for(fv in (colnames(Nij)[colnames(Nij) %in%                   f.vec])){
+  Nij[,fv] <- Nij[,fv]*1e10
 }
-names(fish.corr) <- names(web.links.inf)
-
-fish.corr.summary <- map(fish.corr, ldply, c(mean, sd))
-
-fish.corr.summary <- ldply(fish.corr.summary)
-fish.corr.summary$size <- c(rep("min.min", length(threshold)), rep("mean.min", length(threshold)),rep("mean.max", length(threshold)),rep("max.max", length(threshold)))
-
-ggplot(fish.corr.summary, aes(x = log10(as.numeric(.id)), y = V1, color = size)) +
-   geom_point() #+
-  # geom_errorbar(aes(ymin = V1 - V2,
-  #               ymax = V1 +V2))
+Nij
 
 
-unlist(lapply(tss.step1, mean))
-unlist(lapply(tss.step2, mean))
-
-out <- NULL
-for(t in 1:length(threshold)){
-  out[[t]] <- rm_neutral(nij.test, threshold[t])
-}
-
-# apply function to 1 nested list
-vec <- rnorm(5, 25, 10)
-vecs <- rep(list(vec), 5)
-map(vecs, get_rel_ab)
-vecs2 <- rep(list(vecs),2)
-vecs2.out <- map(vecs2, map, get_rel_ab)
-
-# playing around with applying fxn to 2 nested lists
-Nij <- matrix(rnorm(25, 1e-4, 1e-5), ncol = 5 )
-Nij2 <- matrix(rnorm(25, 1e-4, 1e-5), ncol = 5 )
-test2 <- list(rep(list(Nij), 5), rep(list(Nij2), 5)) 
-threshold <- rnorm(5, 9e-5, 8e06)
-thresh2 <- rep(list(threshold), 2)
-out <- map2(test2, thresh2, map2, rm_neutral)
