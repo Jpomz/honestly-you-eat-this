@@ -12,7 +12,7 @@ library(tidyverse)
 # from Gravel et al. 2013 supplementary information
 source("gravel_functions.R")
 
-tss <- function (observed, inferred){
+get_tss <- function (observed, inferred){
   # make sure adjacency matrices are same dimensions and have same colnames
   stopifnot(dim(observed) == dim(inferred), 
             identical(colnames(observed), colnames(inferred)))
@@ -44,16 +44,12 @@ tss <- function (observed, inferred){
 # invertebrate biomass and abundance
 invert <- readRDS("estimated invert bodymass.RDS")
 # fish biomass and abundance
-fish <- readRDS("estimated fish bodymass and abundance.RDS")
+fish <- readRDS("estimated fish bodymass and abundance.RDS")[[2]]
 # rbind invert to each element in fish, filter out na(dw), order by dw and then split each list into list of sites
-dw <- llply(fish, function (x){
-  y = bind_rows(x, invert)
-  y = y[!is.na(y$dw),]
-  y = y[order(y$dw),]
-  y = split(y, list(y$site))
-  y
-})
-
+dw <- bind_rows(fish, invert)
+dw <- dw[!is.na(dw$dw),]
+dw <- dw[order(dw$dw),]
+dw <- split(dw, list(dw$site))
 # observed webs
 obs.A <- readRDS("observed pred-prey.RDS")
 
@@ -87,175 +83,103 @@ for(web in 1:length(obs.A)){
 names(A.pairs) <- names(obs.A)
 
 # pairs biomass ####
-# list of 4 fish sizes
-  # each fish size has 17 elements
-    # each element is paired biomass for pred-prey
 dw.pairs <- NULL
-for(f in 1:length(dw)){
-  temp <- NULL
-  for(web in 1:length(dw[[f]])){
+  for(web in 1:length(dw)){
     m.pred <- merge(A.pairs[[web]]$pred,
-                    dw[[f]][[web]][,1:2],
+                    dw[[web]][,1:2],
                     by = "taxa",
                     all.x = T)
     m.prey <- merge(A.pairs[[web]]$prey,
-                    dw[[f]][[web]][,1:2],
+                    dw[[web]][,1:2],
                     by = "taxa",
                     all.x = T)
     m.pairs <- cbind(m.pred[,2], m.prey[,2])
     colnames(m.pairs) <- c("pred", "prey")
-    temp[[web]] <- m.pairs[!is.na(m.pairs[,1]) &
+    dw.pairs[[web]] <- m.pairs[!is.na(m.pairs[,1]) &
                         !is.na(m.pairs[,2]),]
   }
-  names(temp) <- names(A.pairs)
-  dw.pairs[[f]] <- temp
-}
-names(dw.pairs) <- names(dw)
+names(dw.pairs) <- names(obs.A)
 
 #training data ####
 # list of lists
 training.list <- NULL
-for (f in 1:length(dw.pairs)){
-  temp <- NULL
-  for (web in 1:length(dw.pairs[[f]])){
-    dat <- ldply(dw.pairs[[f]][-web])
-    temp[[web]] <- dat
+for (web in 1:length(dw.pairs)){
+    dat <- ldply(dw.pairs[-web])
+    training.list[[web]] <- dat
   }
-  training.list[[f]] <- temp
-  names(training.list[[f]]) <- names(dw.pairs[[f]])
-}
 names(training.list) <- names(dw.pairs)
 
 # Gravel model ####
 # get parameters based on training lists
 # solution without using nested for loops
-pars.list <- map(training.list, map, function(x){
+pars.list <- map(training.list, function(x){
   Bprey = log10(x$prey)
   Bpred = log10(x$pred)
   out <- reg_fn(Bprey, Bpred, quartil = c(0.03, 0.97))
 })
-# coef plot ####
-# plot parameters for 4 different fish sizes
-# funciton to extract parameters
-pull_params <- function(dat){
-  data.frame(B0hi = dat[[1]][1],
-             B0center = dat[[2]][1],
-             B0lo = dat[[3]][1],
-             B1hi = dat[[1]][2],
-             B1center = dat[[2]][2],
-             B1lo = dat[[3]][2])
-  }
-
-# list of params for 4 fish sizes
-param.coef.list <- map(pars.list, ldply,
-                       function (x){
-                         pull_params(x)
-})
-
-# mean/SD of paramters for 4 fish sizes
-param.summary.list <- llply(param.coef.list,
-                            function (x){
-  data.frame(mean = apply(x[,-1],2, mean),
-             sd = apply(x[,-1], 2, sd),
-             coef = colnames(x)[-1])
-})
-# add names for plotting below
-names(param.summary.list) <- names(pars.list)
-
-# plot mean coef +- SD
-ggplot(ldply(param.summary.list), aes(x = coef, y = mean, color = .id)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = mean -sd,
-                    ymax = mean +sd))
-
-
 # web params ####
 # calculate web paramters using get_pars_Niche()
-Ball <- map(dw, map, function (x){
+Ball <- map(dw, function (x){
   log10(x$dw)
 })
-web.pars <- map2(pars.list, Ball,
-                 map2, get_pars_Niche)
+web.pars <- map2(pars.list, Ball, get_pars_Niche)
 # infer links ####
 
 # calculate food web links for taieri
 # predation matrix
-web.links.inf  <- map(web.pars, map, function (x){
+web.links.inf  <- map(web.pars, function (x){
   L_fn(x[,"n"],
        x[,"c"],
        x[,"low"],
        x[,"high"])
 })
 # add taxa names to inferred matrices
-web.links.inf <- map2(web.links.inf, dw, map2,
-                      function (x, y){
-                        dimnames(x) <- list(y$taxa, y$taxa)
-                        x
+web.links.inf <- map2(web.links.inf, dw,
+          function (x, y){
+            dimnames(x) <- list(y$taxa, y$taxa)
+            x
                       })
 
 
 # sum of links per web
-# maybe I can use this to "pick" fish size??
-sum_fn <- function (x){
-  sapply(x, sum)
-}
-sum.links <- ldply(web.links.inf, function (x){
-  sum_fn(x)})
-
-
-# taxa index ####
-# make index of taxa names to match matrices
-get_dim_index <- function(object, target){
-  # subset object to names in target
-  index <- intersect(rownames(target),
-                     rownames(object))
-  index
-}
-
-# taxa names index
-dim.index <- map2(rep(list(obs.A),
-                      length(web.links.inf)),
-                  web.links.inf,
-                  map2,
-                  get_dim_index)
-names(dim.index) <- names(web.links.inf)
+sum.links <- sapply(web.links.inf, sum)
 
 
 # TSS ####
-# step1, biomass inference
-tss.step1 <- NULL
-for(f in 1:length(web.links.inf)){
-  temp <- NULL
-  for(web in 1:length(web.links.inf[[f]])){
-    index <- dim.index[[f]][[web]]
-    obs <- obs.A[[web]][index, index]
-    inf <- web.links.inf[[f]][[web]][index, index]
-    temp[[web]] <- tss(obs, inf)
+# function to calc TSS from matrices matched by row/colnames
+# be careful to select appropriate obs and inf
+match_matr_tss <- function (obs, inf, niche.forbid = FALSE, forbidden.taxa = NA){
+  # colnames(inf) have already been size-sorted
+  index = intersect(rownames(inf), rownames(obs))
+  obs = obs[index, index]
+  inf = inf[index, index]
+  if (niche.forbid == TRUE){
+    if(is.character(forbidden.taxa)){
+      for(name in (colnames(inf)[colnames(inf) %in% forbidden.taxa])){
+      inf[,name] <- 0
+      }
+    }
+      else(warning("\n***************\nNo forbidden taxa supplied\nTSS calculated for unmodified inf object\n***************"))
   }
-  tss.step1[[f]] <-temp
+  result = get_tss(obs, inf)
+  result
 }
 
+# step1, biomass inference
+tss.step1 <- map2(obs.A, web.links.inf,
+                  match_matr_tss)
 
+ 
 
 # step2, prune niche forbidden links
 # e.g. taxa that cannot eat prey due to mouthparts, scrapers, filter feeders, etc
 taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
 
-tss.step2 <- NULL
-for(f in 1:length(web.links.inf)){
-  temp <- NULL
-  for(web in 1:length(web.links.inf[[f]])){
-    index <- dim.index[[f]][[web]]
-    obs <- obs.A[[web]][index, index]
-    inf <- web.links.inf[[f]][[web]][index, index]
-    for(name in (colnames(inf)[colnames(inf) %in%
-                               taxa.forbid])){
-      inf[,name] <- 0
-    }
-    temp[[web]] <- tss(obs, inf)
-  }
-  tss.step2[[f]] <-temp
-}
+tss.step2 <- pmap(list(obs = obs.A,
+                  inf = web.links.inf),
+                  match_matr_tss,
+                  niche.forbid = TRUE,
+                  forbidden.taxa = taxa.forbid)
 
 
 # calculate relative abundance matrices
