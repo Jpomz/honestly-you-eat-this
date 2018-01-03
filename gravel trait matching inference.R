@@ -236,7 +236,7 @@ tss.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(thresh
 # fish abundance "correction"
 f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
 f_ab_corr <- function(Nij, taxa, cf){
-  for(f in (colnames(Nij)[colnames(Nij) %in% taxa])){
+  for(f in which(colnames(Nij) %in% taxa)){
   Nij[,f] <- Nij[,f]*cf
   }
   Nij
