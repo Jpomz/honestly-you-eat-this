@@ -155,7 +155,6 @@ obs <- llply(match, function (x){
 inf <- llply(match, function (x){
   x$inferred
 })
-
 # save initial inferred links ####
 saveRDS(inf, "Initial trait matching inference.RDS")
 # save observed adj matrices matched to inferred
@@ -203,27 +202,39 @@ rm_niche <- function(inf, taxa){
 # }
 
 # step1, biomass inference
-tss.initial <- map2(obs.A, web.links.inf,
-                  match_matr_tss)
+tss.initial <- map2(obs, inf,
+                  get_tss)
 # niche forbidden
 taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
 
-inf.niche <- map(web.links.inf,
+inf.niche <- map(inf,
                  rm_niche,
                  taxa = taxa.forbid)
-tss.niche <- pmap(list(obs = obs.A,
+tss.niche <- pmap(list(obs = obs,
                        inf = inf.niche),
-                       match_matr_tss)
+                       get_tss)
 # neutral forbidden
+# vector of abundances
 ab.vec <- llply(dw, function (x){x$dw})
+#vector of taxa
 ab.taxa <- llply(dw, function (x){x$taxa})
+# threshold vector
 threshold <- c(1e-03, 1e-04, 1e-05, 1e-06, 1e-07, 1e-08, 1e-09, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 5.9e-08, 5.9e-9, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07, 3e-8, 3e-9, 1e-10, 3e-10, 5.9e-10, 1e-11, 3e-11, 5.9e-11, 1e-12, 3e-12, 5.9e-12, 1e-13, 1e-2, 3e-2, 5.9e-2)
 
+# calculate relative abundance matrices
 rel.ab.matr <- map2(ab.vec, ab.taxa, get_rel_ab)
+# match to inferred matrices
+rel.ab.matr <- map2(rel.ab.matr, inf,
+                    match_matr)
+# rel.ab.matr$observed == relative abundance matrices
+rel.ab.matr <- llply(rel.ab.matr, function (x){
+  x$observed
+})
 
 inf.neutral <- map(threshold, function (x){
   map(rel.ab.matr, rm_neutral, threshold = x)})
 names(inf.neutral) <- threshold
+
 # confusion matrix
 source("adj_conf_matrix function.R")
 adj_conf_matrix(observed, inferred)
@@ -240,9 +251,9 @@ TPR.neutral <- map(inf.neutral, function (x){
 
 # TSS neutral ####
 tss.neutral <- map(inf.neutral, function (x){
-  pmap(list(obs = obs.A,
+  pmap(list(obs = obs,
             inf = x),
-       match_matr_tss)
+       get_tss)
 })
 tss.neutral <- ldply(flatten(tss.neutral))
 tss.neutral$threshold <- rep(threshold, each = 17)
@@ -256,9 +267,9 @@ tss.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
 
 # neutral and niche forbidden
 tss.niche.neutral <- map(inf.neutral, function (x){
-  pmap(list(obs = obs.A,
+  pmap(list(obs = obs,
             inf = map(x,rm_niche, taxa = taxa.forbid)),
-       match_matr_tss)
+       get_tss)
 })
 tss.niche.neutral <- ldply(flatten(tss.niche.neutral))
 tss.niche.neutral$threshold <- rep(threshold, each = 17)
@@ -269,6 +280,10 @@ ggplot(tss.niche.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
   theme_classic()
 tss.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
 
+
+
+
+# still need to figure this out ####
 # fish abundance "correction"
 f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
 f_ab_corr <- function(Nij, taxa, cf){
