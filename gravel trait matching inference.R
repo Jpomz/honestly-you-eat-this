@@ -244,9 +244,16 @@ f_ab_corr <- function(Nij, taxa, cf){
 
 rel.ab.fish <- map(rel.ab.matr,
             f_ab_corr, taxa = f.vec, cf = 1e5)
+# working out how to make list of diff cf's
+test1 <- map(cf, function (x) {map(Nij.list, f_ab_corr, taxa = taxa, cf = x)})
 
 fish.neutral <- map(threshold, function (x){
   map(rel.ab.fish, rm_neutral, threshold = x)})
+# working out how to make list with
+  #$cf [[2]]
+    #$threshold [[4]]
+      #$webs [[3]]
+
 
 tss.fish.neutral <- map(fish.neutral, function (x){
   pmap(list(obs = obs.A,
