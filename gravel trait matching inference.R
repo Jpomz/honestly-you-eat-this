@@ -139,8 +139,27 @@ web.links.inf <- map2(web.links.inf, dw,
             dimnames(x) <- list(y$taxa, y$taxa)
             x
                       })
+# match observed and inferred matrices
+match_matr <- function (obs, inf){
+  # colnames(inf) have already been size-sorted
+  index = intersect(rownames(inf), rownames(obs))
+  obs = obs[index, index]
+  inf = inf[index, index]
+  list(observed = obs, inferred = inf)
+}
+match <- map2(obs.A, web.links.inf,
+                  match_matr)
+obs <- llply(match, function (x){
+  x$observed
+})
+inf <- llply(match, function (x){
+  x$inferred
+})
+
 # save initial inferred links ####
-saveRDS(web.links.inf, "Initial trait matching inference.RDS")
+saveRDS(inf, "Initial trait matching inference.RDS")
+# save observed adj matrices matched to inferred
+saveRDS(obs, "observed matrices matched to inferred.RDS")
 # sum of links per web
 sum.links <- sapply(web.links.inf, sum)
 
@@ -172,16 +191,16 @@ rm_niche <- function(inf, taxa){
   }
   inf
 }
-# function to calc TSS from matrices matched by row/colnames
-# be careful to select appropriate obs and inf
-match_matr_tss <- function (obs, inf){
-  # colnames(inf) have already been size-sorted
-  index = intersect(rownames(inf), rownames(obs))
-  obs = obs[index, index]
-  inf = inf[index, index]
-  result = get_tss(obs, inf)
-  result
-}
+# # function to calc TSS from matrices matched by row/colnames
+# # be careful to select appropriate obs and inf
+# match_matr_tss <- function (obs, inf){
+#   # colnames(inf) have already been size-sorted
+#   index = intersect(rownames(inf), rownames(obs))
+#   obs = obs[index, index]
+#   inf = inf[index, index]
+#   result = get_tss(obs, inf)
+#   result
+# }
 
 # step1, biomass inference
 tss.initial <- map2(obs.A, web.links.inf,
@@ -204,7 +223,22 @@ rel.ab.matr <- map2(ab.vec, ab.taxa, get_rel_ab)
 
 inf.neutral <- map(threshold, function (x){
   map(rel.ab.matr, rm_neutral, threshold = x)})
+names(inf.neutral) <- threshold
+# confusion matrix
+source("adj_conf_matrix function.R")
+adj_conf_matrix(observed, inferred)
+neutral.match <- map(inf.neutral, function (x){
+  map2(ob)
+})
 
+TPR.neutral <- map(inf.neutral, function (x){
+  pmap(list(obs = match_matr(obs.A, x)$observed,
+            inf = match_matr(obs.A, x)$inferred),
+       adj_conf_matrix)
+})
+
+
+# TSS neutral ####
 tss.neutral <- map(inf.neutral, function (x){
   pmap(list(obs = obs.A,
             inf = x),
