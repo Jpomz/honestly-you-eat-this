@@ -247,14 +247,51 @@ rel.ab.fish <- map(rel.ab.matr,
 # working out how to make list of diff cf's
 test1 <- map(cf, function (x) {map(Nij.list, f_ab_corr, taxa = taxa, cf = x)})
 
+rm_neutral(f_ab_corr(Nij, taxa = "Salmo", cf = 10),
+           threshold = 0.01)
+
+test1 <- map(cf, function (x){
+  pmap(list(Nij = map(Nij.list, f_ab_corr,
+                      taxa = "Salmo",
+                      cf = x),
+            threshold = threshold),
+       rm_neutral)})
+test2 <- map(test1, function (x){
+  pmap(list(observed = obs,
+            inferred = x),
+       get_tss)
+})    
+tss <- NULL
+for(c in 1:length(cf)){
+  temp.thresh <- NULL
+  for(t in 1:length(threshold)){
+    temp.web <- NULL
+    for(web in 1:length(obs)){
+      observed = obs[[web]]
+      inferred = test1[[c]][[t]][[web]]
+      temp.web[[web]] = get_tss(observed, inferred)
+    }
+    temp.thresh[[t]] <- temp.web
+  }
+  tss[[c]] <- temp.thresh
+}
+     
+     
+     
+     
+# fish neutral
 fish.neutral <- map(threshold, function (x){
   map(rel.ab.fish, rm_neutral, threshold = x)})
-# working out how to make list with
-  #$cf [[2]]
-    #$threshold [[4]]
-      #$webs [[3]]
+# tss fish neutral
+tss.fish.neutral <- map(fish.neutral, function (x){
+  pmap(list(obs = obs.A,
+            inf = x),
+       match_matr_tss)
+})
 
-
+map(test1, map2, threshold, function(x){
+  map(rm_neutral, threshold = x)
+})
 
 
 # invoke_map???? ####
@@ -264,11 +301,7 @@ param <- list(
        threshold = threshold))
 test <- invoke_map(f, param)
 
-tss.fish.neutral <- map(fish.neutral, function (x){
-  pmap(list(obs = obs.A,
-            inf = x),
-       match_matr_tss)
-})
+
 
 # example from R4ds ####
 f <- c("runif", "runif", "rnorm", "rpois")
