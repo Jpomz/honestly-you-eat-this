@@ -255,11 +255,31 @@ fish.neutral <- map(threshold, function (x){
       #$webs [[3]]
 
 
+
+
+# invoke_map???? ####
+f <- c("rm_neutral")
+param <- list(
+  list(Nij = Nij.list,
+       threshold = threshold))
+test <- invoke_map(f, param)
+
 tss.fish.neutral <- map(fish.neutral, function (x){
   pmap(list(obs = obs.A,
             inf = x),
        match_matr_tss)
 })
+
+# example from R4ds ####
+f <- c("runif", "runif", "rnorm", "rpois")
+param <- list(
+  list(min = -1, max = 1),
+  list(min = 2, max = 10),
+  list(sd = 5), 
+  list(lambda = 10)
+)
+invoke_map(f, param, n = 2)
+
 tss.fish.neutral <- ldply(flatten(tss.fish.neutral))
 tss.fish.neutral$threshold <- rep(threshold, each = 17)
 ggplot(tss.fish.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
