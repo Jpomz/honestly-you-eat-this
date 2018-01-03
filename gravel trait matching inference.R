@@ -139,6 +139,8 @@ web.links.inf <- map2(web.links.inf, dw,
             dimnames(x) <- list(y$taxa, y$taxa)
             x
                       })
+# save initial inferred links ####
+saveRDS(web.links.inf, "Initial trait matching inference.RDS")
 # sum of links per web
 sum.links <- sapply(web.links.inf, sum)
 
