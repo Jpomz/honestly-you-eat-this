@@ -12,14 +12,47 @@ library(tidyverse)
 inf.list <- readRDS("Initial trait matching inference.RDS")
 # observed webs
 obs.A <- readRDS("observed matrices matched to inferred.RDS")
+niche <- readRDS("Niche pruned trait matching inference.RDS")
+neutral <- readRDS("Neutral trait matching inference.RDS")
 
 obs <- flatten_dbl(obs.A)
 inf <- flatten_dbl(inf.list)
-initial.AUC <- roc(inf, obs, plot = T)
+initial.AUC <- roc(inf, obs)$auc[1]
+
+niche <- flatten_dbl(niche)
+niche.auc <- roc(niche, obs)$auc[1]
 
 
+neutral.flat <- llply(neutral, function (x){
+  flatten_dbl(x)
+})
+neutral.auc <- map(neutral.flat,
+                   roc,
+                   predictor = obs)
+neutral.auc.df <- ldply(llply(neutral.auc, function (x){
+  x$auc[1]
+}))
+ggplot(neutral.auc.df, aes(y = V1,
+        x = log10(as.numeric(.id)))) +
+  geom_point() +
+  theme_classic()
+neutral.auc.df %>% top_n(1, wt = V1)
 
+niche.neutral <- map(neutral.flat,
+                     ~ .x * niche)
+niche.neutral.auc <- map(niche.neutral[-33:-34],
+                         roc,
+                         predictor = obs)
+niche.neutral.auc.df <- ldply(llply(niche.neutral.auc,
+                              function (x){
+                                x$auc[1]
+}))
 
+niche.neutral.auc.df %>% top_n(1, wt = V1)
+ggplot(niche.neutral.auc.df, aes(y = V1,
+                    x = log10(as.numeric(.id)))) +
+  geom_point() +
+  theme_classic()
 
 # formula from stock
 df$dif <- df$obs - df$inf
