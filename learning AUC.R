@@ -35,7 +35,10 @@ neutral.auc.df <- ldply(llply(neutral.auc, function (x){
 ggplot(neutral.auc.df, aes(y = V1,
         x = log10(as.numeric(.id)))) +
   geom_point() +
-  theme_classic()
+  theme_classic() +
+  labs(x = expression(Log[10]~Threshold),
+       y = "AUC", title = "Neutrally forbidden links" )
+  
 neutral.auc.df %>% top_n(1, wt = V1)
 
 niche.neutral <- map(neutral.flat,
@@ -49,10 +52,15 @@ niche.neutral.auc.df <- ldply(llply(niche.neutral.auc,
 }))
 
 niche.neutral.auc.df %>% top_n(1, wt = V1)
+
 ggplot(niche.neutral.auc.df, aes(y = V1,
                     x = log10(as.numeric(.id)))) +
   geom_point() +
-  theme_classic()
+  theme_classic()+
+  labs(x = expression(Log[10]~Threshold),
+                      y = "AUC", 
+                      title = "Niche and Neutrally forbidden links")
+
 
 # # formula from stock
 # df$dif <- df$obs - df$inf
