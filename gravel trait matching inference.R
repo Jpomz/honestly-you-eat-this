@@ -237,16 +237,81 @@ names(inf.neutral) <- threshold
 
 # confusion matrix
 source("adj_conf_matrix function.R")
-adj_conf_matrix(observed, inferred)
-neutral.match <- map(inf.neutral, function (x){
-  map2(ob)
-})
+#adj_conf_matrix(observed, inferred)
 
-TPR.neutral <- map(inf.neutral, function (x){
-  pmap(list(obs = match_matr(obs.A, x)$observed,
-            inf = match_matr(obs.A, x)$inferred),
-       adj_conf_matrix)
+conf.neutral <- map(inf.neutral, function (x){
+  pmap(list(obs = obs,
+            inf = x),
+       adj_conf_matrix)})
+
+ROC <- llply(conf.neutral, function (x){
+  ldply(x)[, c(".id", "TPR", "FPR")]})
+
+ROC <- ROC %>% llply( function (x){
+  names(x)[1] <- "site"; x
 })
+ROC <- ldply(ROC)
+
+# ROC by site
+ggplot(ROC, aes(x = FPR, y = TPR))+
+  facet_wrap(~site)+
+  geom_point(aes(color = .id)) +
+  geom_line()
+
+# ROC by threshold
+ROC %>%
+  group_by(.id) %>%
+  summarize(TPR = mean(TPR), FPR = mean(FPR)) %>%
+  ggplot(aes(x = FPR, y = TPR))+
+  geom_point(aes(color = .id), size = 2) +
+  geom_line()
+
+
+AUC <- llply(conf.neutral, function (x){
+  ldply(x)[, c(".id", "fn", "fp")]})
+AUC <- AUC %>% llply( function (x){
+  names(x)[1] <- "site"; x
+})
+AUC <- ldply(AUC)
+
+
+sutton <- NULL
+for (t in 1:length(inf.neutral)){
+  temp <- as.data.frame(as.numeric(inf.neutral[[t]][[16]]))
+  names(temp) <- "predicted"
+  temp$thresh <- as.numeric(names(inf.neutral)[t])
+  sutton <- rbind(sutton, temp)
+}
+sutton$obs <- as.numeric(obs[[16]])
+glm_obj <- glm(obs~., data = sutton, family = binomial(logit))
+pred_dat <- predict(glm_obj, newdata = sutton, type = "response")
+pred_dat <- data.frame(pred = pred_dat, thresh = sutton$thresh)
+pred_dat %>% group_by(thresh) %>% summarise(min(pred), max(pred)) %>% as.data.frame()
+roc_obj <- roc(sutton$obs, pred_dat$pred, plot = T)
+
+nprime <- NULL
+for (web in 1:length(obs)){
+  temp <- as.data.frame(as.numeric(
+    inf.neutral[[10]][[web]]))
+  names(temp) <- "predicted"
+  temp$thresh <- as.numeric(names(inf.neutral)[10])
+  nprime <- rbind(nprime, temp)
+}
+
+obs.vector <- llply(obs, function (x){as.numeric(x)})
+nprime$obs <- unlist(obs.vector, recursive = F)
+
+glm_obj <- glm(~thresh, data = nprime, family = binomial(logit))
+pred_dat <- predict(glm_obj, newdata = nprime, type = "response")
+pred_dat <- data.frame(pred = pred_dat, thresh = nprime$thresh)
+pred_dat %>% group_by(thresh) %>% summarise(min(pred), max(pred)) %>% as.data.frame()
+roc_obj <- roc(sutton$obs, pred_dat$pred, plot = T)
+
+
+
+
+
+
 
 
 # TSS neutral ####
