@@ -44,7 +44,8 @@ adj_conf_matrix <- function (observed, inferred){
   # FOR = false omission rate = fn / (fn +tn)
   # ACC = accuracy = (tp + tn) / (tp + tn + fp +fn)
   
-  tss <- data.frame(tp = tp,
+  result <- data.frame(S = S,
+                    tp = tp,
                     fp = fp,
                     fn = fn,
                     tn = tn,
@@ -58,7 +59,7 @@ adj_conf_matrix <- function (observed, inferred){
                     FOR = fn / (fn + tn),
                     ACC = (tp + tn) / 
                       (tp + tn + fp + fn))
-  tss
+  result
 }
 
 
