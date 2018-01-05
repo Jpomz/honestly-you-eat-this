@@ -24,11 +24,14 @@ auc.trapz <- lapply(dat.list, function (.data){trapz(
 # compare
 dat2 <- data.frame(auc.base = unlist(auc.base),
                    auc.trapz = unlist(auc.trapz))
-dat2$diff <- dat2$auc.base - dat2$auc.trapz
+difference <- dat2$auc.base - dat2$auc.trapz
 # mean difference <<< small
-mean(dat2$diff)
+mean(difference)
 
 
 # plot
 dat2$threshold <- log10(as.numeric(rownames(dat2)))
 plot(auc.base ~ threshold, data = dat2)
+
+# max auc at threshold of 1e-05
+dat2[order(dat2$auc.base),]
