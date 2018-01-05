@@ -17,6 +17,16 @@ neutral <- readRDS("Neutral trait matching inference.RDS")
 
 obs <- flatten_dbl(obs.A)
 inf <- flatten_dbl(inf.list)
+
+site.initial <- map2(map(obs.A,
+                         as.numeric),
+                    map(inf.list,
+                         as.numeric),
+                    roc)
+ldply(llply(site.initial, function (x) {
+  x$auc
+}))
+
 initial.AUC <- roc(inf, obs)$auc[1]
 
 niche <- flatten_dbl(niche)
@@ -43,7 +53,7 @@ neutral.auc.df %>% top_n(1, wt = V1)
 
 niche.neutral <- map(neutral.flat,
                      ~ .x * niche)
-niche.neutral.auc <- map(niche.neutral[-33:-34],
+niche.neutral.auc <- map(niche.neutral[-43:-45],
                          roc,
                          predictor = obs)
 niche.neutral.auc.df <- ldply(llply(niche.neutral.auc,
