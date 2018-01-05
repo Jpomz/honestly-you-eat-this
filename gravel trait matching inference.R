@@ -260,18 +260,6 @@ conf.neutral <- map(inf.neutral, function (x){
             inf = x),
        adj_conf_matrix)})
 
-test <- map(inf.neutral, function (x){
-  adj_conf_matrix(observed = flatten_dbl(obs), 
-                  inferred = flatten_dbl(x))
-})
-test <- ldply(test)
-ggplot(test, aes(x = FPR, y = TPR)) +
-  geom_point() +
-  geom_abline(slope = 1)
-
-trapz(test$FPR, test$TPR) 
-test %>%
-  summarise(AUC = -sum(diff(FPR) * (head(TPR,-1)+tail(TPR,-1)))/2) 
 
 ROC <- llply(conf.neutral, function (x){
   ldply(x)[, c(".id", "TPR", "FPR")]})
@@ -283,8 +271,12 @@ ROC <- ldply(ROC)
 # ROC by site
 ggplot(ROC, aes(x = FPR, y = TPR))+
   facet_wrap(~site)+
-  geom_point(aes(color = .id)) +
-  geom_line()
+  geom_point(size = 2) +
+  geom_point(data=ROC[ROC$.id=="1e-05",],
+             aes(x=FPR, y=TPR), colour="red", size=5) +
+  geom_abline(slope = 1) +
+  geom_line() +
+  theme_classic()
 
 ggplot(ROC, aes(x = FPR, y = TPR, color = site))+
   geom_point() +
@@ -304,13 +296,14 @@ ggplot(ROC, aes(x = FPR, y = TPR))+
 ROC.summ <- ROC %>% group_by(.id) %>%
   summarise(TPR = mean(TPR), FPR = mean(FPR))
 ggplot(ROC.summ, aes(x = FPR, y = TPR))+
-  geom_point(aes(color = .id)) +
+  geom_point(aes(color = .id), size = 3) +
   geom_line() +
-  geom_abline(slope = 1)
+  geom_abline(slope = 1) +
+  theme_classic()
 
 ROC.thresh <- ROC %>%
   group_by(.id) %>%
-  arrange(TPR) %>%
+  arrange(TPR, FPR) %>%
   summarise(AUC = sum(diff(FPR) * (head(TPR,-1)+tail(TPR,-1)))/2) 
 
 ggplot(ROC.thresh, aes(x = log10(as.numeric(.id)),
@@ -322,9 +315,11 @@ trapz(ROC.summ$FPR, ROC.summ$TPR)
 
 roc.trapz <- ROC %>%
   group_by(.id) %>%
+  arrange(TPR, FPR) %>%
   summarise(AUC = trapz(FPR, TPR)) 
+
 ggplot(roc.trapz, aes(x = log10(as.numeric(.id)),
-                      y = -AUC)) +
+                      y = AUC)) +
   geom_point()
 
 # 
