@@ -25,7 +25,10 @@ auc.trapz <- lapply(dat.list, function (.data){trapz(
 dat2 <- data.frame(auc.base = unlist(auc.base),
                    auc.trapz = unlist(auc.trapz))
 dat2$diff <- dat2$auc.base - dat2$auc.trapz
-dat2$threshold <- as.numeric(rownames(dat2))
+# mean difference <<< small
+mean(dat2$diff)
+
 
 # plot
-plot(auc.base ~ log10(threshold), data = dat2)
+dat2$threshold <- log10(as.numeric(rownames(dat2)))
+plot(auc.base ~ threshold, data = dat2)
