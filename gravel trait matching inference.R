@@ -268,10 +268,6 @@ ROC <- ROC %>% llply( function (x){
   names(x)[1] <- "site"; x
 })
 ROC <- ldply(ROC)
-# save ROC object for Poisot
-ROC <- ROC %>% arrange(.id, TPR, FPR)
-names(ROC)[1] <- "Threshold"
-write_csv(ROC, "Table for AUC.csv")
 
 # ROC by site
 ggplot(ROC, aes(x = FPR, y = TPR))+
