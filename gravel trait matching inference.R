@@ -222,7 +222,18 @@ ab.vec <- llply(dw, function (x){x$dw})
 #vector of taxa
 ab.taxa <- llply(dw, function (x){x$taxa})
 # threshold vector
-threshold <- c(1e-03, 1e-04, 1e-05, 1e-06, 1e-07, 1e-08, 1e-09, 5.9e-03, 5.9e-04, 5.9e-05, 5.9e-06, 5.9e-07, 5.9e-08, 5.9e-9, 3e-03, 3e-04, 3e-05, 3e-06, 3e-07, 3e-8, 3e-9, 1e-10, 3e-10, 5.9e-10, 1e-11, 3e-11, 5.9e-11, 1e-12, 3e-12, 5.9e-12, 1e-13, 1e-2, 3e-2, 5.9e-2)
+threshold <- c(5.9e-13,
+               1.0e-12, 1.5e-12, 3.0e-12, 5.9e-12,
+               1.0e-11, 1.5e-11, 3.0e-11, 5.9e-11,
+               1.0e-10, 1.5e-10, 3.0e-10, 5.9e-10,
+               1.0e-09, 1.5e-9, 3.0e-09, 5.9e-09,
+               1.0e-08, 1.5e-8, 3.0e-08, 5.9e-08,
+               1.0e-07, 1.5e-7, 3.0e-07, 5.9e-07,
+               1.0e-06, 1.5e-6, 3.0e-06, 5.9e-06,
+               1.0e-05, 1.5e-5, 3.0e-05, 5.9e-05,
+               1.0e-04, 1.5e-4, 3.0e-04, 5.9e-04,
+               1.0e-03, 1.5e-3, 3.0e-03, 5.9e-03,
+               1.0e-02, 1.5e-2, 3.0e-02, 5.9e-02)
 
 # calculate relative abundance matrices
 rel.ab.matr <- map2(ab.vec, ab.taxa, get_rel_ab)
@@ -240,28 +251,82 @@ names(inf.neutral) <- threshold
 # save Neutral forbidden trait matching ####
 saveRDS(inf.neutral, "Neutral trait matching inference.RDS")
 
-# # confusion matrix
-# source("adj_conf_matrix function.R")
-# #adj_conf_matrix(observed, inferred)
-# 
-# conf.neutral <- map(inf.neutral, function (x){
-#   pmap(list(obs = obs,
-#             inf = x),
-#        adj_conf_matrix)})
-# 
-# ROC <- llply(conf.neutral, function (x){
-#   ldply(x)[, c(".id", "TPR", "FPR")]})
-# 
-# ROC <- ROC %>% llply( function (x){
-#   names(x)[1] <- "site"; x
-# })
-# ROC <- ldply(ROC)
-# 
-# # ROC by site
-# ggplot(ROC, aes(x = FPR, y = TPR))+
-#   facet_wrap(~site)+
-#   geom_point(aes(color = .id)) +
-#   geom_line()
+# confusion matrix
+source("adj_conf_matrix function.R")
+#adj_conf_matrix(observed, inferred)
+
+conf.neutral <- map(inf.neutral, function (x){
+  pmap(list(obs = obs,
+            inf = x),
+       adj_conf_matrix)})
+
+test <- map(inf.neutral, function (x){
+  adj_conf_matrix(observed = flatten_dbl(obs), 
+                  inferred = flatten_dbl(x))
+})
+test <- ldply(test)
+ggplot(test, aes(x = FPR, y = TPR)) +
+  geom_point() +
+  geom_abline(slope = 1)
+
+trapz(test$FPR, test$TPR) 
+test %>%
+  summarise(AUC = -sum(diff(FPR) * (head(TPR,-1)+tail(TPR,-1)))/2) 
+
+ROC <- llply(conf.neutral, function (x){
+  ldply(x)[, c(".id", "TPR", "FPR")]})
+
+ROC <- ROC %>% llply( function (x){
+  names(x)[1] <- "site"; x
+})
+ROC <- ldply(ROC)
+# ROC by site
+ggplot(ROC, aes(x = FPR, y = TPR))+
+  facet_wrap(~site)+
+  geom_point(aes(color = .id)) +
+  geom_line()
+
+ggplot(ROC, aes(x = FPR, y = TPR, color = site))+
+  geom_point() +
+  geom_line() +
+  geom_abline(slope = 1, color = "black")+
+  theme_classic()
+ggplot(ROC, aes(x = FPR, y = TPR))+
+  facet_wrap(~.id) +
+  geom_point() +
+  geom_abline(slope = 1, color = "black")+
+  theme_classic()
+
+
+
+
+
+ROC.summ <- ROC %>% group_by(.id) %>%
+  summarise(TPR = mean(TPR), FPR = mean(FPR))
+ggplot(ROC.summ, aes(x = FPR, y = TPR))+
+  geom_point(aes(color = .id)) +
+  geom_line() +
+  geom_abline(slope = 1)
+
+ROC.thresh <- ROC %>%
+  group_by(.id) %>%
+  arrange(TPR) %>%
+  summarise(AUC = sum(diff(FPR) * (head(TPR,-1)+tail(TPR,-1)))/2) 
+
+ggplot(ROC.thresh, aes(x = log10(as.numeric(.id)),
+                       y = AUC)) +
+  geom_point()
+
+require(pracma)
+trapz(ROC.summ$FPR, ROC.summ$TPR)
+
+roc.trapz <- ROC %>%
+  group_by(.id) %>%
+  summarise(AUC = trapz(FPR, TPR)) 
+ggplot(roc.trapz, aes(x = log10(as.numeric(.id)),
+                      y = -AUC)) +
+  geom_point()
+
 # 
 # # ROC by threshold
 # ROC %>%
