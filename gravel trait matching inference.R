@@ -5,6 +5,7 @@
 
 # paramterize Niche model using method presented in Gravel et al. 2013 Methods in Eco Evo. Inferring food web structure from predator-prey body size relationships
 
+library(pracma)
 library(plyr)
 library(tidyverse)
 
@@ -195,11 +196,8 @@ saveRDS(obs, "observed matrices matched to inferred.RDS")
 # sum of links per web
 sum.links <- sapply(web.links.inf, sum)
 
-# TSS ####
 
-# step1, biomass inference
-tss.initial <- map2(obs, inf,
-                  get_tss)
+# niche forbidden ####
 # niche forbidden
 taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
 
@@ -209,12 +207,10 @@ inf.niche <- map(inf,
 # save niche pruned trait matching ####
 saveRDS(inf.niche, "Niche pruned trait matching inference.RDS")
 
-tss.niche <- pmap(list(obs = obs,
-                       inf = inf.niche),
-                       get_tss)
+
 # neutral forbidden ####
 # vector of abundances
-ab.vec <- llply(dw, function (x){x$dw})
+ab.vec <- llply(dw, function (x){x$no.m2})
 #vector of taxa
 ab.taxa <- llply(dw, function (x){x$taxa})
 # threshold vector
@@ -249,12 +245,12 @@ saveRDS(inf.neutral, "Neutral trait matching inference.RDS")
 
 
 # AUC ####
-
 # AUC initial
 auc.init <- pmap(list(obs = obs,
                       inf = inf),
                  adj_conf_matrix) %>%
-  ldply %>%.[,c("TPR", "FPR")] %>%
+  ldply %>%
+  .[,c("TPR", "FPR")] %>%
   arrange(TPR, FPR) %>%
   summarise(AUC = trapz(FPR, TPR))
 # AUC niche
@@ -276,14 +272,13 @@ ROC <- ROC %>% llply( function (x){
   names(x)[1] <- "site"; x
 }) 
 # calculate area under the curve for each threshold
-require(pracma)
 roc.trapz <- ldply(ROC) %>%
   group_by(.id) %>%
   arrange(TPR, FPR) %>%
   summarise(AUC = trapz(FPR, TPR))
 roc.trapz %>% top_n(1, wt = AUC)
-# threshold = 1e-05
-# AUC = 0.8013
+# threshold = 5.9e-05
+# AUC = 0.317884
 
 # plot AUC ~ Threshold
 ggplot(roc.trapz, aes(x = 
@@ -293,8 +288,6 @@ ggplot(roc.trapz, aes(x =
   theme_classic() + 
   labs(x = expression(Log[10]~Threshold),
        y = "AUC")
-
-
 
 # AUC Niche + Neutral
 inf.niche.neutral <- map(inf.neutral, function (x){
@@ -319,8 +312,8 @@ ROC.nn.trapz <- ldply(ROC.nn) %>%
   arrange(TPR, FPR) %>%
   summarise(AUC = trapz(FPR, TPR)) 
 ROC.nn.trapz %>% top_n(1, wt = AUC)
-# threshold = 1e-05
-# AUC = 0.684553
+# threshold = 3e-05
+# AUC = 0.3247
 # plot AUC ~ Threshold
 ggplot(ROC.nn.trapz, 
        aes(x = log10(as.numeric(.id)),
@@ -330,39 +323,29 @@ ggplot(ROC.nn.trapz,
   labs(x = expression(Log[10]~Threshold),
        y = "AUC")
 
-# TSS neutral ####
-tss.neutral <- map(inf.neutral, function (x){
-  pmap(list(obs = obs,
-            inf = x),
-       get_tss)
-})
-tss.neutral <- ldply(flatten(tss.neutral))
-tss.neutral$threshold <- rep(threshold, each = 17)
-ggplot(tss.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
-  geom_point() +
-  stat_smooth(alpha = 0.2) +
-  ggtitle("Neutral forbidden") +
-  theme_classic()
 
-tss.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
+# TSS ####
+# working with neutral abundance threshold 3e-05
+# inf.neutral[[32]]
+neutral <- inf.neutral[[33]]
+# step1, biomass inference
+tss.initial <- ldply(map2(obs, inf,
+                    get_tss))
+# TSS niche
+tss.niche <- ldply(pmap(list(obs = obs,
+                       inf = inf.niche),
+                  get_tss))
+# TSS neutral 
+tss.neutral <- ldply(pmap(list(obs = obs,
+                         inf = neutral),
+                    get_tss))
+
 
 # neutral and niche forbidden ####
-tss.niche.neutral <- map(inf.neutral, function (x){
+tss.niche.neutral <- ldply(
   pmap(list(obs = obs,
-            inf = map(x,rm_niche, taxa = taxa.forbid)),
-       get_tss)
-})
-
-tss.niche.neutral <- ldply(flatten(tss.niche.neutral))
-tss.niche.neutral$threshold <- rep(threshold, each = 17)
-ggplot(tss.niche.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
-  geom_point() +
-  stat_smooth(alpha = 0.2)+
-  ggtitle("Niche and Neutral Forbidden") +
-  theme_classic()
-tss.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
-
-
+            inf = inf.niche.neutral[[33]]),
+       get_tss))
 
 
 # still need to figure this out ####
