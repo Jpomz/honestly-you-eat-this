@@ -12,6 +12,9 @@ library(tidyverse)
 # from Gravel et al. 2013 supplementary information
 source("gravel_functions.R")
 
+# calculate confusion matrices
+source("adj_conf_matrix function.R")
+# calculate TSS
 get_tss <- function (observed, inferred){
   # make sure adjacency matrices are same dimensions and have same colnames
   stopifnot(dim(observed) == dim(inferred), 
@@ -39,6 +42,36 @@ get_tss <- function (observed, inferred){
   tss = (a*d - b*c)/((a+c)*(b+d))
   tss
 }
+# function to calculate relative abundance matrices
+get_rel_ab <- function(vec, taxa){
+  stopifnot(length(vec) == length(taxa))
+  rel.ab <- vec / sum(vec)
+  Nij <- matrix(0, length(vec), length(vec))
+  for (i in 1:length(vec)){
+    for (j in 1:length(vec)){
+      Nij[i,j] <- rel.ab[i]*rel.ab[j]
+    }
+  }
+  dimnames(Nij) <- list(taxa, taxa)
+  Nij
+}
+
+# function to remove rel.abundance products < threshold
+rm_neutral <- function(Nij, threshold){
+  Nij[Nij > threshold] <-  1
+  Nij[Nij < 1] <-  0 
+  Nij
+}
+
+# function to remove links from niche forbidden taxa
+rm_niche <- function(inf, taxa){
+  for(name in (
+    colnames(inf)[colnames(inf) %in% taxa])){
+    inf[,name] <- 0
+  }
+  inf
+}
+
 
 # data ####
 # invertebrate biomass and abundance
@@ -163,43 +196,6 @@ saveRDS(obs, "observed matrices matched to inferred.RDS")
 sum.links <- sapply(web.links.inf, sum)
 
 # TSS ####
-# function to calculate relative abundance matrices
-get_rel_ab <- function(vec, taxa){
-  stopifnot(length(vec) == length(taxa))
-  rel.ab <- vec / sum(vec)
-  Nij <- matrix(0, length(vec), length(vec))
-  for (i in 1:length(vec)){
-    for (j in 1:length(vec)){
-      Nij[i,j] <- rel.ab[i]*rel.ab[j]
-    }
-  }
-  dimnames(Nij) <- list(taxa, taxa)
-  Nij
-}
-# function to remove rel.abundance products < threshold
-rm_neutral <- function(Nij, threshold){
-  Nij[Nij > threshold] <-  1
-  Nij[Nij < 1] <-  0 
-  Nij
-}
-
-rm_niche <- function(inf, taxa){
-  for(name in (
-    colnames(inf)[colnames(inf) %in% taxa])){
-        inf[,name] <- 0
-  }
-  inf
-}
-# # function to calc TSS from matrices matched by row/colnames
-# # be careful to select appropriate obs and inf
-# match_matr_tss <- function (obs, inf){
-#   # colnames(inf) have already been size-sorted
-#   index = intersect(rownames(inf), rownames(obs))
-#   obs = obs[index, index]
-#   inf = inf[index, index]
-#   result = get_tss(obs, inf)
-#   result
-# }
 
 # step1, biomass inference
 tss.initial <- map2(obs, inf,
@@ -251,29 +247,44 @@ names(inf.neutral) <- threshold
 # save Neutral forbidden trait matching ####
 saveRDS(inf.neutral, "Neutral trait matching inference.RDS")
 
-# confusion matrix
-source("adj_conf_matrix function.R")
-#adj_conf_matrix(observed, inferred)
 
+# AUC ####
+
+# AUC initial
+auc.init <- pmap(list(obs = obs,
+                      inf = inf),
+                 adj_conf_matrix) %>%
+  ldply %>%.[,c("TPR", "FPR")] %>%
+  arrange(TPR, FPR) %>%
+  summarise(AUC = trapz(FPR, TPR))
+# AUC niche
+auc.niche <- pmap(list(obs = obs,
+                       inf = inf.niche),
+                  adj_conf_matrix) %>%
+  ldply %>%
+  .[,c("TPR", "FPR")] %>%
+  arrange(TPR, FPR) %>%
+  summarise(AUC = trapz(FPR, TPR))
+# AUC neutral
 conf.neutral <- map(inf.neutral, function (x){
   pmap(list(obs = obs,
             inf = x),
        adj_conf_matrix)})
-
-
 ROC <- llply(conf.neutral, function (x){
   ldply(x)[, c(".id", "TPR", "FPR")]})
-
 ROC <- ROC %>% llply( function (x){
   names(x)[1] <- "site"; x
 }) 
-
 # calculate area under the curve for each threshold
 require(pracma)
 roc.trapz <- ldply(ROC) %>%
   group_by(.id) %>%
   arrange(TPR, FPR) %>%
-  summarise(AUC = trapz(FPR, TPR)) 
+  summarise(AUC = trapz(FPR, TPR))
+roc.trapz %>% top_n(1, wt = AUC)
+# threshold = 1e-05
+# AUC = 0.8013
+
 # plot AUC ~ Threshold
 ggplot(roc.trapz, aes(x = 
               log10(as.numeric(.id)),
@@ -283,6 +294,41 @@ ggplot(roc.trapz, aes(x =
   labs(x = expression(Log[10]~Threshold),
        y = "AUC")
 
+
+
+# AUC Niche + Neutral
+inf.niche.neutral <- map(inf.neutral, function (x){
+  map(x, rm_niche, taxa = taxa.forbid)})
+
+conf.niche.neutral <- map(inf.niche.neutral, function (x){
+  pmap(list(obs = obs,
+            inf = x),
+       adj_conf_matrix)})
+
+
+ROC.nn <- llply(conf.niche.neutral, function (x){
+  ldply(x)[, c(".id", "TPR", "FPR")]})
+
+ROC.nn <- ROC.nn %>% llply( function (x){
+  names(x)[1] <- "site"; x
+}) 
+
+# calculate area under the curve for each threshold
+ROC.nn.trapz <- ldply(ROC.nn) %>%
+  group_by(.id) %>%
+  arrange(TPR, FPR) %>%
+  summarise(AUC = trapz(FPR, TPR)) 
+ROC.nn.trapz %>% top_n(1, wt = AUC)
+# threshold = 1e-05
+# AUC = 0.684553
+# plot AUC ~ Threshold
+ggplot(ROC.nn.trapz, 
+       aes(x = log10(as.numeric(.id)),
+           y = AUC)) +
+  geom_point() +
+  theme_classic() + 
+  labs(x = expression(Log[10]~Threshold),
+       y = "AUC")
 
 # TSS neutral ####
 tss.neutral <- map(inf.neutral, function (x){
@@ -300,7 +346,7 @@ ggplot(tss.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
 
 tss.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
 
-# neutral and niche forbidden
+# neutral and niche forbidden ####
 tss.niche.neutral <- map(inf.neutral, function (x){
   pmap(list(obs = obs,
             inf = map(x,rm_niche, taxa = taxa.forbid)),
