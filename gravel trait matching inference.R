@@ -314,6 +314,15 @@ ROC.nn.trapz <- ldply(ROC.nn) %>%
 ROC.nn.trapz %>% top_n(1, wt = AUC)
 # threshold = 3e-05
 # AUC = 0.3247
+ggplot(ldply(ROC.nn)[545:561,] %>%
+         arrange(TPR, FPR),
+       aes(x = FPR,
+           y = TPR,
+           color = .id)) +
+         geom_point() +
+  stat_smooth(alpha = 0.1)+
+  geom_abline(slope = 1)+
+  theme_classic()
 # plot AUC ~ Threshold
 ggplot(ROC.nn.trapz, 
        aes(x = log10(as.numeric(.id)),
@@ -331,14 +340,18 @@ neutral <- inf.neutral[[33]]
 # step1, biomass inference
 tss.initial <- ldply(map2(obs, inf,
                     get_tss))
+mean(tss.initial$V1)
 # TSS niche
 tss.niche <- ldply(pmap(list(obs = obs,
                        inf = inf.niche),
                   get_tss))
+mean(tss.niche$V1)
+
 # TSS neutral 
 tss.neutral <- ldply(pmap(list(obs = obs,
                          inf = neutral),
                     get_tss))
+mean(tss.neutral$V1)
 
 
 # neutral and niche forbidden ####
@@ -346,6 +359,7 @@ tss.niche.neutral <- ldply(
   pmap(list(obs = obs,
             inf = inf.niche.neutral[[33]]),
        get_tss))
+mean(tss.niche.neutral$V1)
 
 
 # still need to figure this out ####
@@ -412,6 +426,12 @@ rel.ab.fish <- map(rel.ab.matr,
 fish.neutral <- map(rel.ab.fish,
                    rm_neutral,
                    threshold = 5.9e-05)
+tss.fish.neutral <- ldply(
+  map2(obs,
+       fish.neutral,
+       get_tss))
+tss.fish.neutral$V1 %>% mean
+
 fish.neut.niche <- map(fish.neutral,
                        rm_niche,
                        taxa = taxa.forbid)
