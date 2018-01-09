@@ -362,7 +362,7 @@ tss.niche.neutral <- ldply(
 mean(tss.niche.neutral$V1)
 
 
-# still need to figure this out ####
+# fish abundance ####
 # fish abundance "correction"
 f_ab_corr <- function(Nij, taxa, cf){
   for(f in which(colnames(Nij) %in% taxa)){
@@ -374,8 +374,7 @@ f_ab_corr <- function(Nij, taxa, cf){
 f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
 threshold2 <- threshold[25:37]
 
-cf <- c(10^seq(from = 1, to = 4))#,
-        #5.9^seq(from = 3, to = 8))
+cf <- c(10^seq(from = 1, to = 4))
 cf.dat <- NULL
 system.time(
 for(c in 1:length(cf)){
@@ -418,7 +417,6 @@ ldply(cf.dat2) %>% top_n(10, wt = auc) %>% arrange(.id)
 
 # fish.tss
 # cf = 100, threshold = 5.9e-05
-
 rel.ab.fish <- map(rel.ab.matr,
                    f_ab_corr,
                    taxa = f.vec,
@@ -440,4 +438,53 @@ tss.fish.n.n <- ldply(map2(obs,
                      get_tss))
 tss.fish.n.n$V1 %>% mean
 
+adj_conf_matrix(obs[[1]], inf[[1]])[10:11]
+
+ldply(map2(obs, inf, adj_conf_matrix))[,10:11] %>% summarize(fnr = mean(FNR), fpr = mean(FPR))
+ldply(map2(obs, inf.niche, adj_conf_matrix))[,10:11] %>% summarize(fnr = mean(FNR), fpr = mean(FPR))
+ldply(map2(obs, neutral, adj_conf_matrix))[,10:11] %>% summarize(fnr = mean(FNR), fpr = mean(FPR))
+ldply(map2(obs, inf.niche.neutral[[33]], adj_conf_matrix))[,10:11] %>% summarize(fnr = mean(FNR), fpr = mean(FPR))
+
+df <- rbind(
+  ldply(map2(obs, inf, adj_conf_matrix)
+        )[,10:11] %>%
+    summarize(fnr = mean(FNR),
+              fpr = mean(FPR),
+              fnr.sd = sd(FNR),
+              fpr.sd = sd(FPR)),
+  ldply(map2(obs, inf.niche,
+             adj_conf_matrix))[,10:11] %>%
+    summarize(fnr = mean(FNR),
+              fpr = mean(FPR),
+              fnr.sd = sd(FNR),
+              fpr.sd = sd(FPR)),
+  ldply(map2(obs, fish.neut.niche,
+             adj_conf_matrix))[,10:11] %>%
+    summarize(fnr = mean(FNR),
+              fpr = mean(FPR),
+              fnr.sd = sd(FNR),
+              fpr.sd = sd(FPR)))
+df$step <- c(1:3)
+#df <- 
+  gather(df, "var", "val", 1:4) %>%
+  separate(var, c("mean", "sd")) 
+ggplot(df, aes(x = step, y = fpr,
+               color = "red")) +
+  geom_point() +
+  geom_errorbar(aes(ymax = fpr + fpr.sd,
+                    ymin = fpr - fpr.sd)) +
+  geom_line() +
+  geom_point(aes(x = step, y = fnr,
+             color = "black")) +
+  geom_errorbar(aes(ymax = fnr + fnr.sd,
+                    ymin = fnr - fnr.sd,
+                    color = "black")) +
+    geom_line(aes(x = step, y = fnr,
+                  color = "black")) +
+  theme_classic() +
+  labs(y = "Proportion of links") +
+  scale_colour_manual(name = 'Colour',
+      values =c('black'='black','red'='red'),
+      labels = c('False negatives',
+                 'False positives'))
 
