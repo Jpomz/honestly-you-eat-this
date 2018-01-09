@@ -350,109 +350,74 @@ tss.niche.neutral <- ldply(
 
 # still need to figure this out ####
 # fish abundance "correction"
-f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
 f_ab_corr <- function(Nij, taxa, cf){
   for(f in which(colnames(Nij) %in% taxa)){
-  Nij[,f] <- Nij[,f]*cf
+    Nij[,f] <- Nij[,f]*cf
   }
   Nij
 }
 
-rel.ab.fish <- map(rel.ab.matr,
-            f_ab_corr, taxa = f.vec, cf = 1e5)
-# working out how to make list of diff cf's
-test1 <- map(cf, function (x) {map(Nij.list, f_ab_corr, taxa = taxa, cf = x)})
+f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
+threshold2 <- threshold[25:37]
 
-rm_neutral(f_ab_corr(Nij, taxa = "Salmo", cf = 10),
-           threshold = 0.01)
-
-test1 <- map(cf, function (x){
-  pmap(list(Nij = map(Nij.list, f_ab_corr,
-                      taxa = "Salmo",
-                      cf = x),
-            threshold = threshold),
-       rm_neutral)})
-test2 <- map(test1, function (x){
-  pmap(list(observed = obs,
-            inferred = x),
-       get_tss)
-})    
-tss <- NULL
+cf <- c(10^seq(from = 1, to = 4))#,
+        #5.9^seq(from = 3, to = 8))
+cf.dat <- NULL
+system.time(
 for(c in 1:length(cf)){
-  temp.thresh <- NULL
-  for(t in 1:length(threshold)){
-    temp.web <- NULL
-    for(web in 1:length(obs)){
-      observed = obs[[web]]
-      inferred = test1[[c]][[t]][[web]]
-      temp.web[[web]] = get_tss(observed, inferred)
+  threshold.dat <- NULL
+  for(t in 1:length(threshold2)){
+    auc.dat <- NULL
+    for(w in 1:length(inf)){
+      N = f_ab_corr(Nij = rel.ab.matr[[w]],
+                    taxa = f.vec,
+                    cf = cf[c])
+      Nprime = rm_neutral(N, threshold2[t])
+      conf = adj_conf_matrix(obs[[w]],
+                             Nprime)[,c(5,10)]
+      auc.dat = rbind(auc.dat, conf)
     }
-    temp.thresh[[t]] <- temp.web
+    threshold.dat[[t]] <- auc.dat %>%
+      arrange(TPR, FPR) %>%
+      summarize(auc = trapz(FPR, TPR))
   }
-  tss[[c]] <- temp.thresh
+  names(threshold.dat) <- as.character(threshold2)
+  cf.dat[[c]] <- threshold.dat
 }
-     
-     
-     
-     
-# fish neutral
-fish.neutral <- map(threshold, function (x){
-  map(rel.ab.fish, rm_neutral, threshold = x)})
-# tss fish neutral
-tss.fish.neutral <- map(fish.neutral, function (x){
-  pmap(list(obs = obs.A,
-            inf = x),
-       match_matr_tss)
-})
-
-map(test1, map2, threshold, function(x){
-  map(rm_neutral, threshold = x)
-})
-
-
-# invoke_map???? ####
-f <- c("rm_neutral")
-param <- list(
-  list(Nij = Nij.list,
-       threshold = threshold))
-test <- invoke_map(f, param)
-
-
-
-# example from R4ds ####
-f <- c("runif", "runif", "rnorm", "rpois")
-param <- list(
-  list(min = -1, max = 1),
-  list(min = 2, max = 10),
-  list(sd = 5), 
-  list(lambda = 10)
 )
-invoke_map(f, param, n = 2)
+names(cf.dat) <- as.character(cf)
 
-tss.fish.neutral <- ldply(flatten(tss.fish.neutral))
-tss.fish.neutral$threshold <- rep(threshold, each = 17)
-ggplot(tss.fish.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
-  geom_point() +
-  stat_smooth(alpha = 0.2) +
-  ggtitle("Neutral forbidden, Fish correction") +
-  theme_classic()
-tss.fish.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
-
-# fish + niche + neutral
-tss.fish.niche.neutral <- map(fish.neutral,
-                              function (x){
-  pmap(list(obs = obs.A,
-            inf = map(x,rm_niche, taxa = taxa.forbid)),
-       match_matr_tss)
+cf.dat2 <- cf.dat %>% llply(function (x){
+  ldply(x)
 })
-tss.fish.niche.neutral <- ldply(flatten(tss.fish.niche.neutral))
-tss.fish.niche.neutral$threshold <- rep(threshold, each = 17)
-ggplot(tss.fish.niche.neutral, aes(x = log10(threshold), y = V1, color = .id)) +
+cf.dat2 <- cf.dat2 %>% llply(function (x){
+  names(x)[1] <- "threshold"; x
+})
+ldply(cf.dat2) %>% 
+  ggplot(aes(x = log10(as.numeric(threshold)),
+             y = auc, color = .id)) +
   geom_point() +
-  stat_smooth(alpha = 0.2) +
-  ggtitle("Neutral + Niche forbidden, Fish correction") +
+  stat_smooth(alpha = 0)+
   theme_classic()
 
-tss.fish.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% mutate(log10(threshold))
+ldply(cf.dat2) %>% top_n(10, wt = auc) %>% arrange(.id)
 
-tss.fish.niche.neutral %>% group_by(.id) %>% top_n(1,wt = V1) %>% .$V1 %>% mean
+# fish.tss
+# cf = 100, threshold = 5.9e-05
+
+rel.ab.fish <- map(rel.ab.matr,
+                   f_ab_corr,
+                   taxa = f.vec,
+                   cf = 10000)
+fish.neutral <- map(rel.ab.fish,
+                   rm_neutral,
+                   threshold = 5.9e-05)
+fish.neut.niche <- map(fish.neutral,
+                       rm_niche,
+                       taxa = taxa.forbid)
+tss.fish.n.n <- ldply(map2(obs,
+                     fish.neut.niche,
+                     get_tss))
+tss.fish.n.n$V1 %>% mean
+
+
