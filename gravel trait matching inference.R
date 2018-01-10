@@ -250,6 +250,24 @@ inf.niche.neutral <- map(inf.neutral, function (x){
 # save niche + neutral matrices
 saveRDS(inf.niche.neutral, ("Neutral + Niche trait matching inference.RDS"))
 
+# AUC logistic model ####
+# need to fix get_auc to work with all inf types!!!! ####
+get_auc <- function(observed, inferred){
+  require(ROCR)
+  y = as.factor(as.numeric(observed))
+  x = as.factor(as.numeric(inferred))
+  if(length(levels(x))== 1){ 
+    auc = NA
+    return(auc)
+  }
+  mod = glm(y ~ x, family = binomial(link = "logit"))
+  mod.pred = predict(mod, x, type = "response")
+  prob = prediction(mod.pred, y)
+  auc = performance(prob, measure = "auc")@y.values[[1]]
+  return(auc)
+}
+
+
 
 auc.all <- NULL
 for(web in 1:length(obs)){
