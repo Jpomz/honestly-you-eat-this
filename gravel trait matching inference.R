@@ -199,13 +199,13 @@ sum.links <- sapply(web.links.inf, sum)
 
 # niche forbidden ####
 # niche forbidden
-taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
+taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus","Oligochaetae", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
 
 inf.niche <- map(inf,
                  rm_niche,
                  taxa = taxa.forbid)
-# save niche pruned trait matching ####
-saveRDS(inf.niche, "Niche pruned trait matching inference.RDS")
+# # save niche pruned trait matching ####
+# saveRDS(inf.niche, "Niche pruned trait matching inference.RDS")
 
 
 # neutral forbidden ####
@@ -314,7 +314,7 @@ ROC.nn.trapz <- ldply(ROC.nn) %>%
 ROC.nn.trapz %>% top_n(1, wt = AUC)
 # threshold = 3e-05
 # AUC = 0.3247
-ggplot(ldply(ROC.nn)[545:561,] %>%
+ggplot(ldply(ROC.nn) %>%
          arrange(TPR, FPR),
        aes(x = FPR,
            y = TPR,
@@ -488,3 +488,71 @@ ggplot(df, aes(x = step, y = fpr,
       labels = c('False negatives',
                  'False positives'))
 
+
+
+
+# logistic model attempt ####
+#
+library(ROCR)
+df <- data.frame(obs = as.factor(as.numeric(obs[[10]])),
+                 niche = as.factor(as.numeric(inf.niche[[10]])),
+                 neutral = as.factor(as.numeric(inf.neutral[[11]][[10]])))
+                 #N = as.numeric(rel.ab.matr[[10]]))
+mod <- glm(obs~., data = df, family = binomial(link = "logit"))
+summary(mod)
+mod.pred <- predict(mod, df, type = "response")
+
+pr <- prediction(mod.pred, df$obs)
+prf <- performance(pr, measure = "tpr", x.measure = "fpr")
+plot(prf)
+abline(0,1)
+auc <- performance(pr, measure = "auc")
+auc <- auc@y.values[[1]]
+auc
+
+df <- data.frame(obs = as.factor(as.numeric(obs[[10]])),
+                 niche = as.factor(as.numeric(inf.niche[[10]])),
+                 neutral = as.factor(as.numeric(inf.neutral[[32]][[10]])))
+                 #N = as.numeric(rel.ab.matr[[10]]))
+mod <- glm(obs~., data = df, family = binomial(link = "logit"))
+summary(mod)
+mod.pred <- predict(mod, df, type = "response")
+
+pr <- prediction(mod.pred, df$obs)
+prf <- performance(pr, measure = "tpr", x.measure = "fpr")
+plot(prf)
+abline(0,1)
+auc <- performance(pr, measure = "auc")
+auc <- auc@y.values[[1]]
+auc
+
+
+get_auc <- function(web, thresh, fig = FALSE){
+  df = data.frame(obs = as.factor(
+    as.numeric(obs[[web]])),
+      neutral = as.factor(as.numeric(
+              inf.neutral[[thresh]][[web]])))
+  mod = glm(obs~.,
+             data = df,
+             family = binomial(link = "logit"))
+  mod.pred = predict(mod, df, type = "response")
+
+  pr = prediction(mod.pred, df$obs)
+  prf = performance(pr,
+                     measure = "tpr",
+                     x.measure = "fpr")
+  auc = performance(pr, measure = "auc")@
+    y.values[[1]]
+  auc
+  if (fig == TRUE){
+    plot(prf)
+    abline(0,1)}
+}
+
+get_auc(1, 10)
+
+
+x <- as.factor(as.numeric(
+  inf.neutral[[1]][[1]]))
+levels(x) <- c("0", "1")
+as.factor(c(0,1))
