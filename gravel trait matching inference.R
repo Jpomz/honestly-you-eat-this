@@ -205,7 +205,7 @@ inf.niche <- map(inf,
                  rm_niche,
                  taxa = taxa.forbid)
 # # save niche pruned trait matching ####
-# saveRDS(inf.niche, "Niche pruned trait matching inference.RDS")
+saveRDS(inf.niche, "Niche pruned trait matching inference.RDS")
 
 
 # neutral forbidden ####
@@ -240,11 +240,47 @@ rel.ab.matr <- llply(rel.ab.matr, function (x){
 inf.neutral <- map(threshold, function (x){
   map(rel.ab.matr, rm_neutral, threshold = x)})
 names(inf.neutral) <- threshold
+
 # save Neutral forbidden trait matching ####
 saveRDS(inf.neutral, "Neutral trait matching inference.RDS")
 
+# prune niche from neutral matrices
+inf.niche.neutral <- map(inf.neutral, function (x){
+  map(x, rm_niche, taxa = taxa.forbid)})
+# save niche + neutral matrices
+saveRDS(inf.niche.neutral, ("Neutral + Niche trait matching inference.RDS"))
 
-# AUC need to re-do with log regre ####
+
+auc.all <- NULL
+for(web in 1:length(obs)){
+  auc.web <- NULL
+  for(t in 1:length(inf.neutral)){
+    auc.web[[t]] <- get_auc(web, t)
+  }
+  auc.all[[web]] <- auc.web
+}
+
+df <- data.frame(auc = flatten_dbl(auc.all),
+                 thresh = log10(as.numeric(threshold)),
+                 site = rep(names(obs), each = length(threshold)),
+                 stringsAsFactors = FALSE)
+
+df %>% group_by(site) %>% 
+  mutate(max.auc = max(na.omit(auc)),
+         is.max = auc == max.auc) %>% 
+  ggplot(aes(x = thresh,
+             y = auc,
+             color = is.max)) +
+  facet_wrap(~site) +
+  geom_point() +
+  scale_color_manual(values = c("black", "red"))+
+  theme_classic()
+
+max.auc <- df %>% group_by(site) %>%
+  top_n(1, wt = auc) %>%
+  .[match(unique(.$site), .$site),]
+ggplot(max.auc, aes(x = thresh)) +
+  geom_density()
 
 # AUC initial
 
@@ -420,55 +456,4 @@ ggplot(df, aes(x = step, y = fpr,
 
 
 
-# logistic model attempt ####
-# need to fix get_auc to work with all inf types!!!! ####
-get_auc <- function(web, thresh){
-  require(ROCR)
-  y = as.factor(as.numeric(
-    obs[[web]]))
-  x = as.factor(as.numeric(
-    inf.neutral[[thresh]][[web]]))
-  if(length(levels(x))== 1){ 
-    auc = NA
-    return(auc)
-  }
-  mod = glm(y ~ x, family =
-              binomial(link = "logit"))
-  mod.pred = predict(mod, x,
-                     type = "response")
-  prob = prediction(mod.pred, y)
-  auc = performance(prob, measure = "auc")@
-    y.values[[1]]
-  return(auc)
-}
-auc.all <- NULL
-for(web in 1:length(obs)){
-  auc.web <- NULL
-  for(t in 1:length(inf.neutral)){
-    auc.web[[t]] <- get_auc(web, t)
-  }
-auc.all[[web]] <- auc.web
-}
-
-df <- data.frame(auc = flatten_dbl(auc.all),
-                 thresh = log10(as.numeric(threshold)),
-                 site = rep(names(obs), each = length(threshold)),
-              stringsAsFactors = FALSE)
-
-df %>% group_by(site) %>% 
-  mutate(max.auc = max(na.omit(auc)),
-         is.max = auc == max.auc) %>% 
-  ggplot(aes(x = thresh,
-             y = auc,
-             color = is.max)) +
-  facet_wrap(~site) +
-  geom_point() +
-  scale_color_manual(values = c("black", "red"))+
-  theme_classic()
- 
-max.auc <- df %>% group_by(site) %>%
-  top_n(1, wt = auc) %>%
-  .[match(unique(.$site), .$site),]
-ggplot(max.auc, aes(x = thresh)) +
-  geom_density()
 
