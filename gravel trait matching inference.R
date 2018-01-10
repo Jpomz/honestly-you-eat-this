@@ -247,91 +247,19 @@ saveRDS(inf.neutral, "Neutral trait matching inference.RDS")
 # AUC need to re-do with log regre ####
 
 # AUC initial
-auc.init <- pmap(list(obs = obs,
-                      inf = inf),
-                 adj_conf_matrix) %>%
-  ldply %>%
-  .[,c("TPR", "FPR")] %>%
-  arrange(TPR, FPR) %>%
-  summarise(AUC = trapz(FPR, TPR))
-# AUC niche
-auc.niche <- pmap(list(obs = obs,
-                       inf = inf.niche),
-                  adj_conf_matrix) %>%
-  ldply %>%
-  .[,c("TPR", "FPR")] %>%
-  arrange(TPR, FPR) %>%
-  summarise(AUC = trapz(FPR, TPR))
-# AUC neutral
-conf.neutral <- map(inf.neutral, function (x){
-  pmap(list(obs = obs,
-            inf = x),
-       adj_conf_matrix)})
-ROC <- llply(conf.neutral, function (x){
-  ldply(x)[, c(".id", "TPR", "FPR")]})
-ROC <- ROC %>% llply( function (x){
-  names(x)[1] <- "site"; x
-}) 
-# calculate area under the curve for each threshold
-roc.trapz <- ldply(ROC) %>%
-  group_by(.id) %>%
-  arrange(TPR, FPR) %>%
-  summarise(AUC = trapz(FPR, TPR))
-roc.trapz %>% top_n(1, wt = AUC)
-# threshold = 5.9e-05
-# AUC = 0.317884
 
-# plot AUC ~ Threshold
-ggplot(roc.trapz, aes(x = 
-              log10(as.numeric(.id)),
-                      y = AUC)) +
-  geom_point() +
-  theme_classic() + 
-  labs(x = expression(Log[10]~Threshold),
-       y = "AUC")
+
+# AUC niche
+
+
+# AUC neutral
+
+
+# calculate area under the curve for each threshold
+
+
 
 # AUC Niche + Neutral
-inf.niche.neutral <- map(inf.neutral, function (x){
-  map(x, rm_niche, taxa = taxa.forbid)})
-
-conf.niche.neutral <- map(inf.niche.neutral, function (x){
-  pmap(list(obs = obs,
-            inf = x),
-       adj_conf_matrix)})
-
-
-ROC.nn <- llply(conf.niche.neutral, function (x){
-  ldply(x)[, c(".id", "TPR", "FPR")]})
-
-ROC.nn <- ROC.nn %>% llply( function (x){
-  names(x)[1] <- "site"; x
-}) 
-
-# calculate area under the curve for each threshold
-ROC.nn.trapz <- ldply(ROC.nn) %>%
-  group_by(.id) %>%
-  arrange(TPR, FPR) %>%
-  summarise(AUC = trapz(FPR, TPR)) 
-ROC.nn.trapz %>% top_n(1, wt = AUC)
-# threshold = 3e-05
-# AUC = 0.3247
-ggplot(ldply(ROC.nn) %>%
-         arrange(TPR, FPR),
-       aes(x = FPR,
-           y = TPR,
-           color = .id)) +
-         geom_point() +
-  stat_smooth(alpha = 0.1)+
-  geom_abline(slope = 1)+
-  theme_classic()
-# plot AUC ~ Threshold
-ggplot(ROC.nn.trapz, 
-       aes(x = log10(as.numeric(.id)),
-           y = AUC)) +
-  geom_point() +
-  theme_classic() + 
-  labs(x = expression(Log[10]~Threshold),
-       y = "AUC")
 
 
 # TSS ####
