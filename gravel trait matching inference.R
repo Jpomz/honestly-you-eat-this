@@ -492,67 +492,54 @@ ggplot(df, aes(x = step, y = fpr,
 
 
 # logistic model attempt ####
-#
-library(ROCR)
-df <- data.frame(obs = as.factor(as.numeric(obs[[10]])),
-                 niche = as.factor(as.numeric(inf.niche[[10]])),
-                 neutral = as.factor(as.numeric(inf.neutral[[11]][[10]])))
-                 #N = as.numeric(rel.ab.matr[[10]]))
-mod <- glm(obs~., data = df, family = binomial(link = "logit"))
-summary(mod)
-mod.pred <- predict(mod, df, type = "response")
 
-pr <- prediction(mod.pred, df$obs)
-prf <- performance(pr, measure = "tpr", x.measure = "fpr")
-plot(prf)
-abline(0,1)
-auc <- performance(pr, measure = "auc")
-auc <- auc@y.values[[1]]
-auc
-
-df <- data.frame(obs = as.factor(as.numeric(obs[[10]])),
-                 niche = as.factor(as.numeric(inf.niche[[10]])),
-                 neutral = as.factor(as.numeric(inf.neutral[[32]][[10]])))
-                 #N = as.numeric(rel.ab.matr[[10]]))
-mod <- glm(obs~., data = df, family = binomial(link = "logit"))
-summary(mod)
-mod.pred <- predict(mod, df, type = "response")
-
-pr <- prediction(mod.pred, df$obs)
-prf <- performance(pr, measure = "tpr", x.measure = "fpr")
-plot(prf)
-abline(0,1)
-auc <- performance(pr, measure = "auc")
-auc <- auc@y.values[[1]]
-auc
-
-
-get_auc <- function(web, thresh, fig = FALSE){
-  df = data.frame(obs = as.factor(
-    as.numeric(obs[[web]])),
-      neutral = as.factor(as.numeric(
-              inf.neutral[[thresh]][[web]])))
-  mod = glm(obs~.,
-             data = df,
-             family = binomial(link = "logit"))
-  mod.pred = predict(mod, df, type = "response")
-
-  pr = prediction(mod.pred, df$obs)
-  prf = performance(pr,
-                     measure = "tpr",
-                     x.measure = "fpr")
-  auc = performance(pr, measure = "auc")@
+get_auc <- function(web, thresh){
+  require(ROCR)
+  y = as.factor(as.numeric(
+    obs[[web]]))
+  x = as.factor(as.numeric(
+    inf.neutral[[thresh]][[web]]))
+  if(length(levels(x))== 1){ 
+    auc = NA
+    return(auc)
+  }
+  mod = glm(y ~ x, family =
+              binomial(link = "logit"))
+  mod.pred = predict(mod, x,
+                     type = "response")
+  prob = prediction(mod.pred, y)
+  auc = performance(prob, measure = "auc")@
     y.values[[1]]
-  auc
-  if (fig == TRUE){
-    plot(prf)
-    abline(0,1)}
+  return(auc)
+}
+auc.all <- NULL
+for(web in 1:length(obs)){
+  auc.web <- NULL
+  for(t in 1:length(inf.neutral)){
+    auc.web[[t]] <- get_auc(web, t)
+  }
+auc.all[[web]] <- auc.web
 }
 
-get_auc(1, 10)
+df <- data.frame(auc = flatten_dbl(auc.all),
+                 thresh = log10(as.numeric(threshold)),
+                 site = rep(names(obs), each = length(threshold)),
+              stringsAsFactors = FALSE)
 
+df %>% group_by(site) %>% 
+  mutate(max.auc = max(na.omit(auc)),
+         is.max = auc == max.auc) %>% 
+  ggplot(aes(x = thresh,
+             y = auc,
+             color = is.max)) +
+  facet_wrap(~site) +
+  geom_point() +
+  scale_color_manual(values = c("black", "red"))+
+  theme_classic()
+ 
+max.auc <- df %>% group_by(site) %>%
+  top_n(1, wt = auc) %>%
+  .[match(unique(.$site), .$site),]
+ggplot(max.auc, aes(x = thresh)) +
+  geom_density()
 
-x <- as.factor(as.numeric(
-  inf.neutral[[1]][[1]]))
-levels(x) <- c("0", "1")
-as.factor(c(0,1))
