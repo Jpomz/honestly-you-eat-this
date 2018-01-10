@@ -244,7 +244,8 @@ names(inf.neutral) <- threshold
 saveRDS(inf.neutral, "Neutral trait matching inference.RDS")
 
 
-# AUC ####
+# AUC need to re-do with log regre ####
+
 # AUC initial
 auc.init <- pmap(list(obs = obs,
                       inf = inf),
@@ -492,7 +493,7 @@ ggplot(df, aes(x = step, y = fpr,
 
 
 # logistic model attempt ####
-
+# need to fix get_auc to work with all inf types!!!! ####
 get_auc <- function(web, thresh){
   require(ROCR)
   y = as.factor(as.numeric(
