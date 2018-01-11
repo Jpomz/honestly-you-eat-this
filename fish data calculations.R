@@ -24,16 +24,6 @@ get_fish_dw <- function(l, a, b){
   dw = exp(1)^x
   dw
 }
-# calculate equilibrium biomass based on body mass
-# Tang 2014
-get_xstar <- function(mi, x0 = -1.16, gamma = -0.675){
-  xstar = 10^(x0 + 3 * gamma)*mi^(1 + gamma)
-  return(xstar)
-}
-# brown --> N~M^[-1, -0.75]
-# when M = 10^3 * mi for inverts
-# M^-0.75 ~ same order of magnitude as observed values
-# this is also ~ 3-4 orders of magnitude greater than in Tang, so may solve my fish "correction factor" problem later on...
 
 #downloaded fish data
 fish <- read_csv("Taieri NZ Fish datbase.csv")
@@ -86,19 +76,19 @@ fish.sites <- data.frame(site =c("Berwick",
              stringsAsFactors = F)
 
 # make an empty list for dry weight calculations
+# estimate fish abundance using metabolic scaling
+# N ~ M^b
+# b generally in the range [-0.675 - -1.2] when using individual data
+# estimated exponent b (linear slope of log10 transformed data) as ~-0.33 (see script "supplemental fish calculations.R")
 dw.list <- NULL
 for(i in 2:length(fish.list)){
   dw.list[[i]] = data.frame(taxa = c("Anguilla", "Galaxias", "Gobiomorphus", "Salmo"),
 # calculate body mass 
           dw = get_fish_dw(fish.list[[i]], a, b),
       stringsAsFactors = F)
-# calculate equilibrium biomass: get_xstar()
-# and numerical abundance = xstar / bodymass
+# estimate abundances
   dw.list[[i]] <- dw.list[[i]] %>%
-    mutate(dw.kg = dw / 10^3, # convert g to kg
-           xstar = get_xstar(mi = dw.kg),
-           no.m2 = xstar / dw.kg) %>%
-    select(taxa, dw, no.m2) %>%
+    mutate(no.m2 = dw^-0.33) %>%
     right_join(fish.sites, by = "taxa")
 }
 names(dw.list) <- names(fish.list)
