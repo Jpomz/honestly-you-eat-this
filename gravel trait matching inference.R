@@ -338,7 +338,7 @@ auc.neutral.df %>%
                size = 2,
                group= 1) +
   geom_point(data = auc.neutral.df %>%
-               filter(thresh > -5.9, thresh < -5.8),
+               filter(thresh > -3.6, thresh < -3.5),
              aes(x = thresh, y = auc), color = "red")+
   theme_classic()
 
@@ -402,16 +402,16 @@ auc.niche.neutral.df %>%
                size = 2,
                group= 1) +
   geom_point(data = auc.niche.neutral.df %>%
-               filter(thresh > -9.9, thresh < -9.8),
+               filter(thresh > -3.6, thresh < -3.5),
              aes(x = thresh, y = auc), color = "red")+
   theme_classic()
 
 
 
 # TSS ####
-# working with neutral abundance threshold 1.5e-06
-# inf.neutral[[27]]
-neutral <- inf.neutral[[27]]
+# working with neutral abundance threshold 1.5e-04
+# inf.neutral[[35]]
+neutral <- inf.neutral[[35]]
 
 # TSS initial ####
 tss.initial <- ldply(map2(obs, inf,
@@ -432,89 +432,11 @@ mean(tss.neutral$V1)
 
 # neutral and niche forbidden ####
 # 1.5e-10
-neutral.niche <- inf.niche.neutral[[11]]
+neutral.niche <- inf.niche.neutral[[35]]
 tss.niche.neutral <- ldply(
   pmap(list(obs = obs,
             inf = neutral.niche),
        get_tss))
 mean(tss.niche.neutral$V1)
 
-
-# fish abundance ####
-# fish abundance "correction"
-f_ab_corr <- function(Nij, taxa, cf){
-  for(f in which(colnames(Nij) %in% taxa)){
-    Nij[,f] <- Nij[,f]*cf
-  }
-  Nij
-}
-
-f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
-threshold2 <- threshold[21:37]
-
-cf <- c(10^seq(from = 1, to = 4))
-auc.cf <- NULL
-system.time(
-for(c in 1:length(cf)){
-  auc.neutral <- NULL
-  for(w in 1:length(inf)){
-    auc.web <- NULL
-    for(t in 1:length(threshold2)){
-      N = f_ab_corr(Nij = rel.ab.matr[[w]],
-                    taxa = f.vec,
-                    cf = cf[c])
-      Nprime = rm_neutral(N, threshold2[t])
-      auc.web[[t]] = get_auc(obs[[w]], Nprime)
-    }
-    names(auc.web) <- as.character(threshold2)
-    auc.neutral[[w]] <- auc.web
-  }
-  names(auc.neutral) <- names(obs)
-  auc.cf[[c]] <- auc.neutral
-  }
-)
-names(auc.cf) <- as.character(cf)
-
-
-auc.cf <- llply(auc.cf, function (x){
-  out = data.frame(auc = flatten_dbl(x),
-                  thresh = log10(as.numeric(threshold2)),
-                  site = rep(names(obs),
-                      each = length(threshold2)),
-                  stringsAsFactors = FALSE)})
-ldply(auc.cf) %>%
-  ggplot(aes(x = thresh,
-             y = auc, color = .id)) +
-  geom_point() +
-  facet_wrap(~site) +
-  stat_smooth(alpha = 0)+
-  theme_classic()
-
-ldply(auc.cf) %>%
-  group_by(.id, thresh) %>%
-  summarize(mean.auc = mean(na.omit(auc))) %>%
-  arrange(.id, desc(mean.auc))
-
-# fish.tss
-# cf = 100, threshold = 3e-04
-rel.ab.fish <- map(rel.ab.matr,
-                   f_ab_corr,
-                   taxa = f.vec,
-                   cf = 10)
-fish.neutral <- map(rel.ab.fish,
-                   rm_neutral,
-                   threshold = 5.9e-5)
-tss.fish.neutral <- ldply(
-  map2(obs,
-       fish.neutral,
-       get_tss))
-tss.fish.neutral$V1 %>% mean
-
-fish.neut.niche <- map(fish.neutral,
-                       rm_niche,
-                       taxa = taxa.forbid)
-tss.fish.n.n <- ldply(map2(obs,
-                     fish.neut.niche,
-                     get_tss))
-tss.fish.n.n$V1 %>% mean
 
