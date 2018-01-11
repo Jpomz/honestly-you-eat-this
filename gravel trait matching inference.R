@@ -268,22 +268,40 @@ get_auc <- function(observed, inferred){
 }
 
 
+# AUC initial ####
+auc.init <- ldply(map2(obs, inf, get_auc))
+auc.init.mean <- mean(auc.init$V1, na.rm = TRUE)
 
-auc.all <- NULL
+# AUC niche ####
+auc.niche <- ldply(map2(obs, inf.niche, get_auc))
+auc.niche.mean <- mean(auc.niche$V1)
+
+# AUC neutral ####
+auc.neutral <- NULL
 for(web in 1:length(obs)){
   auc.web <- NULL
   for(t in 1:length(inf.neutral)){
-    auc.web[[t]] <- get_auc(web, t)
+    auc.web[[t]] <- get_auc(obs[[web]],
+                            inf.neutral[[t]][[web]])
   }
-  auc.all[[web]] <- auc.web
+  auc.neutral[[web]] <- auc.web
 }
 
-df <- data.frame(auc = flatten_dbl(auc.all),
+auc.neutral.df <- data.frame(auc =
+                               flatten_dbl(auc.neutral),
                  thresh = log10(as.numeric(threshold)),
-                 site = rep(names(obs), each = length(threshold)),
+                 site = rep(names(obs),
+                            each = length(threshold)),
                  stringsAsFactors = FALSE)
 
-df %>% group_by(site) %>% 
+# ####
+# local max auc 
+local.thresh.neutral <- auc.neutral.df %>% 
+  group_by(site) %>%
+  top_n(1, wt = auc) %>% 
+  .[match(unique(.$site), .$site),]
+# plot facet by site 
+auc.neutral.df %>% group_by(site) %>% 
   mutate(max.auc = max(na.omit(auc)),
          is.max = auc == max.auc) %>% 
   ggplot(aes(x = thresh,
@@ -292,45 +310,120 @@ df %>% group_by(site) %>%
   facet_wrap(~site) +
   geom_point() +
   scale_color_manual(values = c("black", "red"))+
+  geom_hline(aes(yintercept = 0.5),
+             linetype = "dashed") +
+  theme_classic()
+# density of thresholds == max.auc
+auc.neutral.df %>% group_by(site) %>%
+  top_n(1, wt = auc) %>%
+  .[match(unique(.$site), .$site),] %>%
+ggplot(aes(x = thresh)) +
+  geom_density() +
   theme_classic()
 
-max.auc <- df %>% group_by(site) %>%
-  top_n(1, wt = auc) %>%
+# global max auc
+global.thresh.neutral <- auc.neutral.df %>%
+  group_by(thresh) %>%
+  summarize(mean.auc = mean(na.omit(auc))) %>%
+  top_n(1, wt = mean.auc)
+# plot of global
+auc.neutral.df %>% 
+  ggplot(aes(x = thresh,
+             y = auc)) +
+  geom_point() +
+  stat_summary(aes(y = auc,group=1),
+               fun.y=mean,
+               colour="grey",
+               geom="line",
+               size = 2,
+               group= 1) +
+  geom_point(data = auc.neutral.df %>%
+               filter(thresh > -5.9, thresh < -5.8),
+             aes(x = thresh, y = auc), color = "red")+
+  theme_classic()
+
+# AUC Niche + Neutral ####
+auc.niche.neutral <- NULL
+for(web in 1:length(obs)){
+  auc.web <- NULL
+  for(t in 1:length(inf.niche.neutral)){
+    auc.web[[t]] <- get_auc(obs[[web]],
+                            inf.niche.neutral[[t]][[web]])
+  }
+  auc.niche.neutral[[web]] <- auc.web
+}
+
+auc.niche.neutral.df <- data.frame(auc = 
+                          flatten_dbl(auc.niche.neutral),
+                        thresh =
+                          log10(as.numeric(threshold)),
+                        site = rep(names(obs),
+                                   each =
+                                     length(threshold)),
+                             stringsAsFactors = FALSE)
+
+# local max auc 
+local.thresh.nn <- auc.niche.neutral.df %>% group_by(site) %>%
+  top_n(1, wt = auc) %>% 
   .[match(unique(.$site), .$site),]
-ggplot(max.auc, aes(x = thresh)) +
-  geom_density()
+# plot facet by site 
+auc.niche.neutral.df %>% group_by(site) %>% 
+  mutate(max.auc = max(na.omit(auc)),
+         is.max = auc == max.auc) %>% 
+  ggplot(aes(x = thresh,
+             y = auc,
+             color = is.max)) +
+  facet_wrap(~site) +
+  geom_point() +
+  scale_color_manual(values = c("black", "red"))+
+  geom_hline(aes(yintercept = 0.5),
+             linetype = "dashed") +
+  theme_classic()
+# density of thresholds == max.auc
+auc.niche.neutral.df %>% group_by(site) %>%
+  top_n(1, wt = auc) %>%
+  .[match(unique(.$site), .$site),] %>%
+  ggplot(aes(x = thresh)) +
+  geom_density() +
+  theme_classic()
 
-# AUC initial
+# global max auc
+global.thresh.nn <- auc.niche.neutral.df %>% group_by(thresh) %>%
+  summarize(mean.auc = mean(na.omit(auc))) %>% top_n(1, wt = mean.auc)
+# plot of global
+auc.niche.neutral.df %>% 
+  ggplot(aes(x = thresh,
+             y = auc)) +
+  geom_point() +
+  stat_summary(aes(y = auc,group=1),
+               fun.y=mean,
+               colour="grey",
+               geom="line",
+               size = 2,
+               group= 1) +
+  geom_point(data = auc.niche.neutral.df %>%
+               filter(thresh > -9.9, thresh < -9.8),
+             aes(x = thresh, y = auc), color = "red")+
+  theme_classic()
 
-
-# AUC niche
-
-
-# AUC neutral
-
-
-# calculate area under the curve for each threshold
-
-
-
-# AUC Niche + Neutral
 
 
 # TSS ####
-# working with neutral abundance threshold 3e-05
-# inf.neutral[[32]]
-neutral <- inf.neutral[[33]]
-# step1, biomass inference
+# working with neutral abundance threshold 1.5e-06
+# inf.neutral[[27]]
+neutral <- inf.neutral[[27]]
+
+# TSS initial ####
 tss.initial <- ldply(map2(obs, inf,
                     get_tss))
 mean(tss.initial$V1)
-# TSS niche
+# TSS niche ####
 tss.niche <- ldply(pmap(list(obs = obs,
                        inf = inf.niche),
                   get_tss))
 mean(tss.niche$V1)
 
-# TSS neutral 
+# TSS neutral ####
 tss.neutral <- ldply(pmap(list(obs = obs,
                          inf = neutral),
                     get_tss))
@@ -338,9 +431,11 @@ mean(tss.neutral$V1)
 
 
 # neutral and niche forbidden ####
+# 1.5e-10
+neutral.niche <- inf.niche.neutral[[11]]
 tss.niche.neutral <- ldply(
   pmap(list(obs = obs,
-            inf = inf.niche.neutral[[33]]),
+            inf = neutral.niche),
        get_tss))
 mean(tss.niche.neutral$V1)
 
@@ -355,58 +450,60 @@ f_ab_corr <- function(Nij, taxa, cf){
 }
 
 f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
-threshold2 <- threshold[25:37]
+threshold2 <- threshold[21:37]
 
 cf <- c(10^seq(from = 1, to = 4))
-cf.dat <- NULL
+auc.cf <- NULL
 system.time(
 for(c in 1:length(cf)){
-  threshold.dat <- NULL
-  for(t in 1:length(threshold2)){
-    auc.dat <- NULL
-    for(w in 1:length(inf)){
+  auc.neutral <- NULL
+  for(w in 1:length(inf)){
+    auc.web <- NULL
+    for(t in 1:length(threshold2)){
       N = f_ab_corr(Nij = rel.ab.matr[[w]],
                     taxa = f.vec,
                     cf = cf[c])
       Nprime = rm_neutral(N, threshold2[t])
-      conf = adj_conf_matrix(obs[[w]],
-                             Nprime)[,c(5,10)]
-      auc.dat = rbind(auc.dat, conf)
+      auc.web[[t]] = get_auc(obs[[w]], Nprime)
     }
-    threshold.dat[[t]] <- auc.dat %>%
-      arrange(TPR, FPR) %>%
-      summarize(auc = trapz(FPR, TPR))
+    names(auc.web) <- as.character(threshold2)
+    auc.neutral[[w]] <- auc.web
   }
-  names(threshold.dat) <- as.character(threshold2)
-  cf.dat[[c]] <- threshold.dat
-}
+  names(auc.neutral) <- names(obs)
+  auc.cf[[c]] <- auc.neutral
+  }
 )
-names(cf.dat) <- as.character(cf)
+names(auc.cf) <- as.character(cf)
 
-cf.dat2 <- cf.dat %>% llply(function (x){
-  ldply(x)
-})
-cf.dat2 <- cf.dat2 %>% llply(function (x){
-  names(x)[1] <- "threshold"; x
-})
-ldply(cf.dat2) %>% 
-  ggplot(aes(x = log10(as.numeric(threshold)),
+
+auc.cf <- llply(auc.cf, function (x){
+  out = data.frame(auc = flatten_dbl(x),
+                  thresh = log10(as.numeric(threshold2)),
+                  site = rep(names(obs),
+                      each = length(threshold2)),
+                  stringsAsFactors = FALSE)})
+ldply(auc.cf) %>%
+  ggplot(aes(x = thresh,
              y = auc, color = .id)) +
   geom_point() +
+  facet_wrap(~site) +
   stat_smooth(alpha = 0)+
   theme_classic()
 
-ldply(cf.dat2) %>% top_n(10, wt = auc) %>% arrange(.id)
+ldply(auc.cf) %>%
+  group_by(.id, thresh) %>%
+  summarize(mean.auc = mean(na.omit(auc))) %>%
+  arrange(.id, desc(mean.auc))
 
 # fish.tss
-# cf = 100, threshold = 5.9e-05
+# cf = 100, threshold = 3e-04
 rel.ab.fish <- map(rel.ab.matr,
                    f_ab_corr,
                    taxa = f.vec,
-                   cf = 10000)
+                   cf = 10)
 fish.neutral <- map(rel.ab.fish,
                    rm_neutral,
-                   threshold = 5.9e-05)
+                   threshold = 5.9e-5)
 tss.fish.neutral <- ldply(
   map2(obs,
        fish.neutral,
