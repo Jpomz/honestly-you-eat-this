@@ -440,3 +440,46 @@ tss.niche.neutral <- ldply(
 mean(tss.niche.neutral$V1)
 
 
+
+# TSS for niche + local neutral 
+local_tss <- function (n){
+  x <- sapply(inf.niche.neutral, function (web) web[n])
+  names(x) <- threshold
+  out <- ldply(map(x,  get_tss, obs = obs[[n]]))
+  out
+}
+local.tss.thresh <- NULL
+for(i in 1:length(obs)){
+  local.tss.thresh[[i]] <- local_tss(i)
+  names(local.tss.thresh[[i]]) <-c("thresh", "tss") 
+}
+names(local.tss.thresh) <- names(obs)
+local.tss.thresh <- ldply(local.tss.thresh) %>%
+  group_by(.id) %>%
+  mutate(max.tss = max(na.omit(tss)), 
+         is.max = tss == max.tss)
+  
+ggplot(local.tss.thresh, aes(x = log10(as.numeric(thresh)),
+                 y = tss,
+                 color = .id,
+                 size = is.max)) +
+  scale_size_manual(values = c(1, 5)) +
+  geom_point() +
+  stat_smooth(aes(x = log10(as.numeric(thresh)),
+                  y = tss, color = .id),
+              alpha = 0, inherit.aes = F)+
+  theme_classic()
+
+
+
+
+# total abundance
+tot.ab <- ldply(sapply(dw, function (x) sum(x$no.m2)))
+tot.ab <- left_join(tot.ab, local.thresh.nn[,c(2:3)], by = c(".id" = "site"))
+ggplot(tot.ab, aes(x = log10(V1), y = thresh)) +
+  geom_point()+
+  stat_smooth(method = "lm")
+
+summary(lm(thresh ~ log10(V1), data = tot.ab))
+# higher abundance = smaller threshold
+# when you have more individuals, need to forbid links at smaller cross products
