@@ -294,7 +294,7 @@ auc.neutral.df <- data.frame(auc =
                             each = length(threshold)),
                  stringsAsFactors = FALSE)
 
-# ####
+
 # local max auc 
 local.thresh.neutral <- auc.neutral.df %>% 
   group_by(site) %>%
