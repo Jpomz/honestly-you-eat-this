@@ -10,3 +10,4 @@ mean(lm_obj$coefficients[-1])
 # mean slope = -0.3015064
 range(lm_obj$coefficients[-1])
 # range = [-0.5011 -0.1226]
+
