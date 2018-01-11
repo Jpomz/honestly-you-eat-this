@@ -30,6 +30,10 @@ get_xstar <- function(mi, x0 = -1.16, gamma = -0.675){
   xstar = 10^(x0 + 3 * gamma)*mi^(1 + gamma)
   return(xstar)
 }
+# brown --> N~M^[-1, -0.75]
+# when M = 10^3 * mi for inverts
+# M^-0.75 ~ same order of magnitude as observed values
+# this is also ~ 3-4 orders of magnitude greater than in Tang, so may solve my fish "correction factor" problem later on...
 
 #downloaded fish data
 fish <- read_csv("Taieri NZ Fish datbase.csv")
