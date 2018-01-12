@@ -41,14 +41,16 @@ get_tss <- function (observed, inferred){
   tss
 }
 
-# read in corrected adjaceny matrices
+# read in all pred-prey matrices for registry construction
 web.list <- readRDS("observed pred-prey.RDS")
+# read in observed matrices matched to trait-matching inference. This is for reference to web names and taxa names in trait matching inference
 web.match <- readRDS("observed matrices matched to inferred.RDS")
 
 # convert predation matrix to matrix of pairs
 pairs.list <- web.list %>%
   llply(function (x){
-    as.data.frame(Matrix.to.list(x), stringsAsFactors = FALSE)})
+    as.data.frame(Matrix.to.list(x),
+                  stringsAsFactors = FALSE)})
 
 
 
@@ -61,26 +63,17 @@ register.list <- NULL
 for (i in 1:length(web.match)){
   register.list[[i]] <- ldply(pairs.list)
 }
-# make one complete registry to add to other registers later
-complete.registry <- register.list[[1]]
-colnames(complete.registry) <- c("source.id", "resource", "consumer")
 
-# add web names
-names(register.list) <- names(web.match)
-# subset each element in register.list to not contain name of web trying to infer links for
-for (i in names(register.list)){
-  register.list[[i]] <- subset(register.list[[i]], .id != i)
-}
 
 # change .id column to source.id
 register.list <- register.list %>%
   llply(function (x){
-    colnames(x) <- c("source.id", "resource", "consumer");x
+    colnames(x) <- c("source.id",
+                     "resource",
+                     "consumer");x
   })
 
-# read in registry made from other sources
-other.registry <- read_csv("fw_registry.csv")
-other.registry$source.id <- as.character(other.registry$source.id)
+
 
 # read in file with taxonomy information
 taxonomy <- read_csv("taxonomy.csv")
@@ -101,16 +94,13 @@ for (i in 1:length(register.list)){
   register.list[[i]] <- x
 }
 
-
-
-
-
-
-# intersect of register.list and other register names
-col.names <- intersect(colnames(register.list[[1]]), names(other.registry))
-
+# read in registry made from other sources
+other.registry <- read_csv("fw_registry.csv")
+other.registry$source.id <- as.character(other.registry$source.id)
 # subset other.registry object to match with registry list
-other.registry <- other.registry[,col.names]
+other.registry <- other.registry[,
+                intersect(colnames(register.list[[1]]),
+                          names(other.registry))]
 
 # combine registry list with other registry
 for (i in 1:length(register.list)){
@@ -118,27 +108,19 @@ for (i in 1:length(register.list)){
     register.list[[i]], other.registry)
 }
 
-# complete registry add taxonomy
-complete.registry <- merge(complete.registry,
-                           taxonomy[,1:5],
-                           by.x ="resource",
-                           by.y = "name",
-                           all.x = T)
-colnames(complete.registry)[4:6] <- paste("res.",
-                                          colnames(complete.registry[c(4:6)]),
-                                          sep = "")
-complete.registry <- merge(complete.registry,
-                           taxonomy[,c(1:4,6)],
-                           by.x ="consumer",
-                           by.y = "name",
-                           all.x = T)         
-colnames(complete.registry)[8:10] <- paste("con.", 
-                                           colnames(complete.registry[c(8:10)]),
-                                           sep = "")
-complete.registry$linkevidence <- "direct"
+# make one complete registry to add to other registers later
+complete.registry <- register.list[[1]]
 
-#merge complete with others
-complete.registry <- bind_rows(complete.registry, other.registry)
+
+# add web names
+names(register.list) <- names(web.match)
+# subset each element in register.list to not contain name of web trying to infer links for
+for (i in names(register.list)){
+  register.list[[i]] <- subset(register.list[[i]], source.id != i)
+}
+
+
+
 
 write.csv(complete.registry, "complete webbuilder registry.csv")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
