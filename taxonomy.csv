@@ -1,4 +1,4 @@
-order,family,genus,name,res.method,con.method
+order,family,genus,name,minimum.res.method,minimum.con.method
 Acari,,,Acari,order,order
 Achnanhtales,Achnanthacea,Achnanthes,Achnanthes,genus,genus
 Cocconeidales,Achnanthidiaceae,Achnanthidium,Achnanthidium,genus,genus
