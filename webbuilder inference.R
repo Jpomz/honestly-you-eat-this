@@ -182,3 +182,91 @@ wb.matrices <- map2(wb.matrices, web.match, match_matr2)
 saveRDS(wb.matrices, file ="wb matrices matched to inferred.rds")
 
 wb.tss <- map2(web.match, wb.matrices, get_tss)
+
+
+# AUC logistic model ####
+# need to fix get_auc to work with all inf types!!!! ####
+get_auc <- function(observed, inferred){
+  require(ROCR)
+  y = as.factor(as.numeric(observed))
+  x = as.factor(as.numeric(inferred))
+  if(length(levels(x))== 1){ 
+    auc = NA
+    return(auc)
+  }
+  mod = glm(y ~ x, family = binomial(link = "logit"))
+  mod.pred = predict(mod, x, type = "response")
+  prob = prediction(mod.pred, y)
+  auc = performance(prob, measure = "auc")@y.values[[1]]
+  return(auc)
+}
+
+auc.init <- ldply(map2(web.match, wb.matrices, get_auc))
+auc.init.mean <- mean(auc.init$V1, na.rm = TRUE)
+
+map2(web.match, wb.matrices, get_tss)
+
+inf.list <- readRDS("Neutral + Niche trait matching inference.RDS")
+inf <- inf.list[[12]]
+
+inf.wb <- map2(wb.matrices, inf, .f = ~.x*.y)
+cbind(ldply(map2(web.match, wb.matrices, get_tss)),
+      ldply(map2(web.match, inf.wb, get_tss)))
+
+
+# pca start ####
+# https://www.r-bloggers.com/clustering-mixed-data-types-in-r/
+pc.dat <- ldply(list(wb = 
+                  ldply(wb.matrices, function (x){
+  Get.web.stats(x)}),
+  obs = 
+    ldply(web.match, function (x){
+  Get.web.stats(x)
+}),
+inf = ldply(inf, function (x){
+  Get.web.stats(x)
+})))
+pc.dat$grp <- rep(c("wb", "obs", "inf"), each = 17)
+
+require(vegan)
+require(cluster)
+require(Rtsne)
+pca.obj <- prcomp(pc.dat[,c(3:7, 11:12)], center = T, scale. = T)
+biplot(pca.obj)
+ordiplot(pca.obj, xlim = c(-5,5))
+orditorp(pca.obj,display="species",col="red",air=0.01)
+ordihull(pca.obj,groups=pc.dat$grp,draw="polygon",col="grey90",label=F)
+
+
+gower_dist <- daisy(pc.dat[,c(3:7, 11:13, 15)],
+      metric = "gower",
+      type = list(logratio = 3))
+summary(gower_dist)
+gower_mat <- as.matrix(gower_dist)
+
+pc.dat[which(gower_mat == min(
+  gower_mat[gower_mat != min(gower_mat)]),
+  arr.ind = TRUE)[1, ], ]
+pc.dat[which(gower_mat == max(
+  gower_mat[gower_mat != max(gower_mat)]),
+  arr.ind = TRUE)[1, ], ]
+
+pam_fit <- pam(gower_dist,
+               diss = TRUE,
+               k = 3)
+summary(pam_fit)
+pc.dat[pam_fit$medoids,]
+
+tsne_obj <- Rtsne(gower_dist, is_distance = TRUE, perplexity = 10)
+
+tsne_data <- tsne_obj$Y %>%
+  data.frame() %>%
+  setNames(c("X", "Y")) %>%
+  mutate(cluster = factor(pam_fit$clustering),
+         name = pc.dat$grp)
+
+ggplot(aes(x = X, y = Y), data = tsne_data) +
+  geom_point(aes(color = cluster))
+
+
+adonis(pca.obj ~ grp, data = pc.dat, method='eu')
