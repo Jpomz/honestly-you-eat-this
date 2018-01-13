@@ -484,3 +484,106 @@ ggplot(tot.ab, aes(x = log10(V1), y = thresh)) +
 summary(lm(thresh ~ log10(V1), data = tot.ab))
 # higher abundance = smaller threshold
 # when you have more individuals, need to forbid links at smaller cross products
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# fish abundance ####
+# fish abundance "correction"
+f_ab_corr <- function(Nij, taxa, cf){
+  for(f in which(colnames(Nij) %in% taxa)){
+    Nij[,f] <- Nij[,f]*cf
+  }
+  Nij
+}
+f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
+threshold2 <- threshold
+cf <- c(10^seq(from = 1, to = 4))
+auc.cf <- NULL
+system.time(
+  for(c in 1:length(cf)){
+    auc.neutral <- NULL
+    for(w in 1:length(inf)){
+      auc.web <- NULL
+      for(t in 1:length(threshold2)){
+        N = f_ab_corr(Nij = rel.ab.matr[[w]],
+                      taxa = f.vec,
+                      cf = cf[c])
+        Nprime = rm_neutral(N, threshold2[t])
+        auc.web[[t]] = get_auc(obs[[w]], Nprime)
+      }
+      names(auc.web) <- as.character(threshold2)
+      auc.neutral[[w]] <- auc.web
+    }
+    names(auc.neutral) <- names(obs)
+    auc.cf[[c]] <- auc.neutral
+  }
+)
+names(auc.cf) <- as.character(cf)
+
+auc.cf <- llply(auc.cf, function (x){
+  out = data.frame(auc = flatten_dbl(x),
+                   thresh = log10(as.numeric(threshold2)),
+                   site = rep(names(obs),
+                              each = length(threshold2)),
+                   stringsAsFactors = FALSE)})
+ldply(auc.cf) %>%
+ggplot(aes(x = thresh,
+           y = auc, color = .id)) +
+geom_point() +
+facet_wrap(~site) +
+stat_smooth(alpha = 0)+
+theme_classic()
+
+ldply(auc.cf) %>%
+group_by(.id, thresh) %>%
+summarize(mean.auc = mean(na.omit(auc))) %>%
+arrange(desc(mean.auc), .id)
+# fish.tss
+# cf = 100, threshold = 1e-04
+rel.ab.fish <- map(rel.ab.matr,
+                   f_ab_corr,
+                   taxa = f.vec,
+                   cf = 100)
+fish.neutral <- map(rel.ab.fish,
+                    rm_neutral,
+                    threshold = 1e-04)
+tss.fish.neutral <- ldply(
+  map2(obs,
+       fish.neutral,
+       get_tss))
+tss.fish.neutral$V1 %>% mean
+
+fish.neut.niche <- map(fish.neutral,
+                       rm_niche,
+                       taxa = taxa.forbid)
+tss.fish.n.n <- ldply(map2(obs,
+                           fish.neut.niche,
+                           get_tss))
+tss.fish.n.n$V1 %>% mean
