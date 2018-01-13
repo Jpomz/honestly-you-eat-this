@@ -300,3 +300,11 @@ class(pca2)
 
 adonis(pca2$x~ Species, data = iris, method='eu')
 
+
+
+distance2 <- function(x,y) sum((x-y)^2)
+centroid <- function(x) rowMeans(x)
+x = pca.obj$x[1:17,]
+y = pca.obj$x[18:34,]
+
+distance2(centroid(x), centroid(y))
