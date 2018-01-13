@@ -216,9 +216,9 @@ cbind(ldply(map2(web.match, wb.matrices, get_tss)),
 
 # pca start ####
 # https://www.r-bloggers.com/clustering-mixed-data-types-in-r/
-pc.dat <- ldply(list(wb = 
-                  ldply(wb.matrices, function (x){
-  Get.web.stats(x)}),
+pc.dat <- ldply(list(#wb = 
+                  #ldply(wb.matrices, function (x){
+  #Get.web.stats(x)}),
   obs = 
     ldply(web.match, function (x){
   Get.web.stats(x)
@@ -226,12 +226,17 @@ pc.dat <- ldply(list(wb =
 inf = ldply(inf, function (x){
   Get.web.stats(x)
 })))
-pc.dat$grp <- rep(c("wb", "obs", "inf"), each = 17)
+pc.dat$grp <- rep(c(#"wb",
+  "obs", "inf"), each = 17)
 
 require(vegan)
 require(cluster)
 require(Rtsne)
 pca.obj <- prcomp(pc.dat[,c(3:7, 11:12)], center = T, scale. = T)
+
+
+adonis(pca.obj$x ~ grp, data = pc.dat, method='eu')
+
 biplot(pca.obj)
 ordiplot(pca.obj, xlim = c(-5,5))
 orditorp(pca.obj,display="species",col="red",air=0.01)
@@ -269,4 +274,29 @@ ggplot(aes(x = X, y = Y), data = tsne_data) +
   geom_point(aes(color = cluster))
 
 
-adonis(pca.obj ~ grp, data = pc.dat, method='eu')
+
+
+
+
+
+
+data("iris")
+iris
+iris_c <- scale(iris[ ,1:4])
+pca <- rda(iris_c)
+adonis(iris_c ~ Species, data = iris, method='eu')
+
+plot(pca, type = 'n', display = 'sites')
+cols <- c('red', 'blue', 'green')
+points(pca, display='sites', col = cols[iris$Species], pch = 16)
+ordihull(pca, groups=iris$Species)
+
+
+
+
+pca2 <- prcomp(iris[,1:4])
+biplot(pca2)
+class(pca2)
+
+adonis(pca2$x~ Species, data = iris, method='eu')
+
