@@ -251,7 +251,6 @@ inf.niche.neutral <- map(inf.neutral, function (x){
 saveRDS(inf.niche.neutral, ("Neutral + Niche trait matching inference.RDS"))
 
 # AUC logistic model ####
-# need to fix get_auc to work with all inf types!!!! ####
 get_auc <- function(observed, inferred){
   require(ROCR)
   y = as.factor(as.numeric(observed))
@@ -441,7 +440,7 @@ mean(tss.niche.neutral$V1)
 
 
 
-# TSS for niche + local neutral 
+# TSS for niche + local neutral ####
 local_tss <- function (n){
   x <- sapply(inf.niche.neutral, function (web) web[n])
   names(x) <- threshold
@@ -587,3 +586,42 @@ tss.fish.n.n <- ldply(map2(obs,
                            fish.neut.niche,
                            get_tss))
 tss.fish.n.n$V1 %>% mean
+
+
+# local fish neutral ####
+fish.neutral.list <- map(threshold, function (x){
+  map(rel.ab.fish, rm_neutral, threshold = x)})
+names(fish.neutral.list) <- threshold
+fish.nn.list <- 
+
+
+# local threshold for fish abundance correction
+local_tss_f <- function (n){
+  x <- sapply(inf.niche.neutral, function (web) web[n])
+  names(x) <- threshold
+  out <- ldply(map(x,  get_tss, obs = obs[[n]]))
+  out
+}
+local.tss.f.ab <- NULL
+for(i in 1:length(obs)){
+  local.tss.thresh[[i]] <- local_tss(i)
+  names(local.tss.thresh[[i]]) <-c("thresh", "tss") 
+}
+names(local.tss.thresh) <- names(obs)
+local.tss.thresh <- ldply(local.tss.thresh) %>%
+  group_by(.id) %>%
+  mutate(max.tss = max(na.omit(tss)), 
+         is.max = tss == max.tss)
+
+ggplot(local.tss.thresh, 
+       aes(x = log10(as.numeric(thresh)),
+           y = tss,
+           color = .id,
+           size = is.max)) +
+  scale_size_manual(values = c(1, 5)) +
+  geom_point() +
+  stat_smooth(aes(x = log10(as.numeric(thresh)),
+                  y = tss, color = .id),
+              alpha = 0, inherit.aes = F)+
+  theme_classic()
+
