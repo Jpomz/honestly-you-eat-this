@@ -14,7 +14,9 @@
 # 4) fish gut contents are easier to ID, so invert stomachs are "undersampled" even though an attempt was made to allocate equivalent sample sizes. 
 
 
-# fish abundance ####
+# libraries
+library(plyr)
+library(tidyverse)
 # functions
 get_tss <- function (observed, inferred){
   # make sure adjacency matrices are same dimensions and have same colnames
@@ -83,6 +85,8 @@ f_ab_corr <- function(Nij, taxa, cf){
 # data
 # observed adjacency matrices, matched to inferences
 obs <- readRDS("observed matrices matched to inferred.RDS")
+# initial inferred matrices 
+inf <- readRDS("Initial trait matching inference.RDS")
 # relative abundance cross product matrices
 rel.ab.matr <- readRDS("relative abundance matrices.RDS")
 # niche forbidden
@@ -113,6 +117,7 @@ system.time(
                       taxa = f.vec,
                       cf = cf[c])
         Nprime = rm_neutral(N, threshold2[t])
+        Nprime = Nprime * inf[[w]]
         auc.web[[t]] = get_auc(obs[[w]], Nprime)
       }
       names(auc.web) <- as.character(threshold2)
@@ -142,45 +147,29 @@ ldply(auc.cf) %>%
   group_by(.id, thresh) %>%
   summarize(mean.auc = mean(na.omit(auc))) %>%
   arrange(desc(mean.auc), .id)
-# fish.tss
-# cf = 100, threshold = 1e-04
+
+# fish relative abundance * 100
 rel.ab.fish <- map(rel.ab.matr,
                    f_ab_corr,
                    taxa = f.vec,
-                   cf = 100)
-fish.neutral <- map(rel.ab.fish,
-                    rm_neutral,
-                    threshold = 1e-04)
-tss.fish.neutral <- ldply(
-  map2(obs,
-       fish.neutral,
-       get_tss))
-tss.fish.neutral$V1 %>% mean
-
-# niche neutral ####
-fish.neut.niche <- map(fish.neutral,
-                       rm_niche,
-                       taxa = taxa.forbid)
-tss.fish.n.n <- ldply(map2(obs,
-                           fish.neut.niche,
-                           get_tss))
-tss.fish.n.n$V1 %>% mean
-
+                   cf = 1000)
 
 # local fish neutral ####
-fish.neutral.list <- map(threshold, function (x){
+fish.neutral.list <- map(threshold2, function (x){
   map(rel.ab.fish, rm_neutral, threshold = x)})
-names(fish.neutral.list) <- threshold
+names(fish.neutral.list) <- threshold2
+fish.neutral.list <- map(fish.neutral.list, function (x){
+  map2(x, inf, ~.x*.y)
+})
 
+# local threshold for fish abundance correction
+local_tss <- function (n, inf){
+  x <- sapply(inf, function (web) web[n])
+  names(x) <- threshold2
+  out <- ldply(map(x,  get_tss, obs = obs[[n]]))
+  out
+}
 
-# local neutral ####
-# # local threshold for fish abundance correction
-# local_tss_f <- function (n){
-#   x <- sapply(fish.neutral.list, function (web) web[n])
-#   names(x) <- threshold
-#   out <- ldply(map(x,  get_tss, obs = obs[[n]]))
-#   out
-# }
 
 local.tss.f.ab <- NULL
 for(i in 1:length(obs)){
@@ -205,10 +194,10 @@ ggplot(local.tss.f.ab,
               alpha = 0, inherit.aes = F)+
   theme_classic()
 
-global.tss.f.ab <- local.tss.f.ab %>% 
+global.thresh.ab <- local.tss.f.ab %>%
   group_by(thresh) %>%
-  summarize(mean.tss = mean(tss)) %>%
-  arrange(desc(mean.tss))
+  summarize(mean.tss = mean(na.omit(tss))) %>%
+  top_n(1, wt = mean.tss)
 
 # local nn ####
 #local fish niche neutral
@@ -237,10 +226,6 @@ ggplot(local.tss.f.nn,
                   y = tss, color = .id),
               alpha = 0, inherit.aes = F)+
   theme_classic()
-
-
-
-
 
 
 # plot facet by site 
@@ -298,9 +283,9 @@ for(web in 1:length(obs)){
 
 f.auc.neutral.df <- data.frame(auc =
                                  flatten_dbl(f.auc.neutral),
-                               thresh = log10(as.numeric(threshold)),
+                               thresh = log10(as.numeric(threshold2)),
                                site = rep(names(obs),
-                                          each = length(threshold)),
+                                          each = length(threshold2)),
                                stringsAsFactors = FALSE)
 global.f.neutral <- f.auc.neutral.df %>%
   group_by(thresh) %>%
@@ -321,9 +306,9 @@ for(web in 1:length(obs)){
 
 f.auc.nn.df <- data.frame(auc =
                             flatten_dbl(f.auc.nn),
-                          thresh = log10(as.numeric(threshold)),
+                          thresh = log10(as.numeric(threshold2)),
                           site = rep(names(obs),
-                                     each = length(threshold)),
+                                     each = length(threshold2)),
                           stringsAsFactors = FALSE)
 global.f.nn <- f.auc.nn.df %>%
   group_by(thresh) %>%
