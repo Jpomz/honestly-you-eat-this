@@ -241,6 +241,9 @@ saveRDS(rel.ab.matr, "relative abundance matrices.RDS")
 inf.neutral <- map(threshold, function (x){
   map(rel.ab.matr, rm_neutral, threshold = x)})
 names(inf.neutral) <- threshold
+inf.neutral <- map(inf.neutral, function (x){
+  map2(x, inf, ~.x*.y)
+})
 
 # save Neutral forbidden trait matching ####
 saveRDS(inf.neutral, "Neutral trait matching inference.RDS")
@@ -411,7 +414,7 @@ auc.niche.neutral.df %>%
 # TSS ####
 # working with neutral abundance threshold 3e-04
 # inf.neutral[[35]]
-neutral <- inf.neutral[[19]]
+neutral <- inf.neutral[[18]]
 
 # TSS initial ####
 tss.initial <- ldply(map2(obs, inf,
@@ -431,8 +434,8 @@ mean(tss.neutral$V1)
 
 
 # neutral and niche forbidden ####
-# 1.5e-4
-neutral.niche <- inf.niche.neutral[[18]]
+# 1e-8
+neutral.niche <- inf.niche.neutral[[1]]
 tss.niche.neutral <- ldply(
   pmap(list(obs = obs,
             inf = neutral.niche),
@@ -486,33 +489,5 @@ ggplot(tot.ab, aes(x = log10(V1), y = thresh)) +
 summary(lm(thresh ~ log10(V1), data = tot.ab))
 # higher abundance = smaller threshold
 # when you have more individuals, need to forbid links at smaller cross products
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
