@@ -72,7 +72,14 @@ rm_niche <- function(inf, taxa){
   }
   inf
 }
-
+# match observed and inferred matrices
+match_matr <- function (obs, inf){
+  # colnames(inf) have already been size-sorted
+  index = intersect(rownames(inf), rownames(obs))
+  obs = obs[index, index]
+  inf = inf[index, index]
+  list(observed = obs, inferred = inf)
+}
 
 # data ####
 # invertebrate biomass and abundance
@@ -173,14 +180,7 @@ web.links.inf <- map2(web.links.inf, dw,
             dimnames(x) <- list(y$taxa, y$taxa)
             x
                       })
-# match observed and inferred matrices
-match_matr <- function (obs, inf){
-  # colnames(inf) have already been size-sorted
-  index = intersect(rownames(inf), rownames(obs))
-  obs = obs[index, index]
-  inf = inf[index, index]
-  list(observed = obs, inferred = inf)
-}
+
 match <- map2(obs.A, web.links.inf,
                   match_matr)
 obs <- llply(match, function (x){
@@ -320,7 +320,7 @@ ggplot(aes(x = thresh)) +
   geom_density() +
   theme_classic()
 
-# global max auc
+
 global.thresh.neutral <- auc.neutral.df %>%
   group_by(thresh) %>%
   summarize(mean.auc = mean(na.omit(auc))) %>%
@@ -408,9 +408,9 @@ auc.niche.neutral.df %>%
 
 
 # TSS ####
-# working with neutral abundance threshold 1.5e-04
+# working with neutral abundance threshold 3e-04
 # inf.neutral[[35]]
-neutral <- inf.neutral[[35]]
+neutral <- inf.neutral[[19]]
 
 # TSS initial ####
 tss.initial <- ldply(map2(obs, inf,
@@ -430,8 +430,8 @@ mean(tss.neutral$V1)
 
 
 # neutral and niche forbidden ####
-# 1.5e-10
-neutral.niche <- inf.niche.neutral[[35]]
+# 1.5e-4
+neutral.niche <- inf.niche.neutral[[18]]
 tss.niche.neutral <- ldply(
   pmap(list(obs = obs,
             inf = neutral.niche),
@@ -441,15 +441,17 @@ mean(tss.niche.neutral$V1)
 
 
 # TSS for niche + local neutral ####
-local_tss <- function (n){
-  x <- sapply(inf.niche.neutral, function (web) web[n])
+local_tss <- function (n, inf){
+  x <- sapply(inf, function (web) web[n])
   names(x) <- threshold
   out <- ldply(map(x,  get_tss, obs = obs[[n]]))
   out
 }
+
+
 local.tss.thresh <- NULL
 for(i in 1:length(obs)){
-  local.tss.thresh[[i]] <- local_tss(i)
+  local.tss.thresh[[i]] <- local_tss(i, inf = inf.niche.neutral)
   names(local.tss.thresh[[i]]) <-c("thresh", "tss") 
 }
 names(local.tss.thresh) <- names(obs)
@@ -592,28 +594,29 @@ tss.fish.n.n$V1 %>% mean
 fish.neutral.list <- map(threshold, function (x){
   map(rel.ab.fish, rm_neutral, threshold = x)})
 names(fish.neutral.list) <- threshold
-fish.nn.list <- 
 
 
-# local threshold for fish abundance correction
-local_tss_f <- function (n){
-  x <- sapply(inf.niche.neutral, function (web) web[n])
-  names(x) <- threshold
-  out <- ldply(map(x,  get_tss, obs = obs[[n]]))
-  out
-}
+# local neutral ####
+# # local threshold for fish abundance correction
+# local_tss_f <- function (n){
+#   x <- sapply(fish.neutral.list, function (web) web[n])
+#   names(x) <- threshold
+#   out <- ldply(map(x,  get_tss, obs = obs[[n]]))
+#   out
+# }
+  
 local.tss.f.ab <- NULL
 for(i in 1:length(obs)){
-  local.tss.thresh[[i]] <- local_tss(i)
-  names(local.tss.thresh[[i]]) <-c("thresh", "tss") 
+  local.tss.f.ab[[i]] <- local_tss(i, inf = fish.neutral.list)
+  names(local.tss.f.ab[[i]]) <-c("thresh", "tss") 
 }
-names(local.tss.thresh) <- names(obs)
-local.tss.thresh <- ldply(local.tss.thresh) %>%
+names(local.tss.f.ab) <- names(obs)
+local.tss.f.ab <- ldply(local.tss.f.ab) %>%
   group_by(.id) %>%
   mutate(max.tss = max(na.omit(tss)), 
          is.max = tss == max.tss)
 
-ggplot(local.tss.thresh, 
+ggplot(local.tss.f.ab, 
        aes(x = log10(as.numeric(thresh)),
            y = tss,
            color = .id,
@@ -625,3 +628,127 @@ ggplot(local.tss.thresh,
               alpha = 0, inherit.aes = F)+
   theme_classic()
 
+global.tss.f.ab <- local.tss.f.ab %>% 
+  group_by(thresh) %>%
+  summarize(mean.tss = mean(tss)) %>%
+  arrange(desc(mean.tss))
+
+# local nn ####
+#local fish niche neutral
+fish.nn.list <- map(fish.neutral.list, function (x){
+  map(x, rm_niche, taxa = taxa.forbid)})
+
+local.tss.f.nn <- NULL
+for(i in 1:length(obs)){
+  local.tss.f.nn[[i]] <- local_tss(i, inf = fish.nn.list)
+  names(local.tss.f.nn[[i]]) <-c("thresh", "tss") 
+}
+names(local.tss.f.nn) <- names(obs)
+local.tss.f.nn <- ldply(local.tss.f.nn) %>%
+  group_by(.id) %>%
+  mutate(max.tss = max(na.omit(tss)), 
+         is.max = tss == max.tss)
+
+ggplot(local.tss.f.nn, 
+       aes(x = log10(as.numeric(thresh)),
+           y = tss,
+           color = .id,
+           size = is.max)) +
+  scale_size_manual(values = c(1, 5)) +
+  geom_point() +
+  stat_smooth(aes(x = log10(as.numeric(thresh)),
+                  y = tss, color = .id),
+              alpha = 0, inherit.aes = F)+
+  theme_classic()
+
+
+
+
+
+
+# plot facet by site 
+ggplot(local.tss.f.nn, aes(x = log10(as.numeric(thresh)),
+           y = tss,
+           color = is.max)) +
+facet_wrap(~.id) +
+geom_point() +
+scale_color_manual(values = c("black", "red"))+
+theme_classic()
+# density of thresholds == max.auc
+local.tss.f.nn %>% group_by(.id) %>%
+  top_n(1, wt = tss) %>%
+  .[match(unique(.$.id), .$.id),] %>%
+  ggplot(aes(x = log10(as.numeric(thresh)))) +
+  geom_density() +
+  theme_classic()
+
+# global max tss
+global.thresh.nn <- local.tss.f.nn %>% group_by(thresh) %>%
+  summarize(mean.tss = mean(na.omit(tss))) %>% top_n(1, wt = mean.tss)
+# plot of global
+local.tss.f.nn %>% 
+  ggplot(aes(x = log10(as.numeric(thresh)),
+             y = tss)) +
+  geom_point() +
+  stat_summary(aes(y = tss,group=1),
+               fun.y=mean,
+               colour="grey",
+               geom="line",
+               size = 2,
+               group= 1) +
+  geom_point(data = local.tss.f.nn %>%
+               filter(thresh == "3e-05"),
+             aes(x = log10(as.numeric(thresh)),
+                 y = tss),
+             color = "red")+
+  theme_classic()
+
+
+
+
+
+#auc fish ####
+# global max auc
+f.auc.neutral <- NULL
+for(web in 1:length(obs)){
+  auc.web <- NULL
+  for(t in 1:length(fish.neutral.list)){
+    auc.web[[t]] <- get_auc(obs[[web]],
+                            fish.neutral.list[[t]][[web]])
+  }
+  f.auc.neutral[[web]] <- auc.web
+}
+
+f.auc.neutral.df <- data.frame(auc =
+                               flatten_dbl(f.auc.neutral),
+                             thresh = log10(as.numeric(threshold)),
+                             site = rep(names(obs),
+                                        each = length(threshold)),
+                             stringsAsFactors = FALSE)
+global.f.neutral <- f.auc.neutral.df %>%
+  group_by(thresh) %>%
+  summarize(mean.auc = mean(na.omit(auc))) %>%
+  top_n(1, wt = mean.auc)
+
+
+
+f.auc.nn <- NULL
+for(web in 1:length(obs)){
+  auc.web <- NULL
+  for(t in 1:length(fish.nn.list)){
+    auc.web[[t]] <- get_auc(obs[[web]],
+                            fish.nn.list[[t]][[web]])
+  }
+  f.auc.nn[[web]] <- auc.web
+}
+
+f.auc.nn.df <- data.frame(auc =
+                                 flatten_dbl(f.auc.nn),
+                               thresh = log10(as.numeric(threshold)),
+                               site = rep(names(obs),
+                                          each = length(threshold)),
+                               stringsAsFactors = FALSE)
+global.f.nn <- f.auc.nn.df %>%
+  group_by(thresh) %>%
+  summarize(mean.auc = mean(na.omit(auc))) %>%
+  top_n(1, wt = mean.auc)
