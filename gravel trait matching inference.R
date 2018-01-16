@@ -405,6 +405,63 @@ local.tss.thresh <- ldply(local.tss.thresh) %>%
 # # higher abundance = smaller threshold
 # # when you have more individuals, need to forbid links at smaller cross products
 
+# fn & fp ####
+# initial
+false_prop <- function(obs, inf){
+  stopifnot(dim(obs) == dim(inf), 
+            identical(colnames(obs), colnames(inf)))
+  
+  # subtract inferred from observed
+  minus <- obs - inf
+  # multiply observed and inferred
+  multiply <- obs * inf
+  # change values of 1 in multiplied matrix to 2
+  multiply[multiply == 1] <- 2
+  # add minus and multiply matrices
+  prediction <- minus + multiply
+  # prediction outcome matrix now has all 4 possibilities repreented as different integer values
+  # 2 = true positive (a); links both obserevd & predicted
+  # -1 = false positive (b); predicted but not observed
+  # 1 = false negative (c); observed but not predicted
+  # 0 = true negative (d); not predicted, not observed
+  tss.vars <- data.frame(
+    a = length(prediction[prediction==2]),
+    b = length(prediction[prediction==-1]), 
+    c = length(prediction[prediction==1]), 
+    d = length(prediction[prediction==0]),
+    S = ncol(prediction)
+  )
+  # calculate TSS
+  # TSS = (a*d - b*c)/((a+c)*(b+d))
+  # also decompose TSS to see proportion of positive and negative predictions
+  # abar = proportion of links correctly predicted
+  # dbar = proportion of links correctly not predicted
+  # bc = proportion of links incorrectly predicted
+  tss <- tss.vars %>%
+    transmute(fp = b / S**2,
+           fn = c / S**2)
+  tss
+}
+
+initial.false <- ldply(map2(obs, inf, false_prop)) %>% 
+  summarize(mean.fp = mean(fp), sd.fp = sd(fp),
+            mean.fn = mean(fn), sd.fn = sd(fn))
+niche.false <- ldply(map2(obs, inf.niche, false_prop)) %>% 
+  summarize(mean.fp = mean(fp), sd.fp = sd(fp),
+            mean.fn = mean(fn), sd.fn = sd(fn))
+neutral.false <- ldply(map2(obs, neutral, false_prop)) %>% 
+  summarize(mean.fp = mean(fp), sd.fp = sd(fp),
+            mean.fn = mean(fn), sd.fn = sd(fn))
+nn.false <- ldply(map2(obs, neutral.niche, false_prop)) %>% 
+  summarize(mean.fp = mean(fp), sd.fp = sd(fp),
+            mean.fn = mean(fn), sd.fn = sd(fn))
+
+false.tab <- rbind(initial.false, niche.false, neutral.false, nn.false)
+false.tab$inference <- c("Initial", "Niche", "Neutral", "Niche + Neutral")
+
+false.tab <- gather(false.tab, "var", "val", 1:4) %>%
+  spread(var, val)
+
 # table of auc, tss, threshold ####
 write_csv(data.frame(inference =
         c("Initial", "Niche", "Neutral", "Niche + Neutral"),
@@ -415,7 +472,11 @@ write_csv(data.frame(inference =
                 tss.neutral.mean, tss.nn.mean),
         Threshold = c("NA", "NA",
                       10^as.double(global.thresh.neutral[1]),
-        10^as.double(global.thresh.nn[1]))),
+        10^as.double(global.thresh.nn[1])),
+        mean.fp = false.tab$mean.fp,
+        sd.fp = false.tab$sd.fp,
+        mean.fn = false.tab$mean.fn,
+        sd.fn = false.tab$sd.fn),
         "Mean AUC and TSS trait matching.csv")
 
 # # plots ####
