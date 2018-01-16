@@ -101,7 +101,6 @@ other.registry$source.id <- as.character(other.registry$source.id)
 other.registry <- other.registry[,
                 intersect(colnames(register.list[[1]]),
                           names(other.registry))]
-
 # combine registry list with other registry
 for (i in 1:length(register.list)){
   register.list[[i]] <- bind_rows(
@@ -111,7 +110,6 @@ for (i in 1:length(register.list)){
 # make one complete registry to add to other registers later
 complete.registry <- register.list[[1]]
 
-
 # add web names
 names(register.list) <- names(web.match)
 # subset each element in register.list to not contain name of web trying to infer links for
@@ -119,12 +117,9 @@ for (i in names(register.list)){
   register.list[[i]] <- subset(register.list[[i]], source.id != i)
 }
 
-
-
-
 write.csv(complete.registry, "complete webbuilder registry.csv")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+# registry info ####
 # make table of registry information for manuscript / SI
 # want site, n pairwise intxn
 # na pairwise intxns
@@ -139,7 +134,7 @@ write_csv(n.pairs, "C:/Users/Justin/Google Drive/Data/Predicting NZ Food Webs/fi
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+# infer lnks ####
 # get a list of taxa from web.list
 # need to subset so only looking at webs which were also inferred using gravel method
 taxa.list <- llply(web.match,
@@ -154,8 +149,6 @@ taxa.list <- taxa.list %>%
     merge(x, taxonomy,by.x="node", 
           by.y="name", all.x=T)
   })
-
-
 
 # infer links with WebBuilder function
 # takes a while to run...
@@ -181,7 +174,37 @@ wb.matrices <- map2(wb.matrices, web.match, match_matr2)
 
 saveRDS(wb.matrices, file ="wb matrices matched to inferred.rds")
 
-wb.tss <- map2(web.match, wb.matrices, get_tss)
+# neutral abundance correction
+rel.ab.matr <- readRDS("relative abundance matrices.RDS")
+threshold <- c(1.0e-09, 1.5e-9, 3.0e-09, 5.9e-0,
+               1.0e-08, 1.5e-8, 3.0e-08, 5.9e-08,
+               1.0e-07, 1.5e-7, 3.0e-07, 5.9e-07,
+               1.0e-06, 1.5e-6, 3.0e-06, 5.9e-06) #,
+               # 1.0e-05, 1.5e-5, 3.0e-05, 5.9e-05,
+               # 1.0e-04, 1.5e-4, 3.0e-04, 5.9e-04,
+               # 1.0e-03, 1.5e-3, 3.0e-03, 5.9e-03,
+               # 1.0e-02, 1.5e-2, 3.0e-02, 5.9e-02
+               
+
+# function to remove rel.abundance products < threshold
+rm_neutral <- function(Nij, threshold){
+  Nij[Nij > threshold] <-  1
+  Nij[Nij < 1] <-  0 
+  Nij
+}
+# make a list of neutrally forbidden links at different thresholds
+inf.neutral <- map(threshold, function (x){
+  map(rel.ab.matr, rm_neutral, threshold = x)})
+names(inf.neutral) <- threshold
+# multiply inferred matrices by different neutral thresholds
+inf.neutral <- map(inf.neutral, function (x){
+  map2(x, wb.matrices, ~.x*.y)
+})
+
+
+
+
+
 
 
 # AUC logistic model ####
@@ -201,10 +224,112 @@ get_auc <- function(observed, inferred){
   return(auc)
 }
 
+# initial
 auc.init <- ldply(map2(web.match, wb.matrices, get_auc))
 auc.init.mean <- mean(auc.init$V1, na.rm = TRUE)
 
-map2(web.match, wb.matrices, get_tss)
+# neutral 
+auc.neutral <- NULL
+for(web in 1:length(web.match)){
+  auc.web <- NULL
+  for(t in 1:length(inf.neutral)){
+    auc.web[[t]] <- get_auc(web.match[[web]],
+                            inf.neutral[[t]][[web]])
+  }
+  auc.neutral[[web]] <- auc.web
+}
+
+# data frame of AUC
+auc.neutral.df <- data.frame(auc = flatten_dbl(auc.neutral),
+                        thresh = log10(as.numeric(threshold)),
+                        site = rep(names(web.match),
+                                    each = length(threshold)),
+                             stringsAsFactors = FALSE)
+
+# global max AUC Neutral
+global.thresh.neutral <- auc.neutral.df %>%
+  group_by(thresh) %>%
+  summarize(mean.auc = mean(na.omit(auc))) %>%
+  top_n(1, wt = mean.auc)
+
+# TSS ####
+# initial
+tss.init.mean <- ldply(
+  map2(web.match, wb.matrices, get_tss)) %>% 
+  summarize(tss = mean(V1))
+# neutral
+# threshold == 1e-8 == inf.neutral[[5]]
+wb.n <- inf.neutral[[5]]
+tss.n.mean <- ldply(
+  map2(web.match, wb.n, get_tss)) %>% 
+  summarize(tss = mean(V1))
+
+# fp & fn ####
+# initial
+false_prop <- function(obs, inf){
+  stopifnot(dim(obs) == dim(inf), 
+            identical(colnames(obs), colnames(inf)))
+  
+  # subtract inferred from observed
+  minus <- obs - inf
+  # multiply observed and inferred
+  multiply <- obs * inf
+  # change values of 1 in multiplied matrix to 2
+  multiply[multiply == 1] <- 2
+  # add minus and multiply matrices
+  prediction <- minus + multiply
+  # prediction outcome matrix now has all 4 possibilities repreented as different integer values
+  # 2 = true positive (a); links both obserevd & predicted
+  # -1 = false positive (b); predicted but not observed
+  # 1 = false negative (c); observed but not predicted
+  # 0 = true negative (d); not predicted, not observed
+  tss.vars <- data.frame(
+    a = length(prediction[prediction==2]),
+    b = length(prediction[prediction==-1]), 
+    c = length(prediction[prediction==1]), 
+    d = length(prediction[prediction==0]),
+    S = ncol(prediction)
+  )
+  # calculate TSS
+  # TSS = (a*d - b*c)/((a+c)*(b+d))
+  # also decompose TSS to see proportion of positive and negative predictions
+  # abar = proportion of links correctly predicted
+  # dbar = proportion of links correctly not predicted
+  # bc = proportion of links incorrectly predicted
+  tss <- tss.vars %>%
+    transmute(fp = b / S**2,
+              fn = c / S**2)
+  tss
+}
+false.init <- ldply(
+  map2(web.match, wb.matrices, false_prop)) %>%
+  summarize(mean.fp = mean(fp), sd.fp = sd(fp),
+            mean.fn = mean(fn), sd.fn = sd(fn))
+# neutral
+false.n <- ldply(
+  map2(web.match, wb.n, false_prop)) %>%
+  summarize(mean.fp = mean(fp), sd.fp = sd(fp),
+            mean.fn = mean(fn), sd.fn = sd(fn))
+
+
+
+
+
+
+# need to change object name ??? ####
+false.tab$inference <- c("Neutral", "Niche + Neutral")
+
+false.tab <- gather(false.tab, "var", "val", 1:4) %>%
+  spread(var, val)
+# summary table ####
+wb.tab <- data.frame(inference = "Webbuilder initial",
+                     AUC = auc.init.mean,
+                     TSS = as.double(tss.init.mean))
+wb.tab <- cbind(wb.tab, false.tab)
+
+
+
+
 
 inf.list <- readRDS("Neutral + Niche trait matching inference.RDS")
 inf <- inf.list[[12]]
