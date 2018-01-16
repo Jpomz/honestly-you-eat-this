@@ -342,8 +342,6 @@ global.thresh.nn <- auc.niche.neutral.df %>%
   top_n(1, wt = mean.auc)
 
 
-
-
 # TSS ####
 # working with neutral abundance threshold 1.5e-04
 # inf.neutral[[18]]
@@ -357,7 +355,7 @@ tss.initial.mean <- mean(tss.initial$V1)
 tss.niche <- ldply(pmap(list(obs = obs,
                        inf = inf.niche),
                   get_tss))
-tss.niche.meean <- mean(tss.niche$V1)
+tss.niche.mean <- mean(tss.niche$V1)
 
 # TSS neutral ####
 tss.neutral <- ldply(pmap(list(obs = obs,
