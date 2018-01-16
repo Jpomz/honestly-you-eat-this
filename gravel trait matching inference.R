@@ -214,12 +214,7 @@ ab.vec <- llply(dw, function (x){x$no.m2})
 #vector of taxa
 ab.taxa <- llply(dw, function (x){x$taxa})
 # threshold vector
-threshold <- c(#5.9e-13,
-               # 1.0e-12, 1.5e-12, 3.0e-12, 5.9e-12,
-               # 1.0e-11, 1.5e-11, 3.0e-11, 5.9e-11,
-               # 1.0e-10, 1.5e-10, 3.0e-10, 5.9e-10,
-               # 1.0e-09, 1.5e-9, 3.0e-09, 5.9e-09,
-               1.0e-08, 1.5e-8, 3.0e-08, 5.9e-08,
+threshold <- c(1.0e-08, 1.5e-8, 3.0e-08, 5.9e-08,
                1.0e-07, 1.5e-7, 3.0e-07, 5.9e-07,
                1.0e-06, 1.5e-6, 3.0e-06, 5.9e-06,
                1.0e-05, 1.5e-5, 3.0e-05, 5.9e-05,
