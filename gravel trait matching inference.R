@@ -285,8 +285,7 @@ for(web in 1:length(obs)){
   auc.neutral[[web]] <- auc.web
 }
 
-auc.neutral.df <- data.frame(auc =
-                               flatten_dbl(auc.neutral),
+auc.neutral.df <- data.frame(auc = flatten_dbl(auc.neutral),
                  thresh = log10(as.numeric(threshold)),
                  site = rep(names(obs),
                             each = length(threshold)),
@@ -336,7 +335,7 @@ auc.neutral.df %>%
                size = 2,
                group= 1) +
   geom_point(data = auc.neutral.df %>%
-               filter(thresh > -3.6, thresh < -3.5),
+               filter(thresh > -3.9, thresh < -3.7),
              aes(x = thresh, y = auc), color = "red")+
   theme_classic()
 
@@ -386,8 +385,10 @@ auc.niche.neutral.df %>% group_by(site) %>%
   theme_classic()
 
 # global max auc
-global.thresh.nn <- auc.niche.neutral.df %>% group_by(thresh) %>%
-  summarize(mean.auc = mean(na.omit(auc))) %>% top_n(1, wt = mean.auc)
+global.thresh.nn <- auc.niche.neutral.df %>%
+  group_by(thresh) %>%
+  summarize(mean.auc = mean(na.omit(auc))) %>% 
+  top_n(1, wt = mean.auc)
 # plot of global
 auc.niche.neutral.df %>% 
   ggplot(aes(x = thresh,
@@ -408,24 +409,24 @@ auc.niche.neutral.df %>%
 
 # TSS ####
 # working with neutral abundance threshold 3e-04
-# inf.neutral[[35]]
-neutral <- inf.neutral[[18]]
+# inf.neutral[[19]]
+neutral <- inf.neutral[[19]]
 
 # TSS initial ####
 tss.initial <- ldply(map2(obs, inf,
                     get_tss))
-mean(tss.initial$V1)
+tss.initial.mean <- mean(tss.initial$V1)
 # TSS niche ####
 tss.niche <- ldply(pmap(list(obs = obs,
                        inf = inf.niche),
                   get_tss))
-mean(tss.niche$V1)
+tss.niche.meean <- mean(tss.niche$V1)
 
 # TSS neutral ####
 tss.neutral <- ldply(pmap(list(obs = obs,
                          inf = neutral),
                     get_tss))
-mean(tss.neutral$V1)
+tss.neutral.mean <- mean(tss.neutral$V1)
 
 
 # neutral and niche forbidden ####
@@ -435,7 +436,7 @@ tss.niche.neutral <- ldply(
   pmap(list(obs = obs,
             inf = neutral.niche),
        get_tss))
-mean(tss.niche.neutral$V1)
+tss.nn.mean <- mean(tss.niche.neutral$V1)
 
 
 
@@ -483,4 +484,16 @@ ggplot(local.tss.thresh,
 # # higher abundance = smaller threshold
 # # when you have more individuals, need to forbid links at smaller cross products
 
+# table of auc, tss, threshold
 
+
+data.frame(inference =
+        c("Initial", "Niche", "Neutral", "Niche + Neutral"),
+        AUC = c(auc.init.mean, auc.niche.mean,
+                as.double(global.thresh.neutral[2]),
+                as.double(global.thresh.nn[2])),
+        TSS = c(tss.initial.mean, tss.niche.mean,
+                tss.neutral.mean, tss.nn.mean),
+        Threshold = c("NA", "NA",
+                      10^as.double(global.thresh.neutral[1]),
+        10^as.double(global.thresh.nn[1])))
