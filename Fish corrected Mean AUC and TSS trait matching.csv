@@ -1,0 +1,3 @@
+Inference,AUC,TSS,Threshold
+Fish corrected neutral,0.7168749309324189,0.4337498618648378,1.5e-4
+Fish corrected niche + Neutral,0.7723958219939052,0.5447916439878105,1e-4

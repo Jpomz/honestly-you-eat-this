@@ -93,11 +93,7 @@ rel.ab.matr <- readRDS("relative abundance matrices.RDS")
 taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus","Oligochaetae", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
 
 f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
-threshold2 <- c(#5.9e-13,
-  # 1.0e-12, 1.5e-12, 3.0e-12, 5.9e-12,
-  # 1.0e-11, 1.5e-11, 3.0e-11, 5.9e-11,
-  # 1.0e-10, 1.5e-10, 3.0e-10, 5.9e-10,
-  # 1.0e-09, 1.5e-9, 3.0e-09, 5.9e-09,
+threshold2 <- c(
   1.0e-08, 1.5e-8, 3.0e-08, 5.9e-08,
   1.0e-07, 1.5e-7, 3.0e-07, 5.9e-07,
   1.0e-06, 1.5e-6, 3.0e-06, 5.9e-06,
@@ -272,6 +268,16 @@ global.f.nn <- f.auc.nn.df %>%
   summarize(mean.auc = mean(na.omit(auc))) %>%
   top_n(1, wt = mean.auc)
 
+
+# AUC TSS threshold table
+write_csv(data.frame(Inference = c("Fish corrected neutral", "Fish corrected niche + Neutral"),
+           AUC = c(as.double(global.f.neutral[2]),
+           as.double(global.f.nn[2])),
+           TSS = c(as.double(global.thresh.ab[2]),
+                   as.double(global.thresh.nn[2])),
+           Threshold = c(as.double(global.thresh.ab[1]),
+                         as.double(global.thresh.nn[1]))),
+          "Fish corrected Mean AUC and TSS trait matching.csv")
 # plots ####
 # Fish correction, neutral prune ####
 # tss ~ log10(threshold)
