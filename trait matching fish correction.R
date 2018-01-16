@@ -153,6 +153,7 @@ rel.ab.fish <- map(rel.ab.matr,
                    f_ab_corr,
                    taxa = f.vec,
                    cf = 1000)
+saveRDS(rel.ab.fish, "rel ab fish x 1000.RDS")
 
 # local fish neutral ####
 fish.neutral.list <- map(threshold2, function (x){
