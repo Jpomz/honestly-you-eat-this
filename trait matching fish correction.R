@@ -305,7 +305,9 @@ false_prop <- function(obs, inf){
   tss
 }
 f.neutral <- fish.neutral.list[[18]]
+saveRDS(f.neutral, "fish correction neutral.RDS")
 f.nn <- fish.nn.list[[17]]
+saveRDS(f.nn, "fish correction neutral + Niche.RDS")
 
 neutral.false <- ldply(map2(obs, f.neutral, false_prop)) %>% 
   summarize(mean.fp = mean(fp), sd.fp = sd(fp),
