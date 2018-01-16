@@ -199,7 +199,7 @@ sum.links <- sapply(web.links.inf, sum)
 
 # niche forbidden ####
 # niche forbidden
-taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus","Oligochaetae", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
+taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Coloburiscus", "Deleatidium", "Nesameletus","Oligochaetae", "Oxyethira", "Potamopyrgus", "Zephlebia")
 
 inf.niche <- map(inf,
                  rm_niche,
@@ -477,17 +477,15 @@ ggplot(local.tss.thresh,
   theme_classic()
 
 
-
-
-# total abundance
-tot.ab <- ldply(sapply(dw, function (x) sum(x$no.m2)))
-tot.ab <- left_join(tot.ab, local.thresh.nn[,c(2:3)], by = c(".id" = "site"))
-ggplot(tot.ab, aes(x = log10(V1), y = thresh)) +
-  geom_point()+
-  stat_smooth(method = "lm")
-
-summary(lm(thresh ~ log10(V1), data = tot.ab))
-# higher abundance = smaller threshold
-# when you have more individuals, need to forbid links at smaller cross products
+# # total abundance
+# tot.ab <- ldply(sapply(dw, function (x) sum(x$no.m2)))
+# tot.ab <- left_join(tot.ab, local.thresh.nn[,c(2:3)], by = c(".id" = "site"))
+# ggplot(tot.ab, aes(x = log10(V1), y = thresh)) +
+#   geom_point()+
+#   stat_smooth(method = "lm")
+# 
+# summary(lm(thresh ~ log10(V1), data = tot.ab))
+# # higher abundance = smaller threshold
+# # when you have more individuals, need to forbid links at smaller cross products
 
 
