@@ -12,7 +12,6 @@ library(tidyverse)
 # gravel functions
 # from Gravel et al. 2013 supplementary information
 source("gravel_functions.R")
-
 # calculate confusion matrices
 source("adj_conf_matrix function.R")
 # calculate TSS
@@ -56,14 +55,12 @@ get_rel_ab <- function(vec, taxa){
   dimnames(Nij) <- list(taxa, taxa)
   Nij
 }
-
 # function to remove rel.abundance products < threshold
 rm_neutral <- function(Nij, threshold){
   Nij[Nij > threshold] <-  1
   Nij[Nij < 1] <-  0 
   Nij
 }
-
 # function to remove links from niche forbidden taxa
 rm_niche <- function(inf, taxa){
   for(name in (
@@ -85,16 +82,18 @@ match_matr <- function (obs, inf){
 # invertebrate biomass and abundance
 invert <- readRDS("estimated invert bodymass.RDS")
 # fish biomass and abundance
+# the RDS file is a list of 4 different fish sizes
+# [[2]] is the mean minimum 
 fish <- readRDS("estimated fish bodymass and abundance.RDS")[[2]]
-# rbind invert to each element in fish, filter out na(dw), order by dw and then split each list into list of sites
+# rbind invert to each fish, filter out na(dw), order by dw and then split into list of sites
 dw <- bind_rows(fish, invert)
 dw <- dw[!is.na(dw$dw),]
 dw <- dw[order(dw$dw),]
 dw <- split(dw, list(dw$site))
+
 # observed webs
 obs.A <- readRDS("observed pred-prey.RDS")
-
-# subset obs_A to only include webs with community data
+# subset obs.A to only include webs with community data
 obs.A <- obs.A[names(obs.A) %in% unique(invert$site)]
 
 # pred-prey pairs ####
@@ -124,6 +123,7 @@ for(web in 1:length(obs.A)){
 names(A.pairs) <- names(obs.A)
 
 # pairs biomass ####
+# add biomass estimate to pred and prey pairs
 dw.pairs <- NULL
   for(web in 1:length(dw)){
     m.pred <- merge(A.pairs[[web]]$pred,
@@ -142,7 +142,8 @@ dw.pairs <- NULL
 names(dw.pairs) <- names(obs.A)
 
 #training data ####
-# list of lists
+# list, where each element contains all pred-prey biomass pairs except for the web that is being inferred
+# e.g. the list element "Blackrock" does not contain feeding paris from Blackrock, and will be used to infer interactions at that site. 
 training.list <- NULL
 for (web in 1:length(dw.pairs)){
     dat <- ldply(dw.pairs[-web])
@@ -151,21 +152,21 @@ for (web in 1:length(dw.pairs)){
 names(training.list) <- names(dw.pairs)
 
 # Gravel model ####
-# get parameters based on training lists
-# solution without using nested for loops
+# get parameters based on training list
 pars.list <- map(training.list, function(x){
   Bprey = log10(x$prey)
   Bpred = log10(x$pred)
   out <- reg_fn(Bprey, Bpred, quartil = c(0.01, 0.97))
 })
 # web params ####
-# calculate web paramters using get_pars_Niche()
+# list of all body sizes at a site
 Ball <- map(dw, function (x){
   log10(x$dw)
 })
+# calculate web paramters using get_pars_Niche() from Gravel et al 2013
 web.pars <- map2(pars.list, Ball, get_pars_Niche)
-# infer links ####
 
+# infer links ####
 # calculate food web links for taieri
 # predation matrix
 web.links.inf  <- map(web.pars, function (x){
@@ -180,12 +181,14 @@ web.links.inf <- map2(web.links.inf, dw,
             dimnames(x) <- list(y$taxa, y$taxa)
             x
                       })
-
+# match order of rows/cols in observed and inferred adjacency matrices
 match <- map2(obs.A, web.links.inf,
                   match_matr)
+# observed matrices
 obs <- llply(match, function (x){
   x$observed
 })
+# trait matching inferred matrices
 inf <- llply(match, function (x){
   x$inferred
 })
@@ -231,11 +234,14 @@ rel.ab.matr <- map2(rel.ab.matr, inf,
 rel.ab.matr <- llply(rel.ab.matr, function (x){
   x$observed
 })
+# save relative abundance matrices ####
 saveRDS(rel.ab.matr, "relative abundance matrices.RDS")
 
+# make a list of neutrally forbidden links at different thresholds
 inf.neutral <- map(threshold, function (x){
   map(rel.ab.matr, rm_neutral, threshold = x)})
 names(inf.neutral) <- threshold
+# multiply inferred matrices by different neutral thresholds
 inf.neutral <- map(inf.neutral, function (x){
   map2(x, inf, ~.x*.y)
 })
@@ -265,7 +271,6 @@ get_auc <- function(observed, inferred){
   return(auc)
 }
 
-
 # AUC initial ####
 auc.init <- ldply(map2(obs, inf, get_auc))
 auc.init.mean <- mean(auc.init$V1, na.rm = TRUE)
@@ -292,52 +297,17 @@ auc.neutral.df <- data.frame(auc = flatten_dbl(auc.neutral),
                  stringsAsFactors = FALSE)
 
 
-# local max auc 
+# local max auc Neutral
 local.thresh.neutral <- auc.neutral.df %>% 
   group_by(site) %>%
   top_n(1, wt = auc) %>% 
   .[match(unique(.$site), .$site),]
-# plot facet by site 
-auc.neutral.df %>% group_by(site) %>% 
-  mutate(max.auc = max(na.omit(auc)),
-         is.max = auc == max.auc) %>% 
-  ggplot(aes(x = thresh,
-             y = auc,
-             color = is.max)) +
-  facet_wrap(~site) +
-  geom_point() +
-  scale_color_manual(values = c("black", "red"))+
-  geom_hline(aes(yintercept = 0.5),
-             linetype = "dashed") +
-  theme_classic()
-# density of thresholds == max.auc
-auc.neutral.df %>% group_by(site) %>%
-  top_n(1, wt = auc) %>%
-  .[match(unique(.$site), .$site),] %>%
-ggplot(aes(x = thresh)) +
-  geom_density() +
-  theme_classic()
-
-
+# global max AUC Neutral
 global.thresh.neutral <- auc.neutral.df %>%
   group_by(thresh) %>%
   summarize(mean.auc = mean(na.omit(auc))) %>%
   top_n(1, wt = mean.auc)
-# plot of global
-auc.neutral.df %>% 
-  ggplot(aes(x = thresh,
-             y = auc)) +
-  geom_point() +
-  stat_summary(aes(y = auc,group=1),
-               fun.y=mean,
-               colour="grey",
-               geom="line",
-               size = 2,
-               group= 1) +
-  geom_point(data = auc.neutral.df %>%
-               filter(thresh > -3.9, thresh < -3.7),
-             aes(x = thresh, y = auc), color = "red")+
-  theme_classic()
+
 
 # AUC Niche + Neutral ####
 auc.niche.neutral <- NULL
@@ -363,47 +333,14 @@ auc.niche.neutral.df <- data.frame(auc =
 local.thresh.nn <- auc.niche.neutral.df %>% group_by(site) %>%
   top_n(1, wt = auc) %>% 
   .[match(unique(.$site), .$site),]
-# plot facet by site 
-auc.niche.neutral.df %>% group_by(site) %>% 
-  mutate(max.auc = max(na.omit(auc)),
-         is.max = auc == max.auc) %>% 
-  ggplot(aes(x = thresh,
-             y = auc,
-             color = is.max)) +
-  facet_wrap(~site) +
-  geom_point() +
-  scale_color_manual(values = c("black", "red"))+
-  geom_hline(aes(yintercept = 0.5),
-             linetype = "dashed") +
-  theme_classic()
-# density of thresholds == max.auc
-auc.niche.neutral.df %>% group_by(site) %>%
-  top_n(1, wt = auc) %>%
-  .[match(unique(.$site), .$site),] %>%
-  ggplot(aes(x = thresh)) +
-  geom_density() +
-  theme_classic()
+
 
 # global max auc
 global.thresh.nn <- auc.niche.neutral.df %>%
   group_by(thresh) %>%
   summarize(mean.auc = mean(na.omit(auc))) %>% 
   top_n(1, wt = mean.auc)
-# plot of global
-auc.niche.neutral.df %>% 
-  ggplot(aes(x = thresh,
-             y = auc)) +
-  geom_point() +
-  stat_summary(aes(y = auc,group=1),
-               fun.y=mean,
-               colour="grey",
-               geom="line",
-               size = 2,
-               group= 1) +
-  geom_point(data = auc.niche.neutral.df %>%
-               filter(thresh > -3.6, thresh < -3.5),
-             aes(x = thresh, y = auc), color = "red")+
-  theme_classic()
+
 
 
 
@@ -438,8 +375,6 @@ tss.niche.neutral <- ldply(
        get_tss))
 tss.nn.mean <- mean(tss.niche.neutral$V1)
 
-
-
 # TSS for niche + local neutral ####
 local_tss <- function (n, inf){
   x <- sapply(inf, function (web) web[n])
@@ -448,32 +383,20 @@ local_tss <- function (n, inf){
   out
 }
 
-
+# TSS niche + neutral
 local.tss.thresh <- NULL
 for(i in 1:length(obs)){
   local.tss.thresh[[i]] <- local_tss(i, inf = inf.niche.neutral)
   names(local.tss.thresh[[i]]) <-c("thresh", "tss") 
 }
 names(local.tss.thresh) <- names(obs)
+
 local.tss.thresh <- ldply(local.tss.thresh) %>%
   group_by(.id) %>%
   mutate(max.tss = max(na.omit(tss)), 
          is.max = tss == max.tss)
   
-ggplot(local.tss.thresh, 
-       aes(x = log10(as.numeric(thresh)),
-                 y = tss,
-                 color = .id,
-                 size = is.max)) +
-  scale_size_manual(values = c(1, 5)) +
-  geom_point() +
-  stat_smooth(aes(x = log10(as.numeric(thresh)),
-                  y = tss, color = .id),
-              alpha = 0, inherit.aes = F)+
-  theme_classic()
-
-
-# # total abundance
+# # total abundance ####
 # tot.ab <- ldply(sapply(dw, function (x) sum(x$no.m2)))
 # tot.ab <- left_join(tot.ab, local.thresh.nn[,c(2:3)], by = c(".id" = "site"))
 # ggplot(tot.ab, aes(x = log10(V1), y = thresh)) +
@@ -484,8 +407,7 @@ ggplot(local.tss.thresh,
 # # higher abundance = smaller threshold
 # # when you have more individuals, need to forbid links at smaller cross products
 
-# table of auc, tss, threshold
-
+# table of auc, tss, threshold ####
 write_csv(data.frame(inference =
         c("Initial", "Niche", "Neutral", "Niche + Neutral"),
         AUC = c(auc.init.mean, auc.niche.mean,
@@ -497,3 +419,105 @@ write_csv(data.frame(inference =
                       10^as.double(global.thresh.neutral[1]),
         10^as.double(global.thresh.nn[1]))),
         "Mean AUC and TSS trait matching.csv")
+
+# # plots ####
+# # auc ####
+# # Niche ####
+# # AUC ~ threshold, facet by site
+# # max AUC = red
+# auc.neutral.df %>% group_by(site) %>% 
+#   mutate(max.auc = max(na.omit(auc)),
+#          is.max = auc == max.auc) %>% 
+#   ggplot(aes(x = thresh,
+#              y = auc,
+#              color = is.max)) +
+#   facet_wrap(~site) +
+#   geom_point() +
+#   scale_color_manual(values = c("black", "red"))+
+#   geom_hline(aes(yintercept = 0.5),
+#              linetype = "dashed") +
+#   theme_classic()
+# # density of thresholds == max.auc
+# auc.neutral.df %>% group_by(site) %>%
+#   top_n(1, wt = auc) %>%
+#   .[match(unique(.$site), .$site),] %>%
+#   ggplot(aes(x = thresh)) +
+#   geom_density() +
+#   theme_classic()
+# # auc ~ threshold
+# # all sites combined
+# # max threshold = red points
+# # plot of global
+# auc.neutral.df %>% 
+#   ggplot(aes(x = thresh,
+#              y = auc)) +
+#   geom_point() +
+#   stat_summary(aes(y = auc,group=1),
+#                fun.y=mean,
+#                colour="grey",
+#                geom="line",
+#                size = 2,
+#                group= 1) +
+#   geom_point(data = auc.neutral.df %>%
+#                filter(thresh > -3.9, thresh < -3.7),
+#              aes(x = thresh, y = auc), color = "red")+
+#   theme_classic()
+# 
+# # Niche + Neutral ####
+# # AUC ~ threshold, facet by site
+# # max AUC = red
+# # plot facet by site 
+# auc.niche.neutral.df %>% group_by(site) %>% 
+#   mutate(max.auc = max(na.omit(auc)),
+#          is.max = auc == max.auc) %>% 
+#   ggplot(aes(x = thresh,
+#              y = auc,
+#              color = is.max)) +
+#   facet_wrap(~site) +
+#   geom_point() +
+#   scale_color_manual(values = c("black", "red"))+
+#   geom_hline(aes(yintercept = 0.5),
+#              linetype = "dashed") +
+#   theme_classic()
+# # density of thresholds == max.auc
+# auc.niche.neutral.df %>% group_by(site) %>%
+#   top_n(1, wt = auc) %>%
+#   .[match(unique(.$site), .$site),] %>%
+#   ggplot(aes(x = thresh)) +
+#   geom_density() +
+#   theme_classic()
+# # auc ~ threshold
+# # all sites combined
+# # max threshold = red points
+# # plot of global
+# auc.niche.neutral.df %>% 
+#   ggplot(aes(x = thresh,
+#              y = auc)) +
+#   geom_point() +
+#   stat_summary(aes(y = auc,group=1),
+#                fun.y=mean,
+#                colour="grey",
+#                geom="line",
+#                size = 2,
+#                group= 1) +
+#   geom_point(data = auc.niche.neutral.df %>%
+#                filter(thresh > -3.6, thresh < -3.5),
+#              aes(x = thresh, y = auc), color = "red")+
+#   theme_classic()
+# 
+# # TSS ####
+# # Niche + neutral
+# # TSS ~ threshold
+# # colored by site
+# # size = max TSS
+# ggplot(local.tss.thresh, 
+#        aes(x = log10(as.numeric(thresh)),
+#            y = tss,
+#            color = .id,
+#            size = is.max)) +
+#   scale_size_manual(values = c(1, 5)) +
+#   geom_point() +
+#   stat_smooth(aes(x = log10(as.numeric(thresh)),
+#                   y = tss, color = .id),
+#               alpha = 0, inherit.aes = F)+
+#   theme_classic()
