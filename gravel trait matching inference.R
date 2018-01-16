@@ -408,9 +408,9 @@ auc.niche.neutral.df %>%
 
 
 # TSS ####
-# working with neutral abundance threshold 3e-04
-# inf.neutral[[19]]
-neutral <- inf.neutral[[19]]
+# working with neutral abundance threshold 1.5e-04
+# inf.neutral[[18]]
+neutral <- inf.neutral[[18]]
 
 # TSS initial ####
 tss.initial <- ldply(map2(obs, inf,
@@ -486,8 +486,7 @@ ggplot(local.tss.thresh,
 
 # table of auc, tss, threshold
 
-
-data.frame(inference =
+write_csv(data.frame(inference =
         c("Initial", "Niche", "Neutral", "Niche + Neutral"),
         AUC = c(auc.init.mean, auc.niche.mean,
                 as.double(global.thresh.neutral[2]),
@@ -496,4 +495,5 @@ data.frame(inference =
                 tss.neutral.mean, tss.nn.mean),
         Threshold = c("NA", "NA",
                       10^as.double(global.thresh.neutral[1]),
-        10^as.double(global.thresh.nn[1])))
+        10^as.double(global.thresh.nn[1]))),
+        "Mean AUC and TSS trait matching.csv")
