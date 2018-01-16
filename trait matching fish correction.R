@@ -278,70 +278,71 @@ write_csv(data.frame(Inference = c("Fish corrected neutral", "Fish corrected nic
            Threshold = c(as.double(global.thresh.ab[1]),
                          as.double(global.thresh.nn[1]))),
           "Fish corrected Mean AUC and TSS trait matching.csv")
-# plots ####
-# Fish correction, neutral prune ####
-# tss ~ log10(threshold)
-# each site gets a color / line
-ggplot(local.tss.f.ab, 
-       aes(x = log10(as.numeric(thresh)),
-           y = tss,
-           color = .id,
-           size = is.max)) +
-  scale_size_manual(values = c(1, 5)) +
-  geom_point() +
-  stat_smooth(aes(x = log10(as.numeric(thresh)),
-                  y = tss, color = .id),
-              alpha = 0, inherit.aes = F)+
-  theme_classic()
 
-# fish correction, neutral + niche prune ####
-# TSS ~ log10(threshold)
-# each site gets a line / color
-ggplot(local.tss.f.nn, 
-       aes(x = log10(as.numeric(thresh)),
-           y = tss,
-           color = .id,
-           size = is.max)) +
-  scale_size_manual(values = c(1, 5)) +
-  geom_point() +
-  stat_smooth(aes(x = log10(as.numeric(thresh)),
-                  y = tss, color = .id),
-              alpha = 0, inherit.aes = F)+
-  theme_classic()
-# TSS ~ log10(threshold)
-# each facet isone site
-# max tss is colored red
-ggplot(local.tss.f.nn, aes(x = log10(as.numeric(thresh)),
-                           y = tss,
-                           color = is.max)) +
-  facet_wrap(~.id) +
-  geom_point() +
-  scale_color_manual(values = c("black", "red"))+
-  theme_classic()
-# density of thresholds which result in TSS
-local.tss.f.nn %>% group_by(.id) %>%
-  top_n(1, wt = tss) %>%
-  .[match(unique(.$.id), .$.id),] %>%
-  ggplot(aes(x = log10(as.numeric(thresh)))) +
-  geom_density() +
-  theme_classic()
-# tss~log10(threshold)
-# gray line = mean tss ~ threshold
-# red points = threshold which gives highest mean TSS
-local.tss.f.nn %>% 
-  ggplot(aes(x = log10(as.numeric(thresh)),
-             y = tss)) +
-  geom_point() +
-  stat_summary(aes(y = tss,group=1),
-               fun.y=mean,
-               colour="grey",
-               geom="line",
-               size = 2,
-               group= 1) +
-  geom_point(data = local.tss.f.nn %>%
-               filter(thresh == "0.00015"),
-             aes(x = log10(as.numeric(thresh)),
-                 y = tss),
-             color = "red")+
-  theme_classic()
-
+# # plots ####
+# # Fish correction, neutral prune ####
+# # tss ~ log10(threshold)
+# # each site gets a color / line
+# ggplot(local.tss.f.ab, 
+#        aes(x = log10(as.numeric(thresh)),
+#            y = tss,
+#            color = .id,
+#            size = is.max)) +
+#   scale_size_manual(values = c(1, 5)) +
+#   geom_point() +
+#   stat_smooth(aes(x = log10(as.numeric(thresh)),
+#                   y = tss, color = .id),
+#               alpha = 0, inherit.aes = F)+
+#   theme_classic()
+# 
+# # fish correction, neutral + niche prune ####
+# # TSS ~ log10(threshold)
+# # each site gets a line / color
+# ggplot(local.tss.f.nn, 
+#        aes(x = log10(as.numeric(thresh)),
+#            y = tss,
+#            color = .id,
+#            size = is.max)) +
+#   scale_size_manual(values = c(1, 5)) +
+#   geom_point() +
+#   stat_smooth(aes(x = log10(as.numeric(thresh)),
+#                   y = tss, color = .id),
+#               alpha = 0, inherit.aes = F)+
+#   theme_classic()
+# # TSS ~ log10(threshold)
+# # each facet isone site
+# # max tss is colored red
+# ggplot(local.tss.f.nn, aes(x = log10(as.numeric(thresh)),
+#                            y = tss,
+#                            color = is.max)) +
+#   facet_wrap(~.id) +
+#   geom_point() +
+#   scale_color_manual(values = c("black", "red"))+
+#   theme_classic()
+# # density of thresholds which result in TSS
+# local.tss.f.nn %>% group_by(.id) %>%
+#   top_n(1, wt = tss) %>%
+#   .[match(unique(.$.id), .$.id),] %>%
+#   ggplot(aes(x = log10(as.numeric(thresh)))) +
+#   geom_density() +
+#   theme_classic()
+# # tss~log10(threshold)
+# # gray line = mean tss ~ threshold
+# # red points = threshold which gives highest mean TSS
+# local.tss.f.nn %>% 
+#   ggplot(aes(x = log10(as.numeric(thresh)),
+#              y = tss)) +
+#   geom_point() +
+#   stat_summary(aes(y = tss,group=1),
+#                fun.y=mean,
+#                colour="grey",
+#                geom="line",
+#                size = 2,
+#                group= 1) +
+#   geom_point(data = local.tss.f.nn %>%
+#                filter(thresh == "0.00015"),
+#              aes(x = log10(as.numeric(thresh)),
+#                  y = tss),
+#              color = "red")+
+#   theme_classic()
+# 
