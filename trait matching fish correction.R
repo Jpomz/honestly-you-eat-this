@@ -269,6 +269,7 @@ global.f.nn <- f.auc.nn.df %>%
   summarize(mean.auc = mean(na.omit(auc))) %>%
   top_n(1, wt = mean.auc)
 
+
 # fn & fp ####
 false_prop <- function(obs, inf){
   stopifnot(dim(obs) == dim(inf), 
@@ -308,7 +309,7 @@ false_prop <- function(obs, inf){
 f.neutral <- fish.neutral.list[[18]]
 saveRDS(f.neutral, "fish correction neutral.RDS")
 f.nn <- fish.nn.list[[17]]
-saveRDS(f.nn, "fish correction neutral + Niche.RDS")
+saveRDS(f.nn, "tm nn fish for PCA.RDS")
 
 neutral.false <- ldply(map2(obs, f.neutral, false_prop)) %>% 
   summarize(mean.fp = mean(fp), sd.fp = sd(fp),
