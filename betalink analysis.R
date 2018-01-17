@@ -1,15 +1,15 @@
 # betalink 
 
 # install.packages("betalink") # one time only
+library(plyr)
+library(tidyverse)
 library(betalink)
 library(igraph)
 
-obs <- readRDS("observed adj matr list trimmed taxa.rds")
-# 
-# obs1 <- as.matrix(obs[[1]])
-# obs2 <- as.matrix(obs[[2]])
-# graph1 <- graph_from_adjacency_matrix(obs1, mode = "directed")
-# graph2 <- graph_from_adjacency_matrix(obs2, mode = "directed")
+obs <- readRDS("observed matrices matched to inferred.RDS")
+wb <- readRDS("wb for PCA.RDS")
+tm <- readRDS("tm nn fish for PCA.RDS")
+wb.tm <- readRDS("wb x tm for PCA.rds")
 
 # betalink(graph1, graph2)
 
@@ -22,18 +22,16 @@ obs.beta <- beta_os_prime(obs.graph)
 plot(density(obs.beta), main = "B'os observed")
 abline(v = mean(obs.beta))
 
-grav3 <- readRDS("gravel inferred pruned rel ab.rds")
-grav.mat <- grav3 %>%
+tm.mat <- tm %>%
   llply(function (x){as.matrix(x)})
-grav.graph <- grav.mat %>%
+tm.graph <- tm.mat %>%
   llply( function (x){
     graph_from_adjacency_matrix(x)
   })
-grav.beta <- beta_os_prime(grav.graph)
-plot(density(grav.beta), main = "B'os Gravel step 3")
-abline(v = mean(grav.beta))
+tm.beta <- beta_os_prime(tm.graph)
+plot(density(tm.beta), main = "B'os Trait matching")
+abline(v = mean(tm.beta))
 
-wb <- readRDS("webbuilder inferred list trimmed taxa.rds")
 wb.mat <- wb %>%
   llply(function (x){as.matrix(x)})
 wb.graph <- wb.mat %>%
@@ -44,22 +42,43 @@ wb.beta <- beta_os_prime(wb.graph)
 plot(density(wb.beta), main = "B'os WebBuilder")
 abline(v = mean(wb.beta))
 
+wb.tm.mat <- wb.tm %>%
+  llply(function (x){as.matrix(x)})
+wb.tm.graph <- wb.tm.mat %>%
+  llply( function (x){
+    graph_from_adjacency_matrix(x)
+  })
+wb.tm.beta <- beta_os_prime(wb.tm.graph)
+plot(density(wb.tm.beta), main = "B'os WebBuilder")
+abline(v = mean(wb.tm.beta))
+
 
 # one plot
 plot(density(obs.beta), lty = 1, main = NA,
-     xlim = c(0,0.8), ylim = c(0, 25),
+     xlim = c(0,0.8), ylim = c(0, 6),
      xlab = NA)
 abline(v = mean(obs.beta), lty = 1)
 par(new = T)
-plot(density(grav.beta), lty = 2, main = NA,
-     xlim = c(0,0.8), ylim = c(0, 25),
+plot(density(tm.beta), lty = 2, main = NA,
+     xlim = c(0,0.8), ylim = c(0, 6),
      xlab = NA)
-abline(v = mean(grav.beta), lty = 2)
+abline(v = mean(tm.beta), lty = 2)
 par(new = T)
 plot(density(wb.beta), main = NA, lty = 3,
-     xlim = c(0,0.8), ylim = c(0, 25),
+     xlim = c(0,0.8), ylim = c(0, 6),
      xlab = NA)
 abline(v = mean(wb.beta), lty = 3)
+par(new = T)
+plot(density(wb.tm.beta), main = NA, lty = 3,
+     xlim = c(0,0.8), ylim = c(0, 6),
+     xlab = NA)
+abline(v = mean(wb.tm.beta), lty = 3)
+
+
+
+
+
+
 
 beta_os <- as.data.frame(rbind(obs.beta, grav.beta, wb.beta))
 beta_os$model <- rownames(beta_os)
