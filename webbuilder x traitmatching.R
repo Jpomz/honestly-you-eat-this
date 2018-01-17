@@ -168,6 +168,7 @@ tss.n.mean <- ldply(
 # neutral fish correction * 1000
 # threshold = 1.5e-5 == [[18]]
 wb.f.n <- fish.neutral.list[[18]]
+saveRDS(wb.f.n, "wb x tm for PCA.RDS")
 tss.n.f.mean <- ldply(
   map2(web.match, wb.f.n, get_tss)) %>% 
   summarize(tss = mean(V1)) %>% as.double()
@@ -233,12 +234,13 @@ wb.tab <- data.frame(inference = c("Wb * trait", "Neutral", "Neutral Fish correc
                              as.double(global.thresh.neutral[2]),
                              as.double(global.thresh.neutral.f[2])),
                      TSS = c(tss.init.mean, tss.n.mean,
-                             tss.n.f.mean))
+                             tss.n.f.mean),
+                     Thresh = c("NA",
+              10**(as.double(global.thresh.neutral[1])),
+              10**(as.double(global.thresh.neutral.f[1]))))
 wb.tab <- cbind(wb.tab, false.tab)
 write_csv(wb.tab, "Wb x tm AUC, TSS, fp+fn.csv")
 
 
 
 
-
-inf.list <- readRDS("Neutral + Niche trait matching inference.RDS")
