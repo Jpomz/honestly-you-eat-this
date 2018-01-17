@@ -363,7 +363,10 @@ wb.tab <- data.frame(inference = c("Webbuilder initial", "Neutral", "Neutral Fis
                         as.double(global.thresh.neutral[2]),
                         as.double(global.thresh.neutral.f[2])),
                      TSS = c(tss.init.mean, tss.n.mean,
-                             tss.n.f.mean))
+                             tss.n.f.mean),
+                     Thresh = c("NA",
+                10**(as.double(global.thresh.neutral[1])),
+                10**(as.double(global.thresh.neutral.f[1]))))
 wb.tab <- cbind(wb.tab, false.tab)
 write_csv(wb.tab, "Webbuilder AUC, TSS, fp+fn.csv")
 
