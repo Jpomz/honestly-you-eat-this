@@ -88,25 +88,25 @@ obs.tab <- data.frame(tm.n = obs.tm.n.dist,
                       wb.tm = obs.wb.tm.dist,
                       wb.n = obs.wb.n.dist,
                       wb.tm.n = obs.wb.tm.n)
+write.csv(obs.tab, "PCA euclidean distance observed.csv")
 
-
-dist.tab <- matrix(NA, 3, 4)
-dimnames(dist.tab) <- list(c("Observed",
-                             "Trait match",
-                             "WebBuilder"),
-                           c("Trait match",
-                             "raw WebBuilder",
-                             "WebBuilder",
-                             "WebBuilder:Trait match"))
-dist.tab[1,1] <- obs.tm.dist
-dist.tab[1,2] <- raw.obs
-dist.tab[1,3] <- obs.wb.dist
-dist.tab[1,4] <- obs.wbtm.dist
-dist.tab[2,2] <- raw.tm
-dist.tab[2,3] <- wb.tm.dist
-dist.tab[2,4] <- tm.wbtm.dist
-dist.tab[3,2] <- raw.wb
-dist.tab[3,4] <- wb.wbtm.dist
+# dist.tab <- matrix(NA, 3, 4)
+# dimnames(dist.tab) <- list(c("Observed",
+#                              "Trait match",
+#                              "WebBuilder"),
+#                            c("Trait match",
+#                              "raw WebBuilder",
+#                              "WebBuilder",
+#                              "WebBuilder:Trait match"))
+# dist.tab[1,1] <- obs.tm.dist
+# dist.tab[1,2] <- raw.obs
+# dist.tab[1,3] <- obs.wb.dist
+# dist.tab[1,4] <- obs.wbtm.dist
+# dist.tab[2,2] <- raw.tm
+# dist.tab[2,3] <- wb.tm.dist
+# dist.tab[2,4] <- tm.wbtm.dist
+# dist.tab[3,2] <- raw.wb
+# dist.tab[3,4] <- wb.wbtm.dist
 #write.csv(dist.tab, "PCA euclidean distance.csv")
 
 
