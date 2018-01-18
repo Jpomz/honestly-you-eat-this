@@ -4,14 +4,21 @@ source("C:\\Users\\Justin\\Documents\\Data\\FW modelling Petchey Github\\ttl-res
 library(plyr)
 library(tidyverse)
 library(vegan)
-# require(cluster)
-# require(Rtsne)
+
+
 obs <- readRDS("observed matrices matched to inferred.RDS")
+# wb == neutral prune + fish correction
 wb <- readRDS("wb for PCA.RDS")
+# tm == neutral, niche prune, fish correction
 tm <- readRDS("tm nn fish for PCA.RDS")
+# wb.tm wb * tm neutral prune fish correction
 wb.tm <- readRDS("wb x tm for PCA.rds")
+# wb.raw == initial WB inference
 wb.raw <- readRDS("wb matrices matched to inferred.RDS")
 
+# wb and wb.tm are basically the same
+# maybe compare JUST wb*tm, without correcting fish / pruning neutral
+# should be 6 total inferences
 
 # pca start ####
 # https://www.r-bloggers.com/clustering-mixed-data-types-in-r/
@@ -33,7 +40,7 @@ pc.dat <- ldply(list(
     })[,c(1, 3:7, 12:13)]
   ))
 # add grouping variable
-pc.dat$grp <- rep(c("obs","wb.raw","wb", "tm", "wb.tm"), each = 17)
+pc.dat$grp <- as.factor(rep(c("obs","wb.raw","wb", "tm", "wb.tm"), each = 17))
 pc.dat$land <- rep(c("Pn", "Pn", "T","T","T","Pn","T",
                       "T","T","T","T","Pn", "Pn", "Pn",
                       "T","T","Pn"), 5)
@@ -46,10 +53,12 @@ pca.obj <- prcomp(pc.dat[,c(2:8)], center = T, scale. = T)
 ordiplot(pca.obj, xlim = c(-5,5))
 orditorp(pca.obj, display="species", col="red", air=0.01)
 ordihull(pca.obj, groups=pc.dat$grp, draw="polygon", 
-         col=c("grey90", "green", "blue", "red", "purple"),
+         col=c("grey90","red", "blue", "green", "purple"),
          label=F)
+# red == TM, blue == wb, green == wb.raw, purple == wb.tm
 
 # distance
+# surely I could come up with a function that does all of this in one go.... ####
 distance2 <- function(x,y) sum((x-y)^2)
 centroid <- function(x) rowMeans(x)
 obs.center = pca.obj$x[1:17,]
@@ -98,25 +107,12 @@ dist.tab[2,3] <- wb.tm.dist
 dist.tab[2,4] <- tm.wbtm.dist
 dist.tab[3,2] <- raw.wb
 dist.tab[3,4] <- wb.wbtm.dist
-write.csv(dist.tab, "PCA euclidean distance.csv")
+#write.csv(dist.tab, "PCA euclidean distance.csv")
 
 
 
 
-# pca by land per group
-pca.dat.list <- split(pc.dat, list(pc.dat$grp))
-pca.list <- llply(pca.dat.list, function (x) {
-  prcomp(x[,c(2:9)], center = T, scale. = T)
-})
 
-for (g in 1:length(pca.dat.list)){
-  ordiplot(pca.list[[g]])
-  orditorp(pca.list[[g]],display="species",col="red",air=0.01)
-  ordihull(pca.list[[g]],groups=pca.dat.list[[g]]$land,
-           draw="polygon",
-           col=c("blue", "green"),label=F)
-  title(names(pca.list)[g])
-}
 
 
 
@@ -140,75 +136,24 @@ myfun <- function(g1, g2){
 }
 
 myfun("obs", "tm")
+myfun("obs", "wb.raw")
 myfun("obs", "wb")
 myfun("tm", "wb")
 
 
+# pca by land per group
+pca.dat.list <- split(pc.dat, list(pc.dat$grp))
+pca.list <- llply(pca.dat.list, function (x) {
+  prcomp(x[,c(2:9)], center = T, scale. = T)
+})
 
-
-
-
-
-
-gower_dist <- daisy(pc.dat[,c(2:9)],
-                    metric = "gower",
-                    type = list(logratio = 3))
-summary(gower_dist)
-gower_mat <- as.matrix(gower_dist)
-
-# most sim
-pc.dat[which(gower_mat == min(
-  gower_mat[gower_mat != min(gower_mat)]),
-  arr.ind = TRUE)[1, ], ]
-# most dissim
-pc.dat[which(gower_mat == max(
-  gower_mat[gower_mat != max(gower_mat)]),
-  arr.ind = TRUE)[1, ], ]
-
-pam_fit <- pam(gower_dist,
-               diss = TRUE,
-               k = 4)
-summary(pam_fit)
-pc.dat[pam_fit$medoids,]
-
-tsne_obj <- Rtsne(gower_dist, is_distance = TRUE, perplexity = 10)
-
-tsne_data <- tsne_obj$Y %>%
-  data.frame() %>%
-  setNames(c("X", "Y")) %>%
-  mutate(cluster = factor(pam_fit$clustering),
-         name = pc.dat$grp)
-
-ggplot(aes(x = X, y = Y, shape = name), data = tsne_data) +
-  geom_point(aes(color = cluster))
-
-
-
-
-
-
-
-
-data("iris")
-iris
-iris_c <- scale(iris[ ,1:4])
-pca <- rda(iris_c)
-adonis(iris_c ~ Species, data = iris, method='eu')
-
-plot(pca, type = 'n', display = 'sites')
-cols <- c('red', 'blue', 'green')
-points(pca, display='sites', col = cols[iris$Species], pch = 16)
-ordihull(pca, groups=iris$Species)
-
-
-
-
-pca2 <- prcomp(iris[,1:4])
-biplot(pca2)
-class(pca2)
-
-adonis(pca2$x~ Species, data = iris, method='eu')
-
-
+for (g in 1:length(pca.dat.list)){
+  ordiplot(pca.list[[g]])
+  orditorp(pca.list[[g]],display="species",col="red",air=0.01)
+  ordihull(pca.list[[g]],groups=pca.dat.list[[g]]$land,
+           draw="polygon",
+           col=c("blue", "green"),label=F)
+  title(names(pca.list)[g])
+}
 
 
