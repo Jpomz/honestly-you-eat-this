@@ -43,6 +43,7 @@ wb.matrices <- readRDS("wb matrices matched to inferred.rds")
 tm <- readRDS("Initial trait matching inference.RDS")
 
 wb.matrices <- map2(wb.matrices, tm, ~.x*.y)
+saveRDS(wb.matrices, "wb x tm for PCA.RDS")
 
 # neutral abundance correction ####
 rel.ab.matr <- readRDS("relative abundance matrices.RDS")
@@ -168,7 +169,7 @@ tss.n.mean <- ldply(
 # neutral fish correction * 1000
 # threshold = 1.5e-5 == [[18]]
 wb.f.n <- fish.neutral.list[[18]]
-saveRDS(wb.f.n, "wb x tm for PCA.RDS")
+saveRDS(wb.f.n, "wb x tm x n for PCA.RDS")
 tss.n.f.mean <- ldply(
   map2(web.match, wb.f.n, get_tss)) %>% 
   summarize(tss = mean(V1)) %>% as.double()
