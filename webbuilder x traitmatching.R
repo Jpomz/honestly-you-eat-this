@@ -83,7 +83,6 @@ fish.neutral.list <- map(fish.neutral.list, function (x){
 })
 
 # AUC logistic model ####
-# need to fix get_auc to work with all inf types!!!! ####
 get_auc <- function(observed, inferred){
   require(ROCR)
   y = as.factor(as.numeric(observed))
