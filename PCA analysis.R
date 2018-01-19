@@ -11,8 +11,10 @@ obs <- readRDS("observed matrices matched to inferred.RDS")
 wb.raw <- readRDS("wb matrices matched to inferred.RDS")
 # wb == neutral prune + fish correction
 wb.n <- readRDS("wb for PCA.RDS")
+tm <- readRDS("Initial trait matching inference.RDS")
+tm.niche <- readRDS("Niche pruned trait matching inference.RDS")
 # tm == neutral, niche prune, fish correction
-tm.n <- readRDS("tm nn fish for PCA.RDS")
+tm.nn <- readRDS("tm nn fish for PCA.RDS")
 # wb x trait match, no neutral
 wb.tm <- readRDS("wb x tm for PCA.RDS")
 # wb.tm wb * tm neutral prune fish correction
@@ -34,7 +36,13 @@ pc.dat <- ldply(list(
   wb.n = ldply(wb.n, function (x){
     Get.web.stats(x, which.stats = 1)
   })[,c(1, 3:7, 12:13)],
-  tm.n = ldply(tm.n, function (x){
+  tm = ldply(tm, function (x){
+    Get.web.stats(x, which.stats = 1)
+  })[,c(1, 3:7, 12:13)],
+  tm.niche = ldply(tm.niche, function (x){
+    Get.web.stats(x, which.stats = 1)
+  })[,c(1, 3:7, 12:13)],
+  tm.nn = ldply(tm.nn, function (x){
     Get.web.stats(x, which.stats = 1)
   })[,c(1, 3:7, 12:13)],
   wb.tm = ldply(wb.tm, function (x){
@@ -45,10 +53,10 @@ pc.dat <- ldply(list(
   })[,c(1, 3:7, 12:13)]
   ))
 # add grouping variable
-pc.dat$grp <- as.factor(rep(c("obs","wb.raw","wb.n", "tm.n", "wb.tm", "wb.tm.n"), each = 17))
+pc.dat$grp <- as.factor(rep(c("obs","wb.raw","wb.n", "tm", "tm.niche", "tm.nn", "wb.tm", "wb.tm.n"), each = 17))
 pc.dat$land <- rep(c("Pn", "Pn", "T","T","T","Pn","T",
                       "T","T","T","T","Pn", "Pn", "Pn",
-                      "T","T","Pn"), 6)
+                      "T","T","Pn"), 8)
 
 
 pca.obj <- prcomp(pc.dat[,c(2:8)], center = T, scale. = T)
@@ -58,12 +66,14 @@ pca.obj <- prcomp(pc.dat[,c(2:8)], center = T, scale. = T)
 ordiplot(pca.obj)
 orditorp(pca.obj, display="species", col="red", cex = 1.25, air = 0.0005)
 ordihull(pca.obj, groups=pc.dat$grp, draw="polygon", 
-         col=c("grey90","yellow", "green", "red", 
-               "blue", "plum1"),
+         col=c("grey90","yellow", "gold", "gold4",
+               "skyblue", "slategray",
+               "plum", "green"),
          label=F)
 # obs= grey90 
-# tm.n= yellow wb.n= green 
-# wb.raw= red wb.tm = blue wb.tm.n = plum1
+# tm = yellow; tm.niche = gold;  tm.nn= gold4
+# wb.n= skyblue; wb.raw= slategray 
+#wb.tm = plum; wb.tm.n = green
 
 # distance
 # surely I could come up with a function that does all of this in one go.... ####
@@ -72,18 +82,25 @@ centroid <- function(x) rowMeans(x)
 obs.center = centroid(pca.obj$x[1:17,])
 raw.center = centroid(pca.obj$x[18:34,])
 wb.n.center = centroid(pca.obj$x[35:51,])
-tm.n.center = centroid(pca.obj$x[52:68,])
-wb.tm.center = centroid(pca.obj$x[69:85,])
-wb.tm.n.center = centroid(pca.obj$x[86:102,])
+tm.center = centroid(pca.obj$x[52:68,])
+tm.niche.center = centroid(pca.obj$x[69:85,])
+tm.nn.center = centroid(pca.obj$x[86:102,])
+wb.tm.center = centroid(pca.obj$x[103:119,])
+wb.tm.n.center = centroid(pca.obj$x[120:136,])
 
 
 obs.raw <- distance2(raw.center, obs.center)
 obs.wb.n.dist <- distance2(obs.center, wb.n.center)
-obs.tm.n.dist <- distance2(obs.center, tm.n.center)
+obs.tm.dist <- distance2(obs.center, tm.center)
+obs.tm.niche.dist <- distance2(obs.center,
+                               tm.niche.center)
+obs.tm.nn.dist <- distance2(obs.center, tm.nn.center)
 obs.wb.tm.dist <- distance2(obs.center, wb.tm.center)
 obs.wb.tm.n <- distance2(obs.center, wb.tm.n.center)
 
-obs.tab <- data.frame(tm.n = obs.tm.n.dist,
+obs.tab <- data.frame(tm = obs.tm.dist,
+                      tm.niche = obs.tm.niche.dist,
+                      tm.nn = obs.tm.nn.dist,
                       wb = obs.raw, 
                       wb.tm = obs.wb.tm.dist,
                       wb.n = obs.wb.n.dist,
