@@ -96,4 +96,6 @@ dw.list[[1]] <- NULL
 
 saveRDS(dw.list, "estimated fish bodymass and abundance.RDS")
 
+# note 19 Jan 2018
+# I ran all of the trait matching scripts with no.m2 = dw^-1 and none of the results changed much. Still need to do a relative abundance correction for fish. AUC, TSS, threshholds, FP and FN results were all ~ the same
 
