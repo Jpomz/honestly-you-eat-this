@@ -324,7 +324,7 @@ false.tab$inference <- c("Neutral", "Niche + Neutral")
 false.tab <- gather(false.tab, "var", "val", 1:4) %>%
   spread(var, val)
 # AUC TSS threshold table
-write_csv(data.frame(Inference = c("Fish corrected neutral", "Fish corrected niche + Neutral"),
+write_csv(data.frame(inference = c("Fish corrected neutral", "Fish corrected niche + Neutral"),
            AUC = c(as.double(global.f.neutral[2]),
            as.double(global.f.nn[2])),
            TSS = c(as.double(global.thresh.ab[2]),
