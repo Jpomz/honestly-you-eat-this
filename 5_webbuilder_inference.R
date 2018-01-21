@@ -365,7 +365,7 @@ wb.tab <- data.frame(inference = c("Webbuilder initial", "Neutral", "Neutral Fis
                         as.double(global.thresh.neutral.f[2])),
                      TSS = c(tss.init.mean, tss.n.mean,
                              tss.n.f.mean),
-                     Thresh = c("NA",
+                     Threshold = c("NA",
                 10**(as.double(global.thresh.neutral[1])),
                 10**(as.double(global.thresh.neutral.f[1]))))
 wb.tab <- cbind(wb.tab, false.tab)
