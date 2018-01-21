@@ -88,7 +88,7 @@ for(i in 2:length(fish.list)){
       stringsAsFactors = F)
 # estimate abundances
   dw.list[[i]] <- dw.list[[i]] %>%
-    mutate(no.m2 = dw^-0.3015) %>%
+    mutate(no.m2 = dw^-1) %>%
     right_join(fish.sites, by = "taxa")
 }
 names(dw.list) <- names(fish.list)
