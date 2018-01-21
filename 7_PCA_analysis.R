@@ -133,44 +133,44 @@ write.csv(obs.tab, "PCA euclidean distance observed.csv")
 
 
 
-myfun <- function(g1, g2){
-  pca.pair <- prcomp(
-    pc.dat[which(pc.dat$grp==g1 | pc.dat$grp == g2),2:8],
-    center = T, scale. = T)
-  ordiplot(pca.pair, xlim = c(-5,5))
-  orditorp(pca.pair, display="species", col="red")
-  ordihull(pca.pair, 
-           groups = pc.dat$grp[which(pc.dat$grp==g1 | 
-                                       pc.dat$grp == g2)], 
-           draw="polygon", 
-           col=c("blue", "red"),
-           label=F)
-  g1.center = pca.pair$x[1:17,]
-  g2.center = pca.pair$x[18:34,]
-  dist <- distance2(centroid(g1.center),
-                    centroid(g2.center))
-  return(dist)
-}
-
-myfun("obs", "tm")
-myfun("obs", "wb.raw")
-myfun("obs", "wb")
-myfun("tm", "wb")
-
-
-# pca by land per group
-pca.dat.list <- split(pc.dat, list(pc.dat$grp))
-pca.list <- llply(pca.dat.list, function (x) {
-  prcomp(x[,c(2:9)], center = T, scale. = T)
-})
-
-for (g in 1:length(pca.dat.list)){
-  ordiplot(pca.list[[g]])
-  orditorp(pca.list[[g]],display="species",col="red",air=0.01)
-  ordihull(pca.list[[g]],groups=pca.dat.list[[g]]$land,
-           draw="polygon",
-           col=c("blue", "green"),label=F)
-  title(names(pca.list)[g])
-}
-
-
+# myfun <- function(g1, g2){
+#   pca.pair <- prcomp(
+#     pc.dat[which(pc.dat$grp==g1 | pc.dat$grp == g2),2:8],
+#     center = T, scale. = T)
+#   ordiplot(pca.pair, xlim = c(-5,5))
+#   orditorp(pca.pair, display="species", col="red")
+#   ordihull(pca.pair, 
+#            groups = pc.dat$grp[which(pc.dat$grp==g1 | 
+#                                        pc.dat$grp == g2)], 
+#            draw="polygon", 
+#            col=c("blue", "red"),
+#            label=F)
+#   g1.center = pca.pair$x[1:17,]
+#   g2.center = pca.pair$x[18:34,]
+#   dist <- distance2(centroid(g1.center),
+#                     centroid(g2.center))
+#   return(dist)
+# }
+# 
+# myfun("obs", "tm")
+# myfun("obs", "wb.raw")
+# myfun("obs", "wb")
+# myfun("tm", "wb")
+# 
+# 
+# # pca by land per group
+# pca.dat.list <- split(pc.dat, list(pc.dat$grp))
+# pca.list <- llply(pca.dat.list, function (x) {
+#   prcomp(x[,c(2:9)], center = T, scale. = T)
+# })
+# 
+# for (g in 1:length(pca.dat.list)){
+#   ordiplot(pca.list[[g]])
+#   orditorp(pca.list[[g]],display="species",col="red",air=0.01)
+#   ordihull(pca.list[[g]],groups=pca.dat.list[[g]]$land,
+#            draw="polygon",
+#            col=c("blue", "green"),label=F)
+#   title(names(pca.list)[g])
+# }
+# 
+# 
