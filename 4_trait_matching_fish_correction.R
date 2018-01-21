@@ -387,7 +387,7 @@ write_csv(data.frame(inference = c("Fish corrected neutral", "Fish corrected nic
 # # tss~log10(threshold)
 # # gray line = mean tss ~ threshold
 # # red points = threshold which gives highest mean TSS
-# local.tss.f.nn %>% 
+# local.tss.f.nn %>%
 #   ggplot(aes(x = log10(as.numeric(thresh)),
 #              y = tss)) +
 #   geom_point() +
@@ -404,3 +404,15 @@ write_csv(data.frame(inference = c("Fish corrected neutral", "Fish corrected nic
 #              color = "red")+
 #   theme_classic()
 # 
+# # # AUC fish corrected Neutral + Niche
+# f.auc.nn.plot <- f.auc.nn.df %>%
+#   ggplot(aes(x = thresh, y = auc)) +
+#   geom_point() +
+#   stat_summary(aes(y = auc,group=1),
+#                fun.y=mean,
+#                colour="grey",
+#                geom="line",
+#                size = 2,
+#                group= 1) +
+#   theme_classic()
+# ggsave("figs for MS\\post poisot\\TM fish corr nn auc.pdf")
