@@ -375,11 +375,11 @@ write_csv(wb.tab, "Webbuilder AUC, TSS, fp+fn.csv")
 
 
 
-inf.list <- readRDS("Neutral + Niche trait matching inference.RDS")
-inf <- inf.list[[12]]
-
-inf.wb <- map2(wb.matrices, inf, .f = ~.x*.y)
-cbind(ldply(map2(web.match, wb.matrices, get_tss)),
-      ldply(map2(web.match, inf.wb, get_tss)))
+# inf.list <- readRDS("Neutral + Niche trait matching inference.RDS")
+# inf <- inf.list[[12]]
+# 
+# inf.wb <- map2(wb.matrices, inf, .f = ~.x*.y)
+# cbind(ldply(map2(web.match, wb.matrices, get_tss)),
+#       ldply(map2(web.match, inf.wb, get_tss)))
 
 
