@@ -3,6 +3,8 @@
 # useful food web functions from Petchey
 source("C:\\Users\\Justin\\Documents\\Data\\FW modelling Petchey Github\\ttl-resources-master\\food_web\\FoodWebFunctions.r")
 
+library(plyr)
+library(tidyverse)
 require(traitmatch)
 library(gplots)
 # Probability interaction new data
@@ -186,7 +188,12 @@ barplot(c(lh_model, lh_niche, lh_neutral),
 #pull out dempsters
 dmp <- pairs.dw.list[[7]]
 # filter out NA dw observations
-dmp <- dmp %>% filter(!is.na(res.dw), !is.na(con.dw))
+dmp <- dmp %>% filter(!is.na(res.dw),
+                      !is.na(con.dw))#,
+                      # consumer != "Salmo",
+                      # consumer != "Galaxias",
+                      # consumer != "Gobiomorphus",
+                      # consumer != "Anguilla")
 #make vectors of 2 trophic levels
 t1 <- as.vector(sort(unique(dmp$res.dw)))
 t2 <- as.vector(sort(unique(dmp$con.dw)))
@@ -197,7 +204,7 @@ t2 <- as.vector(sort(unique(dmp$con.dw)))
 all.t <- sort(unique(c(t1, t2)))
 # expand grid to get all pairwise combos of body sizes
 all.comb <- expand.grid(all.t, all.t)
-all.com <- all.comb[with(all.comb, order( Var1)),]
+all.comb <- log10(all.comb[with(all.comb, order( Var1)),])
 
 
 # predict probability of interactions
