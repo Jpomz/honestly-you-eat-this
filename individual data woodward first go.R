@@ -279,9 +279,10 @@ for (i in 3:502){
               point.cex = 1.5)
   dev.off()
 }
-gif.files <- list.files(paste(
-  getwd(), "/gif/", sep = ""),
-  full.names = F)
+gif.files <- list.files(
+  paste(getwd(), "/gif.ind.dat/", sep = ""),
+  full.names = F
+  )
 setwd(paste(getwd(),"/gif.ind.dat/",sep = ""))
 ani.options(interval=.1)
 im.convert(gif.files)
