@@ -291,7 +291,7 @@ tss.init.mean <- ldply(
   summarize(tss = mean(V1)) %>% as.double()
 # neutral
 # threshold == 1e-8 == inf.neutral[[5]]
-wb.n <- inf.neutral[[5]]
+wb.n <- inf.neutral[[1]]
 tss.n.mean <- ldply(
   map2(web.match, wb.n, get_tss)) %>% 
   summarize(tss = mean(V1)) %>% as.double()
