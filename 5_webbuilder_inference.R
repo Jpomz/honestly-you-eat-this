@@ -298,6 +298,7 @@ tss.n.mean <- ldply(
 # neutral fish correction * 1000
 # threshold = 1.5e-5 == [[18]]
 wb.f.n <- fish.neutral.list[[18]]
+names(wb.f.n) <- names(obs)
 saveRDS(wb.f.n, "wb for PCA.RDS")
 tss.n.f.mean <- ldply(
   map2(web.match, wb.f.n, get_tss)) %>% 
