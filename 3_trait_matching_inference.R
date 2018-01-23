@@ -212,10 +212,19 @@ saveRDS(inf.niche, "Niche pruned trait matching inference.RDS")
 
 
 # neutral forbidden ####
+# Subset dw to match inference
+dw.sub <- NULL
+for(web in 1:length(dw)){
+  dw.sub[[web]] <- dw[[web]][which(dw[[web]]$taxa %in%
+                                     colnames(inf[[web]])),]
+}
+
 # vector of abundances
-ab.vec <- llply(dw, function (x){x$no.m2})
+ab.vec <- llply(dw.sub, function (x){
+  x$no.m2})
 #vector of taxa
-ab.taxa <- llply(dw, function (x){x$taxa})
+ab.taxa <- llply(dw.sub, function (x){x$taxa})
+
 # threshold vector
 threshold <- c(1.0e-08, 1.5e-8, 3.0e-08, 5.9e-08,
                1.0e-07, 1.5e-7, 3.0e-07, 5.9e-07,
