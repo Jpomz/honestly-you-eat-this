@@ -103,49 +103,49 @@ threshold2 <- c(
   1.0e-02, 1.5e-2, 3.0e-02, 5.9e-02)
 cf <- c(10^seq(from = 1, to = 4))
 # correction factor ####
-# # takes forever to run, commented out ####
-# # examine how different correction factors influence inferences
-# auc.cf <- NULL
-# system.time(
-#   for(c in 1:length(cf)){
-#     auc.neutral <- NULL
-#     for(w in 1:length(inf)){
-#       auc.web <- NULL
-#       for(t in 1:length(threshold2)){
-#         N = f_ab_corr(Nij = rel.ab.matr[[w]],
-#                       taxa = f.vec,
-#                       cf = cf[c])
-#         Nprime = rm_neutral(N, threshold2[t])
-#         Nprime = Nprime * inf[[w]]
-#         auc.web[[t]] = get_auc(obs[[w]], Nprime)
-#       }
-#       names(auc.web) <- as.character(threshold2)
-#       auc.neutral[[w]] <- auc.web
-#     }
-#     names(auc.neutral) <- names(obs)
-#     auc.cf[[c]] <- auc.neutral
-#   }
-# )
-# names(auc.cf) <- as.character(cf)
-# 
-# auc.cf <- llply(auc.cf, function (x){
-#   out = data.frame(auc = flatten_dbl(x),
-#                    thresh = log10(as.numeric(threshold2)),
-#                    site = rep(names(obs),
-#                               each = length(threshold2)),
-#                    stringsAsFactors = FALSE)})
-# ldply(auc.cf) %>%
-#   ggplot(aes(x = thresh,
-#              y = auc, color = .id)) +
-#   geom_point() +
-#   facet_wrap(~site) +
-#   stat_smooth(alpha = 0)+
-#   theme_classic()
-# 
-# ldply(auc.cf) %>%
-#   group_by(.id, thresh) %>%
-#   summarize(mean.auc = mean(na.omit(auc))) %>%
-#   arrange(desc(mean.auc), .id)
+# takes forever to run, commented out ####
+# examine how different correction factors influence inferences
+auc.cf <- NULL
+system.time(
+  for(c in 1:length(cf)){
+    auc.neutral <- NULL
+    for(w in 1:length(inf)){
+      auc.web <- NULL
+      for(t in 1:length(threshold2)){
+        N = f_ab_corr(Nij = rel.ab.matr[[w]],
+                      taxa = f.vec,
+                      cf = cf[c])
+        Nprime = rm_neutral(N, threshold2[t])
+        Nprime = Nprime * inf[[w]]
+        auc.web[[t]] = get_auc(obs[[w]], Nprime)
+      }
+      names(auc.web) <- as.character(threshold2)
+      auc.neutral[[w]] <- auc.web
+    }
+    names(auc.neutral) <- names(obs)
+    auc.cf[[c]] <- auc.neutral
+  }
+)
+names(auc.cf) <- as.character(cf)
+
+auc.cf <- llply(auc.cf, function (x){
+  out = data.frame(auc = flatten_dbl(x),
+                   thresh = log10(as.numeric(threshold2)),
+                   site = rep(names(obs),
+                              each = length(threshold2)),
+                   stringsAsFactors = FALSE)})
+ldply(auc.cf) %>%
+  ggplot(aes(x = thresh,
+             y = auc, color = .id)) +
+  geom_point() +
+  facet_wrap(~site) +
+  stat_smooth(alpha = 0)+
+  theme_classic()
+
+ldply(auc.cf) %>%
+  group_by(.id, thresh) %>%
+  summarize(mean.auc = mean(na.omit(auc))) %>%
+  arrange(desc(mean.auc), .id)
 
 # fish corrected ####
 # fish relative abundance * 1000
@@ -211,8 +211,10 @@ local.tss.f.nn <- ldply(local.tss.f.nn) %>%
 
 
 # global max tss
-global.thresh.nn <- local.tss.f.nn %>% group_by(thresh) %>%
-  summarize(mean.tss = mean(na.omit(tss))) %>% top_n(1, wt = mean.tss)
+global.thresh.nn <- local.tss.f.nn %>%
+  group_by(thresh) %>%
+  summarize(mean.tss = mean(na.omit(tss))) %>% 
+  top_n(1, wt = mean.tss)
 
 
 
@@ -306,9 +308,9 @@ false_prop <- function(obs, inf){
               fn = c / S**2)
   tss
 }
-f.neutral <- fish.neutral.list[[18]]
+f.neutral <- fish.neutral.list[[19]]
 saveRDS(f.neutral, "fish correction neutral.RDS")
-f.nn <- fish.nn.list[[17]]
+f.nn <- fish.nn.list[[18]]
 saveRDS(f.nn, "tm nn fish for PCA.RDS")
 
 neutral.false <- ldply(map2(obs, f.neutral, false_prop)) %>% 
