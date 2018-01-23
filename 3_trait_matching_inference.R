@@ -218,6 +218,8 @@ for(web in 1:length(dw)){
   dw.sub[[web]] <- dw[[web]][which(dw[[web]]$taxa %in%
                                      colnames(inf[[web]])),]
 }
+# save object for rank abundance calcs, supplemental
+#saveRDS(dw.sub, "ab, dw, info for sites, subset to match inference.RDS")
 
 # vector of abundances
 ab.vec <- llply(dw.sub, function (x){
@@ -352,9 +354,9 @@ global.thresh.nn <- auc.niche.neutral.df %>%
 
 
 # TSS ####
-# working with neutral abundance threshold 1.5e-04
+# working with neutral abundance threshold 5.9e-04
 # inf.neutral[[18]]
-neutral <- inf.neutral[[18]]
+neutral <- inf.neutral[[20]]
 
 # TSS initial ####
 tss.initial <- ldply(map2(obs, inf,
@@ -374,8 +376,8 @@ tss.neutral.mean <- mean(tss.neutral$V1)
 
 
 # neutral and niche forbidden ####
-# 1e-8
-neutral.niche <- inf.niche.neutral[[1]]
+# 1.5e-8
+neutral.niche <- inf.niche.neutral[[2]]
 tss.niche.neutral <- ldply(
   pmap(list(obs = obs,
             inf = neutral.niche),
