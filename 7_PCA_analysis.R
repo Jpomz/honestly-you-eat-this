@@ -15,10 +15,12 @@ tm <- readRDS("Initial trait matching inference.RDS")
 tm.niche <- readRDS("Niche pruned trait matching inference.RDS")
 # tm == neutral, niche prune, fish correction
 tm.nn <- readRDS("tm nn fish for PCA.RDS")
+names(tm.nn) <- names(obs) # need to go back to original script and fix names
 # wb x trait match, no neutral
 wb.tm <- readRDS("wb x tm for PCA.RDS")
 # wb.tm wb * tm neutral prune fish correction
 wb.tm.n <- readRDS("wb x tm x n for PCA.rds")
+names(wb.tm.n) <- names(obs) # need to go back to original script and fix names
 
 # wb and wb.tm are basically the same
 # maybe compare JUST wb*tm, without correcting fish / pruning neutral
