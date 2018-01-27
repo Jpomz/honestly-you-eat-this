@@ -113,11 +113,8 @@ for(web in 1:length(obs.A)){
       }
     }
   }
-  pred <- as.matrix(pred) # convert vec to matrix in order to add colname
-  colnames(pred) <- "taxa"
-  prey <- as.matrix(prey)
-  colnames(prey) <- "taxa"
-  pairs <- list(pred = pred, prey = prey) 
+  pairs <- matrix(c(pred,prey), ncol = 2, byrow = F)
+  colnames(pairs) <- c("pred", "prey")
   A.pairs[[web]] <- pairs 
 }
 names(A.pairs) <- names(obs.A)
@@ -126,15 +123,17 @@ names(A.pairs) <- names(obs.A)
 # add biomass estimate to pred and prey pairs
 dw.pairs <- NULL
   for(web in 1:length(dw)){
-    # m.pred <- merge(A.pairs[[web]]$pred,
-    #                 dw[[web]][,1:2],
-    #                 by = "taxa",
-    #                 all.x = T)
-    m.prey <- merge(A.pairs[[web]]$prey,
+    datout <- merge(A.pairs[[web]],
                     dw[[web]][,1:2],
-                    by = "taxa",
+                    by.x = "pred",
+                    by.y = "taxa",
                     all.x = T)
-    m.pairs <- cbind(m.pred[,2], m.prey[,2])
+    datout <- merge(datout,
+                    dw[[web]][,1:2],
+                    by.x = "prey",
+                    by.y = "taxa",
+                    all.x = T)
+    m.pairs <- datout[,3:4]
     colnames(m.pairs) <- c("pred", "prey")
     dw.pairs[[web]] <- m.pairs[!is.na(m.pairs[,1]) &
                         !is.na(m.pairs[,2]),]
