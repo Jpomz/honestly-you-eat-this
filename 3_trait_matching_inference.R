@@ -353,9 +353,9 @@ global.thresh.nn <- auc.niche.neutral.df %>%
 
 
 # TSS ####
-# working with neutral abundance threshold 5.9e-04
-# inf.neutral[[18]]
-neutral <- inf.neutral[[20]]
+# working with neutral abundance threshold 3.0e-04
+# inf.neutral[[19]]
+neutral <- inf.neutral[[19]]
 
 # TSS initial ####
 tss.initial <- ldply(map2(obs, inf,

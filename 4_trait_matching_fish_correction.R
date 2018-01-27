@@ -308,7 +308,7 @@ false_prop <- function(obs, inf){
               fn = c / S**2)
   tss
 }
-f.neutral <- fish.neutral.list[[19]]
+f.neutral <- fish.neutral.list[[18]]
 saveRDS(f.neutral, "fish correction neutral.RDS")
 f.nn <- fish.nn.list[[18]]
 saveRDS(f.nn, "tm nn fish for PCA.RDS")
