@@ -1,4 +1,5 @@
 # figures and tables for MS
+library(ggplot2)
 
 
 # inference stats table
@@ -25,3 +26,61 @@ tab$euclidean <- t(eu)
 tab <- tab[,c(9,1,2,3,4,5,6,7,8,10)]
 
 write.csv(tab, "figs for MS\\post poisot\\All inference summary stats.csv", row.names = F)
+
+
+
+# plots of Adj matrices
+source("C:\\Users\\Justin\\Documents\\Data\\FW modelling Petchey Github\\ttl-resources-master\\food_web\\FoodWebFunctions.r")
+
+obs <- readRDS("observed matrices matched to inferred.RDS")
+# wb.raw == initial WB inference
+wb.raw <- readRDS("wb matrices matched to inferred.RDS")
+# wb == neutral prune + fish correction
+wb.n <- readRDS("wb for PCA.RDS")
+tm <- readRDS("Initial trait matching inference.RDS")
+tm.niche <- readRDS("Niche pruned trait matching inference.RDS")
+tm.nn <- readRDS("tm nn fish for PCA.RDS")
+names(tm.nn) <- names(obs) # need to go back to original script and fix names
+# wb x trait match, no neutral
+wb.tm <- readRDS("wb x tm for PCA.RDS")
+# wb.tm wb * tm neutral prune fish correction
+wb.tm.n <- readRDS("wb x tm x n for PCA.rds")
+
+# dempsters, one plot ####
+png(filename = "figs for MS\\post poisot\\R fig1.png",
+    width = 240, height = 320, units = "mm", res =300)
+layout(matrix(c(1,2,3,4,0,5,6,0,7,0,0,8), 4, 3, byrow = T))
+Plot.matrix2(tm[[7]], sp.pt.ch = 18, point.cex = 1)
+title(main = "Trait-matching", cex.lab = 2)
+mtext(text = "A ", side = 2, cex = 1.5, las = 1, padj = 0)
+
+Plot.matrix2(tm.niche[[7]], sp.pt.ch = 18, point.cex = 1)
+title(main = "Trait-matching + Niche", cex.lab = 2)
+mtext(text = "B ", side = 2, cex = 1.5, las = 1, padj = 0)
+
+Plot.matrix2(tm.nn[[7]], sp.pt.ch = 18, point.cex = 1)
+title(main = "Trait-matching + Niche + Neutral", cex.lab = 2)
+mtext(text = "C ", side = 2, cex = 1.5, las = 1, padj = 0)
+
+Plot.matrix2(wb.raw[[7]], sp.pt.ch = 18, point.cex = 1)
+title(main = "WebBuilder", cex.lab = 2)
+mtext(text = "D ", side = 2, cex = 1.5, las = 1, padj = 0)
+
+Plot.matrix2(wb.n[[7]], sp.pt.ch = 18, point.cex = 1)
+title(main = "WebBuilder + Neutral", cex.lab = 2)
+mtext(text = "E ", side = 2, cex = 1.5, las = 1, padj = 0)
+
+Plot.matrix2(wb.tm[[7]], sp.pt.ch = 18, point.cex = 1)
+title(main = "WebBuilde:Trait-matching", cex.lab = 2)
+mtext(text = "F ", side = 2, cex = 1.5, las = 1, padj = 0)
+
+Plot.matrix2(wb.tm.n[[7]], sp.pt.ch = 18, point.cex = 1)
+title(main = "WebBuilde:Trait-matching + Neutral", cex.lab = 2)
+mtext(text = "G ", side = 2, cex = 1.5, las = 1, padj = 0)
+
+Plot.matrix2(obs[[7]], sp.pt.ch = 18, point.cex = 1)
+title(main = "Empirical", cex.lab = 2)
+mtext(text = "H ", side = 2, cex = 1.5, las = 1, padj = 0)
+dev.off()
+
+
