@@ -406,8 +406,8 @@ write_csv(data.frame(inference = c("Fish corrected neutral", "Fish corrected nic
 #              color = "red")+
 #   theme_classic()
 # 
-# # # AUC fish corrected Neutral + Niche
-# f.auc.nn.plot <- f.auc.nn.df %>%
+# # AUC fish corrected Neutral + Niche
+# (f.auc.nn.plot <- f.auc.nn.df %>%
 #   ggplot(aes(x = thresh, y = auc)) +
 #   geom_point() +
 #   stat_summary(aes(y = auc,group=1),
@@ -416,5 +416,6 @@ write_csv(data.frame(inference = c("Fish corrected neutral", "Fish corrected nic
 #                geom="line",
 #                size = 2,
 #                group= 1) +
-#   theme_classic()
+#   theme_classic()) +
+#   labs(y = "AUC", x = expression(Log["10"]~Threshold))
 # ggsave("figs for MS\\post poisot\\TM fish corr nn auc.pdf")
