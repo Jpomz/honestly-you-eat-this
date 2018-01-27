@@ -102,53 +102,54 @@ threshold2 <- c(
   1.0e-03, 1.5e-3, 3.0e-03, 5.9e-03,
   1.0e-02, 1.5e-2, 3.0e-02, 5.9e-02)
 cf <- c(10^seq(from = 0, to = 4))
-# correction factor ####
-# takes forever to run, commented out ####
-# examine how different correction factors influence inferences
-auc.cf <- NULL
-system.time(
-  for(c in 1:length(cf)){
-    auc.neutral <- NULL
-    for(w in 1:length(inf)){
-      auc.web <- NULL
-      for(t in 1:length(threshold2)){
-        N = f_ab_corr(Nij = rel.ab.matr[[w]],
-                      taxa = f.vec,
-                      cf = cf[c])
-        Nprime = rm_neutral(N, threshold2[t])
-        Nprime = Nprime * inf[[w]]
-        auc.web[[t]] = get_auc(obs[[w]], Nprime)
-      }
-      names(auc.web) <- as.character(threshold2)
-      auc.neutral[[w]] <- auc.web
-    }
-    names(auc.neutral) <- names(obs)
-    auc.cf[[c]] <- auc.neutral
-  }
-)
-names(auc.cf) <- as.character(cf)
-
-auc.cf <- llply(auc.cf, function (x){
-  out = data.frame(auc = flatten_dbl(x),
-                   thresh = log10(as.numeric(threshold2)),
-                   site = rep(names(obs),
-                              each = length(threshold2)),
-                   stringsAsFactors = FALSE)})
-plot.corr.fact <- ldply(auc.cf) %>%
-  ggplot(aes(x = thresh,
-             y = auc, color = .id)) +
-  geom_point() +
-  scale_color_discrete(name = "cf") +
-  stat_smooth(alpha = 0)+
-  theme_classic() +
-  labs(y = "AUC", x = expression(Log["10"]~Threshold))
-ggsave("figs for MS\\post poisot\\fish corr factor.png",
-       width = 420, height = 200, units = "mm")
-
-ldply(auc.cf) %>%
-  group_by(.id, thresh) %>%
-  summarize(mean.auc = mean(na.omit(auc))) %>%
-  arrange(desc(mean.auc), .id)
+# # correction factor ####
+# # takes forever to run, commented out ####
+# # examine how different correction factors influence inferences
+# auc.cf <- NULL
+# system.time(
+#   for(c in 1:length(cf)){
+#     auc.neutral <- NULL
+#     for(w in 1:length(inf)){
+#       auc.web <- NULL
+#       for(t in 1:length(threshold2)){
+#         N = f_ab_corr(Nij = rel.ab.matr[[w]],
+#                       taxa = f.vec,
+#                       cf = cf[c])
+#         Nprime = rm_neutral(N, threshold2[t])
+#         Nprime = Nprime * inf[[w]]
+#         auc.web[[t]] = get_auc(obs[[w]], Nprime)
+#       }
+#       names(auc.web) <- as.character(threshold2)
+#       auc.neutral[[w]] <- auc.web
+#     }
+#     names(auc.neutral) <- names(obs)
+#     auc.cf[[c]] <- auc.neutral
+#   }
+# )
+# names(auc.cf) <- as.character(cf)
+# 
+# auc.cf <- llply(auc.cf, function (x){
+#   out = data.frame(auc = flatten_dbl(x),
+#                    thresh = log10(as.numeric(threshold2)),
+#                    site = rep(names(obs),
+#                               each = length(threshold2)),
+#                    stringsAsFactors = FALSE)})
+# plot.corr.fact <- ldply(auc.cf) %>%
+#   ggplot(aes(x = thresh,
+#              y = auc, color = .id)) +
+#   geom_point() +
+#   scale_color_discrete(name = "cf") +
+#   stat_smooth(alpha = 0, size = 1.5)+
+#   theme_classic() +
+#   labs(y = "AUC", x = expression(Log["10"]~Threshold))+
+#   scale_colour_brewer(palette = "Set1")
+# ggsave("figs for MS\\post poisot\\fish corr factor.png",
+#        width = 420, height = 200, units = "mm")
+# 
+# ldply(auc.cf) %>%
+#   group_by(.id, thresh) %>%
+#   summarize(mean.auc = mean(na.omit(auc))) %>%
+#   arrange(desc(mean.auc), .id)
 
 # fish corrected ####
 # fish relative abundance * 1000
