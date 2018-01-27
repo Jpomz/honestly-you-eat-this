@@ -290,7 +290,7 @@ tss.init.mean <- ldply(
   map2(web.match, wb.matrices, get_tss)) %>% 
   summarize(tss = mean(V1)) %>% as.double()
 # neutral
-# threshold == 1e-8 == inf.neutral[[5]]
+# threshold == 1e-9 == inf.neutral[[1]]
 wb.n <- inf.neutral[[1]]
 tss.n.mean <- ldply(
   map2(web.match, wb.n, get_tss)) %>% 
@@ -298,7 +298,7 @@ tss.n.mean <- ldply(
 # neutral fish correction * 1000
 # threshold = 1.5e-5 == [[18]]
 wb.f.n <- fish.neutral.list[[18]]
-names(wb.f.n) <- names(obs)
+names(wb.f.n) <- names(web.match)
 saveRDS(wb.f.n, "wb for PCA.RDS")
 tss.n.f.mean <- ldply(
   map2(web.match, wb.f.n, get_tss)) %>% 
