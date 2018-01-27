@@ -92,7 +92,7 @@ rel.ab.matr <- readRDS("relative abundance matrices.RDS")
 # niche forbidden
 taxa.forbid <- c("Amphipoda", "Atalophlebioides", "Austroclima", "Austrosimulium", "Blephariceridae", "Coloburiscus", "Deleatidium", "Nesameletus","Oligochaetae", "Ostracoda", "Oxyethira", "Potamopyrgus", "Zephlebia")
 
-f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorpus")
+f.vec <- c("Salmo", "Galaxias", "Anguilla", "Gobiomorphus")
 threshold2 <- c(
   1.0e-08, 1.5e-8, 3.0e-08, 5.9e-08,
   1.0e-07, 1.5e-7, 3.0e-07, 5.9e-07,
