@@ -54,3 +54,40 @@ invert %>% group_by(site) %>%
 
 invert[order(desc(rank(invert$no.m2, ties = "first"))),]
 invert[312,]
+
+
+invert %>% 
+  mutate(tot = sum(no.m2),
+          rel.ab = no.m2 / tot) %>%
+  group_by(taxa) %>%
+  summarize(mean = mean(rel.ab), sd = sd(rel.ab), n = n()) %>% 
+  arrange(desc(mean))
+
+
+
+
+
+invert %>% group_by(site) %>%
+  mutate(tot = sum(no.m2),
+         a = no.m2 / tot) %>%
+  mutate(rank = rank(-no.m2, ties.method = "average")) %>%
+  filter(rank <20) %>%
+  ggplot(aes(rank))+
+  facet_wrap(~taxa) +
+  geom_histogram()
+
+invert %>% group_by(site) %>%
+  mutate(tot = sum(no.m2),
+         a = no.m2 / tot) %>%
+  mutate(rank = rank(-no.m2, ties.method = "average")) %>%
+  filter(rank <8) %>%
+  ggplot(aes(rank, fill = taxa))+
+  geom_histogram(position = "fill", bins = 8)
+
+invert %>% group_by(site) %>%
+  mutate(tot = sum(no.m2),
+         a = no.m2 / tot) %>%
+  mutate(rank = rank(-no.m2, ties.method = "average")) %>%
+  group_by(taxa) %>%
+  count(rank) %>%
+  arrange(rank, taxa) %>% View
