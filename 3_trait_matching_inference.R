@@ -126,10 +126,10 @@ names(A.pairs) <- names(obs.A)
 # add biomass estimate to pred and prey pairs
 dw.pairs <- NULL
   for(web in 1:length(dw)){
-    m.pred <- merge(A.pairs[[web]]$pred,
-                    dw[[web]][,1:2],
-                    by = "taxa",
-                    all.x = T)
+    # m.pred <- merge(A.pairs[[web]]$pred,
+    #                 dw[[web]][,1:2],
+    #                 by = "taxa",
+    #                 all.x = T)
     m.prey <- merge(A.pairs[[web]]$prey,
                     dw[[web]][,1:2],
                     by = "taxa",
