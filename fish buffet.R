@@ -45,12 +45,16 @@ mean(flatten_dbl(map(wb.tm.n, fish.prey)))
 mean(flatten_dbl(map(wb.n, fish.prey)))
 
 
+data.frame(obs = map(obs, fish.prey) %>% sapply(mean),
+           tm.nn = map(tm.nn, fish.prey) %>% sapply(mean),
+           wb.raw = map(wb.raw, fish.prey) %>% sapply(mean)) %>%
+  plot(wb.raw~obs, data = .)
 
 
 
-saveRDS(inf.niche, "Niche pruned trait matching inference.RDS")
-saveRDS(inf.neutral, "Neutral trait matching inference.RDS")
-saveRDS(inf.niche.neutral, ("Neutral + Niche trait matching inference.RDS"))
+# saveRDS(inf.niche, "Niche pruned trait matching inference.RDS")
+# saveRDS(inf.neutral, "Neutral trait matching inference.RDS")
+# saveRDS(inf.niche.neutral, ("Neutral + Niche trait matching inference.RDS"))
 
 
 mean(flatten_dbl(map(inf.niche, fish.prey)))
