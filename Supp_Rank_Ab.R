@@ -1,6 +1,5 @@
 library(plyr)
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 # invertebrate biomass and abundance
 #invert <- readRDS("estimated invert bodymass.RDS")
 
@@ -91,3 +90,101 @@ invert %>% group_by(site) %>%
   group_by(taxa) %>%
   count(rank) %>%
   arrange(rank, taxa) %>% View
+
+
+
+# make a graph of M ~ mean(M)
+
+invert %>% group_by(taxa) %>%
+  summarize(mean = mean(dw), sd = sd(dw)) %>%
+  na.omit %>%
+  ggplot(aes(log10(mean), log10(mean)))+
+  geom_point()+
+  geom_errorbar(aes(ymin = log10(mean) - log10(sd),
+                    ymax = log10(mean) + log10(sd)))
+
+
+# local site variation from mean biomass
+invert %>%
+  group_by(taxa) %>%
+  mutate(mean.dw = mean(dw)) %>%
+  #group_by(site, taxa) %>%
+  mutate(x = (dw - mean.dw)^2) %>%
+  group_by(taxa) %>%
+  summarize(max.x = log10(max(x))) %>%
+  arrange(desc(max.x))
+
+  
+invert %>%
+    group_by(taxa) %>%
+    mutate(mean.no.m2 = mean(log10(no.m2))) %>%
+    #group_by(site, taxa) %>%
+    mutate(x = (no.m2 - mean.no.m2)^2) %>%
+    group_by(taxa) %>%
+  summarize(max.x = log10(max(x))) %>%
+  arrange(desc(max.x))
+
+
+
+# boxplots ####
+# filtering out fish (same values at all sites)
+# reducing to only taxa that were observed >= 7 sites
+# dw
+dplot <- invert %>% filter(dw<.10) %>%
+  group_by(taxa) %>%
+  mutate(n = n()) %>% 
+  filter(n > 7) %>%
+  ggplot(aes(fct_reorder(taxa, no.m2), log10(dw))) +
+  geom_boxplot()+
+  theme(axis.text.x = element_text(angle = 90,
+                                   hjust = 1))
+# N
+nplot <- invert %>% filter(dw<.10) %>%
+  group_by(taxa) %>%
+  mutate(n = n()) %>% 
+  filter(n > 7) %>%
+  ggplot(aes(fct_reorder(taxa, no.m2), log10(no.m2))) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90,
+                                 hjust = 1))
+
+library(gridExtra)
+grid.arrange(dplot, nplot)
+
+# geom_density
+invert %>% filter(dw<.10) %>%
+  group_by(taxa) %>%
+  mutate(n = n()) %>% 
+  filter(n > 5) %>%
+  ggplot(aes(log10(dw))) +
+  geom_density()+
+  facet_wrap(~taxa)
+
+invert %>% filter(dw<.10) %>%
+  group_by(taxa) %>%
+  mutate(n = n()) %>% 
+  filter(n > 5) %>%
+  ggplot(aes(log10(no.m2))) +
+  geom_density()+
+  facet_wrap(~taxa)
+
+invert %>% filter(dw<.10) %>%
+  group_by(taxa) %>%
+  #mutate(n = n()) %>% 
+  filter(log10(dw) < 5) %>%
+  ggplot(aes(log10(dw))) +
+  geom_density()+
+  facet_wrap(~taxa)
+
+invert %>% filter(dw<.10) %>%
+  group_by(site) %>%
+  mutate(tot = sum(no.m2),
+         a = no.m2 / tot) %>%
+  mutate(rank = rank(-no.m2, ties.method = "first")) %>%
+  group_by(taxa) %>%
+  mutate(m.rank = mean(rank)) %>%
+  filter(m.rank < 10) %>%
+  ggplot(aes(log10(no.m2))) +
+  geom_density()+
+  facet_wrap(~taxa)
+
