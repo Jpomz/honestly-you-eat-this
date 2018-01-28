@@ -167,24 +167,24 @@ invert %>% filter(dw<.10) %>%
   ggplot(aes(log10(no.m2))) +
   geom_density()+
   facet_wrap(~taxa)
-
-invert %>% filter(dw<.10) %>%
-  group_by(taxa) %>%
-  #mutate(n = n()) %>% 
-  filter(log10(dw) < 5) %>%
-  ggplot(aes(log10(dw))) +
-  geom_density()+
-  facet_wrap(~taxa)
-
+# #
+# invert %>% filter(dw<.10) %>%
+#   group_by(taxa) %>%
+#   #mutate(n = n()) %>% 
+#   filter(log10(dw) < 5) %>%
+#   ggplot(aes(log10(dw))) +
+#   geom_density()+
+#   facet_wrap(~taxa)
+# 
 invert %>% filter(dw<.10) %>%
   group_by(site) %>%
   mutate(tot = sum(no.m2),
          a = no.m2 / tot) %>%
-  mutate(rank = rank(-no.m2, ties.method = "first")) %>%
+  # mutate(rank = rank(-no.m2, ties.method = "first")) %>%
   group_by(taxa) %>%
-  mutate(m.rank = mean(rank)) %>%
-  filter(m.rank < 10) %>%
-  ggplot(aes(log10(no.m2))) +
+  #mutate(m.rank = mean(rank)) %>%
+  filter(a > 0.05) %>%
+  ggplot(aes((a))) +
   geom_density()+
   facet_wrap(~taxa)
 
