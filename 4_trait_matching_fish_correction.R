@@ -191,7 +191,7 @@ local.tss.f.ab <- ldply(local.tss.f.ab) %>%
 # calculate the threshold which gives highest mean TSS
 global.thresh.ab <- local.tss.f.ab %>%
   group_by(thresh) %>%
-  summarize(mean.tss = mean(na.omit(tss))) %>%
+  summarize(mean.tss = mean(na.omit(tss)), sd = sd(tss)) %>%
   top_n(1, wt = mean.tss)
 
 # local fish neutral + niche ####
@@ -217,7 +217,7 @@ local.tss.f.nn <- ldply(local.tss.f.nn) %>%
 # global max tss
 global.thresh.nn <- local.tss.f.nn %>%
   group_by(thresh) %>%
-  summarize(mean.tss = mean(na.omit(tss))) %>% 
+  summarize(mean.tss = mean(na.omit(tss)), sd = sd(tss)) %>% 
   top_n(1, wt = mean.tss)
 
 
@@ -335,6 +335,8 @@ write_csv(data.frame(inference = c("Fish corrected neutral", "Fish corrected nic
            as.double(global.f.nn[2])),
            TSS = c(as.double(global.thresh.ab[2]),
                    as.double(global.thresh.nn[2])),
+           sd.TSS = c(as.double(global.thresh.ab[3]),
+                      as.double(global.thresh.nn[3])),
            Threshold = c(as.double(global.thresh.ab[1]),
                          as.double(global.thresh.nn[1])),
            mean.fp = false.tab$mean.fp,
