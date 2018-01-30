@@ -159,12 +159,18 @@ global.thresh.neutral.f <- auc.f.neutral.df %>%
 tss.init.mean <- ldply(
   map2(web.match, wb.matrices, get_tss)) %>% 
   summarize(tss = mean(V1)) %>% as.double()
+tss.init.sd <- ldply(
+  map2(web.match, wb.matrices, get_tss)) %>% 
+  summarize(sd(V1)) %>% as.double()
 # neutral
 # threshold == 1e-9 == inf.neutral[[1]]
 wb.n <- inf.neutral[[1]]
 tss.n.mean <- ldply(
   map2(web.match, wb.n, get_tss)) %>% 
   summarize(tss = mean(V1)) %>% as.double()
+tss.n.sd <- ldply(
+  map2(web.match, wb.n, get_tss)) %>% 
+  summarize(sd(V1)) %>% as.double()
 # neutral fish correction * 1000
 # threshold = 1.5e-5 == [[18]]
 wb.f.n <- fish.neutral.list[[18]]
@@ -172,6 +178,9 @@ saveRDS(wb.f.n, "wb x tm x n for PCA.RDS")
 tss.n.f.mean <- ldply(
   map2(web.match, wb.f.n, get_tss)) %>% 
   summarize(tss = mean(V1)) %>% as.double()
+tss.n.f.sd <- ldply(
+  map2(web.match, wb.f.n, get_tss)) %>% 
+  summarize(sd(V1)) %>% as.double()
 
 
 # fp & fn ####
@@ -235,6 +244,8 @@ wb.tab <- data.frame(inference = c("Wb * trait", "Neutral", "Neutral Fish correc
                              as.double(global.thresh.neutral.f[2])),
                      TSS = c(tss.init.mean, tss.n.mean,
                              tss.n.f.mean),
+                     sd.TSS = c(tss.init.sd, tss.n.sd,
+                             tss.n.f.sd),
                      Threshold = c("NA",
               10**(as.double(global.thresh.neutral[1])),
               10**(as.double(global.thresh.neutral.f[1]))))

@@ -361,18 +361,19 @@ neutral <- inf.neutral[[19]]
 tss.initial <- ldply(map2(obs, inf,
                     get_tss))
 tss.initial.mean <- mean(tss.initial$V1)
+tss.initial.sd <- sd(tss.initial$V1)
 # TSS niche ####
 tss.niche <- ldply(pmap(list(obs = obs,
                        inf = inf.niche),
                   get_tss))
 tss.niche.mean <- mean(tss.niche$V1)
-
+tss.niche.sd <- sd(tss.niche$V1)
 # TSS neutral ####
 tss.neutral <- ldply(pmap(list(obs = obs,
                          inf = neutral),
                     get_tss))
 tss.neutral.mean <- mean(tss.neutral$V1)
-
+tss.neutral.sd <- mean(tss.neutral$V1)
 
 # neutral and niche forbidden ####
 # 1.5e-8
@@ -382,6 +383,7 @@ tss.niche.neutral <- ldply(
             inf = neutral.niche),
        get_tss))
 tss.nn.mean <- mean(tss.niche.neutral$V1)
+tss.nn.sd <- sd(tss.niche.neutral$V1)
 
 # TSS for niche + local neutral ####
 local_tss <- function (n, inf){
@@ -480,6 +482,8 @@ write_csv(data.frame(inference =
                 as.double(global.thresh.nn[2])),
         TSS = c(tss.initial.mean, tss.niche.mean,
                 tss.neutral.mean, tss.nn.mean),
+        sd.TSS = c(tss.initial.sd, tss.niche.sd,
+                   tss.neutral.sd, tss.nn.sd),
         Threshold = c("NA", "NA",
                   10^as.double(global.thresh.neutral[1]),
                   10^as.double(global.thresh.nn[1])),
