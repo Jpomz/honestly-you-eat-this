@@ -6,36 +6,9 @@ library(tidyverse)
 source("Useful WebBuilder functions.R")
 # useful food web functions from petchey
 source("C:\\Users\\Justin\\Documents\\Data\\FW modelling Petchey Github\\ttl-resources-master\\food_web\\FoodWebFunctions.r")
-# function to convert list of pairs to adjacency matrix
-source("pairs_to_adj function.R")
+# useful functions 
+source("Inference_MS_functions.R")
 # TSS function
-get_tss <- function (observed, inferred){
-  # make sure adjacency matrices are same dimensions and have same colnames
-  stopifnot(dim(observed) == dim(inferred), 
-            identical(colnames(observed), colnames(inferred)))
-  
-  # subtract inferred from observed
-  minus <- observed - inferred
-  # multiply observed and inferred
-  multiply <- observed * inferred
-  # change values of 1 in multiplied matrix to 2
-  multiply[multiply == 1] <- 2
-  # add minus and multiply matrices
-  prediction <- minus + multiply
-  # prediction outcome matrix now has all 4 possibilities repreented as different integer values
-  # 2 = true positive (a); links both obserevd & predicted
-  # -1 = false positive (b); predicted but not observed
-  # 1 = false negative (c); observed but not predicted
-  # 0 = true negative (d); not predicted, not observed
-  a = length(prediction[prediction==2])
-  b = length(prediction[prediction==-1]) 
-  c = length(prediction[prediction==1]) 
-  d = length(prediction[prediction==0])
-  # calculate TSS
-  # TSS = (a*d - b*c)/((a+c)*(b+d))
-  tss = (a*d - b*c)/((a+c)*(b+d))
-  tss
-}
 
 # data ####
 web.match <- readRDS("observed matrices matched to inferred.RDS")
@@ -43,6 +16,7 @@ wb.matrices <- readRDS("wb matrices matched to inferred.rds")
 tm <- readRDS("Initial trait matching inference.RDS")
 
 wb.matrices <- map2(wb.matrices, tm, ~.x*.y)
+# initial wb * tm
 saveRDS(wb.matrices, "wb x tm for PCA.RDS")
 
 # neutral abundance correction ####
@@ -57,12 +31,7 @@ threshold <- c(1.0e-09, 1.5e-9, 3.0e-09, 5.9e-09,
                1.0e-02, 1.5e-2, 3.0e-02, 5.9e-02)
 
 
-# function to remove rel.abundance products < threshold
-rm_neutral <- function(Nij, threshold){
-  Nij[Nij > threshold] <-  1
-  Nij[Nij < 1] <-  0 
-  Nij
-}
+
 # make a list of neutrally forbidden links at different thresholds
 inf.neutral <- map(threshold, function (x){
   map(rel.ab.matr, rm_neutral, threshold = x)})
@@ -81,22 +50,6 @@ names(fish.neutral.list) <- threshold
 fish.neutral.list <- map(fish.neutral.list, function (x){
   map2(x, wb.matrices, ~.x*.y)
 })
-
-# AUC logistic model ####
-get_auc <- function(observed, inferred){
-  require(ROCR)
-  y = as.factor(as.numeric(observed))
-  x = as.factor(as.numeric(inferred))
-  if(length(levels(x))== 1){ 
-    auc = NA
-    return(auc)
-  }
-  mod = glm(y ~ x, family = binomial(link = "logit"))
-  mod.pred = predict(mod, x, type = "response")
-  prob = prediction(mod.pred, y)
-  auc = performance(prob, measure = "auc")@y.values[[1]]
-  return(auc)
-}
 
 # initial ####
 auc.init <- ldply(map2(web.match, wb.matrices, get_auc))
@@ -185,41 +138,6 @@ tss.n.f.sd <- ldply(
 
 # fp & fn ####
 # initial
-false_prop <- function(obs, inf){
-  stopifnot(dim(obs) == dim(inf), 
-            identical(colnames(obs), colnames(inf)))
-  
-  # subtract inferred from observed
-  minus <- obs - inf
-  # multiply observed and inferred
-  multiply <- obs * inf
-  # change values of 1 in multiplied matrix to 2
-  multiply[multiply == 1] <- 2
-  # add minus and multiply matrices
-  prediction <- minus + multiply
-  # prediction outcome matrix now has all 4 possibilities repreented as different integer values
-  # 2 = true positive (a); links both obserevd & predicted
-  # -1 = false positive (b); predicted but not observed
-  # 1 = false negative (c); observed but not predicted
-  # 0 = true negative (d); not predicted, not observed
-  tss.vars <- data.frame(
-    a = length(prediction[prediction==2]),
-    b = length(prediction[prediction==-1]), 
-    c = length(prediction[prediction==1]), 
-    d = length(prediction[prediction==0]),
-    S = ncol(prediction)
-  )
-  # calculate TSS
-  # TSS = (a*d - b*c)/((a+c)*(b+d))
-  # also decompose TSS to see proportion of positive and negative predictions
-  # abar = proportion of links correctly predicted
-  # dbar = proportion of links correctly not predicted
-  # bc = proportion of links incorrectly predicted
-  tss <- tss.vars %>%
-    transmute(fp = b / S**2,
-              fn = c / S**2)
-  tss
-}
 false.init <- ldply(
   map2(web.match, wb.matrices, false_prop)) %>%
   summarize(mean.fp = mean(fp), sd.fp = sd(fp),
