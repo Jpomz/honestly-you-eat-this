@@ -1,7 +1,6 @@
 # figures and tables for MS
 library(ggplot2)
 
-
 # inference stats table
 tm <- read.csv("Mean AUC and TSS trait matching.csv")
 tm.f <- read.csv("Fish corrected Mean AUC and TSS trait matching.csv")
