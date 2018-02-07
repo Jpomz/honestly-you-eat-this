@@ -67,17 +67,19 @@ match_matr <- function (obs, inf){
 get_auc <- function(observed, inferred){
   require(ROCR)
   y = as.factor(as.numeric(observed))
-  x = as.factor(as.numeric(inferred))
+  x = as.numeric(inferred)
   if(length(levels(x))== 1){ 
     auc = NA
     return(auc)
   }
   mod = glm(y ~ x, family = binomial(link = "logit"))
-  mod.pred = predict(mod, x, type = "response")
+  mod.pred = predict(mod, x = x, type = "response")
   prob = prediction(mod.pred, y)
   auc = performance(prob, measure = "auc")@y.values[[1]]
+  #plot(performance(prob, "tpr", "fpr"))
   return(auc)
 }
+
 # calculate false pos / false neg predictions
 false_prop <- function(obs, inf){
   stopifnot(dim(obs) == dim(inf), 
