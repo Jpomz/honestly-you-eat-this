@@ -9,11 +9,8 @@ library(pracma)
 library(plyr)
 library(tidyverse)
 
-# gravel functions
-# from Gravel et al. 2013 supplementary information
+# functions from Gravel et al. 2013 supporting information
 source("gravel_functions.R")
-# calculate confusion matrices
-source("adj_conf_matrix function.R")
 # useful functions
 source("Inference_MS_functions.R")
 
@@ -134,9 +131,6 @@ inf <- llply(match, function (x){
 saveRDS(inf, "Initial trait matching inference.RDS")
 # save observed adj matrices matched to inferred
 saveRDS(obs, "observed matrices matched to inferred.RDS")
-# sum of links per web
-sum.links <- sapply(web.links.inf, sum)
-
 
 # niche forbidden ####
 # niche forbidden
@@ -147,7 +141,6 @@ inf.niche <- map(inf,
                  taxa = taxa.forbid)
 # # save niche pruned trait matching ####
 saveRDS(inf.niche, "Niche pruned trait matching inference.RDS")
-
 
 # neutral forbidden ####
 # Subset dw to match inference
@@ -204,7 +197,6 @@ inf.niche.neutral <- map(inf.neutral, function (x){
 # save niche + neutral matrices
 saveRDS(inf.niche.neutral, ("Neutral + Niche trait matching inference.RDS"))
 
-
 # AUC initial ####
 auc.init <- ldply(map2(obs, inf, get_auc))
 auc.init.mean <- mean(auc.init$V1, na.rm = TRUE)
@@ -230,14 +222,11 @@ auc.neutral.df <- data.frame(auc = flatten_dbl(auc.neutral),
                             each = length(threshold)),
                  stringsAsFactors = FALSE)
 
-
-
 # global max AUC Neutral
 global.thresh.neutral <- auc.neutral.df %>%
   group_by(thresh) %>%
   summarize(mean.auc = mean(na.omit(auc))) %>%
   top_n(1, wt = mean.auc)
-
 
 # AUC Niche + Neutral ####
 auc.niche.neutral <- NULL
@@ -265,10 +254,9 @@ global.thresh.nn <- auc.niche.neutral.df %>%
   summarize(mean.auc = mean(na.omit(auc))) %>% 
   top_n(1, wt = mean.auc)
 
-
 # TSS ####
-# working with neutral abundance threshold 3.0e-04
-# inf.neutral[[19]]
+# neutral abundance threshold 3.0e-04
+# inf.neutral[[19]], 
 neutral <- inf.neutral[[19]]
 
 # TSS initial ####
@@ -290,7 +278,7 @@ tss.neutral.mean <- mean(tss.neutral$V1)
 tss.neutral.sd <- mean(tss.neutral$V1)
 
 # neutral and niche forbidden ####
-# 1.5e-8
+# neutral + Niche abundance threshold 1.5e-8
 neutral.niche <- inf.niche.neutral[[2]]
 tss.niche.neutral <- ldply(
   pmap(list(obs = obs,
@@ -299,12 +287,8 @@ tss.niche.neutral <- ldply(
 tss.nn.mean <- mean(tss.niche.neutral$V1)
 tss.nn.sd <- sd(tss.niche.neutral$V1)
 
-
-
 # fn & fp ####
 # initial
-
-
 initial.false <- ldply(map2(obs, inf, false_prop)) %>% 
   summarize(mean.fp = mean(fp), sd.fp = sd(fp),
             mean.fn = mean(fn), sd.fn = sd(fn))
@@ -317,14 +301,13 @@ neutral.false <- ldply(map2(obs, neutral, false_prop)) %>%
 nn.false <- ldply(map2(obs, neutral.niche, false_prop)) %>% 
   summarize(mean.fp = mean(fp), sd.fp = sd(fp),
             mean.fn = mean(fn), sd.fn = sd(fn))
-
+# bind all fp/fn rows together
 false.tab <- rbind(initial.false, niche.false, neutral.false, nn.false)
+# add inference type to df
 false.tab$inference <- c("Initial", "Niche", "Neutral", "Niche + Neutral")
 
-false.tab <- gather(false.tab, "var", "val", 1:4) %>%
-  spread(var, val)
-
 # table of auc, tss, threshold ####
+# write results
 write_csv(data.frame(inference =
         c("Initial", "Niche", "Neutral", "Niche + Neutral"),
         AUC = c(auc.init.mean, auc.niche.mean,
@@ -348,9 +331,9 @@ write_csv(data.frame(inference =
 # # Niche ####
 # # AUC ~ threshold, facet by site
 # # max AUC = red
-# auc.neutral.df %>% group_by(site) %>% 
+# auc.neutral.df %>% group_by(site) %>%
 #   mutate(max.auc = max(na.omit(auc)),
-#          is.max = auc == max.auc) %>% 
+#          is.max = auc == max.auc) %>%
 #   ggplot(aes(x = thresh,
 #              y = auc,
 #              color = is.max)) +
