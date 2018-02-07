@@ -77,6 +77,52 @@ match_matr <- function (obs, inf){
   inf = inf[index, index]
   list(observed = obs, inferred = inf)
 }
+# AUC logistic model ####
+get_auc <- function(observed, inferred){
+  require(ROCR)
+  y = as.factor(as.numeric(observed))
+  x = as.factor(as.numeric(inferred))
+  if(length(levels(x))== 1){ 
+    auc = NA
+    return(auc)
+  }
+  mod = glm(y ~ x, family = binomial(link = "logit"))
+  mod.pred = predict(mod, x, type = "response")
+  prob = prediction(mod.pred, y)
+  auc = performance(prob, measure = "auc")@y.values[[1]]
+  return(auc)
+}
+# calculate false pos / false neg predictions
+false_prop <- function(obs, inf){
+  stopifnot(dim(obs) == dim(inf), 
+            identical(colnames(obs), colnames(inf)))
+  
+  # subtract inferred from observed
+  minus <- obs - inf
+  # multiply observed and inferred
+  multiply <- obs * inf
+  # change values of 1 in multiplied matrix to 2
+  multiply[multiply == 1] <- 2
+  # add minus and multiply matrices
+  prediction <- minus + multiply
+  # prediction outcome matrix now has all 4 possibilities repreented as different integer values
+  # 2 = true positive (a); links both obserevd & predicted
+  # -1 = false positive (b); predicted but not observed
+  # 1 = false negative (c); observed but not predicted
+  # 0 = true negative (d); not predicted, not observed
+  vars <- data.frame(
+    a = length(prediction[prediction==2]),
+    b = length(prediction[prediction==-1]), 
+    c = length(prediction[prediction==1]), 
+    d = length(prediction[prediction==0]),
+    S = ncol(prediction)
+  )
+
+  wrong <- vars %>%
+    transmute(fp = b / S**2,
+              fn = c / S**2)
+  wrong
+}
 
 # data ####
 # invertebrate biomass and abundance
@@ -265,21 +311,6 @@ inf.niche.neutral <- map(inf.neutral, function (x){
 # save niche + neutral matrices
 saveRDS(inf.niche.neutral, ("Neutral + Niche trait matching inference.RDS"))
 
-# AUC logistic model ####
-get_auc <- function(observed, inferred){
-  require(ROCR)
-  y = as.factor(as.numeric(observed))
-  x = as.factor(as.numeric(inferred))
-  if(length(levels(x))== 1){ 
-    auc = NA
-    return(auc)
-  }
-  mod = glm(y ~ x, family = binomial(link = "logit"))
-  mod.pred = predict(mod, x, type = "response")
-  prob = prediction(mod.pred, y)
-  auc = performance(prob, measure = "auc")@y.values[[1]]
-  return(auc)
-}
 
 # AUC initial ####
 auc.init <- ldply(map2(obs, inf, get_auc))
@@ -385,75 +416,11 @@ tss.niche.neutral <- ldply(
 tss.nn.mean <- mean(tss.niche.neutral$V1)
 tss.nn.sd <- sd(tss.niche.neutral$V1)
 
-# TSS for niche + local neutral ####
-local_tss <- function (n, inf){
-  x <- sapply(inf, function (web) web[n])
-  names(x) <- threshold
-  out <- ldply(map(x,  get_tss, obs = obs[[n]]))
-  out
-}
 
-# TSS niche + neutral
-local.tss.thresh <- NULL
-for(i in 1:length(obs)){
-  local.tss.thresh[[i]] <- local_tss(i, inf = inf.niche.neutral)
-  names(local.tss.thresh[[i]]) <-c("thresh", "tss") 
-}
-names(local.tss.thresh) <- names(obs)
-
-local.tss.thresh <- ldply(local.tss.thresh) %>%
-  group_by(.id) %>%
-  mutate(max.tss = max(na.omit(tss)), 
-         is.max = tss == max.tss)
-  
-# # total abundance ####
-# tot.ab <- ldply(sapply(dw, function (x) sum(x$no.m2)))
-# tot.ab <- left_join(tot.ab, local.thresh.nn[,c(2:3)], by = c(".id" = "site"))
-# ggplot(tot.ab, aes(x = log10(V1), y = thresh)) +
-#   geom_point()+
-#   stat_smooth(method = "lm")
-# 
-# summary(lm(thresh ~ log10(V1), data = tot.ab))
-# # higher abundance = smaller threshold
-# # when you have more individuals, need to forbid links at smaller cross products
 
 # fn & fp ####
 # initial
-false_prop <- function(obs, inf){
-  stopifnot(dim(obs) == dim(inf), 
-            identical(colnames(obs), colnames(inf)))
-  
-  # subtract inferred from observed
-  minus <- obs - inf
-  # multiply observed and inferred
-  multiply <- obs * inf
-  # change values of 1 in multiplied matrix to 2
-  multiply[multiply == 1] <- 2
-  # add minus and multiply matrices
-  prediction <- minus + multiply
-  # prediction outcome matrix now has all 4 possibilities repreented as different integer values
-  # 2 = true positive (a); links both obserevd & predicted
-  # -1 = false positive (b); predicted but not observed
-  # 1 = false negative (c); observed but not predicted
-  # 0 = true negative (d); not predicted, not observed
-  tss.vars <- data.frame(
-    a = length(prediction[prediction==2]),
-    b = length(prediction[prediction==-1]), 
-    c = length(prediction[prediction==1]), 
-    d = length(prediction[prediction==0]),
-    S = ncol(prediction)
-  )
-  # calculate TSS
-  # TSS = (a*d - b*c)/((a+c)*(b+d))
-  # also decompose TSS to see proportion of positive and negative predictions
-  # abar = proportion of links correctly predicted
-  # dbar = proportion of links correctly not predicted
-  # bc = proportion of links incorrectly predicted
-  tss <- tss.vars %>%
-    transmute(fp = b / S**2,
-           fn = c / S**2)
-  tss
-}
+
 
 initial.false <- ldply(map2(obs, inf, false_prop)) %>% 
   summarize(mean.fp = mean(fp), sd.fp = sd(fp),
