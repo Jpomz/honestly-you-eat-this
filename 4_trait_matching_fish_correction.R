@@ -17,63 +17,8 @@
 # libraries
 library(plyr)
 library(tidyverse)
-# functions
-get_tss <- function (observed, inferred){
-  # make sure adjacency matrices are same dimensions and have same colnames
-  stopifnot(dim(observed) == dim(inferred), 
-            identical(colnames(observed), colnames(inferred)))
-  
-  # subtract inferred from observed
-  minus <- observed - inferred
-  # multiply observed and inferred
-  multiply <- observed * inferred
-  # change values of 1 in multiplied matrix to 2
-  multiply[multiply == 1] <- 2
-  # add minus and multiply matrices
-  prediction <- minus + multiply
-  # prediction outcome matrix now has all 4 possibilities repreented as different integer values
-  # 2 = true positive (a); links both obserevd & predicted
-  # -1 = false positive (b); predicted but not observed
-  # 1 = false negative (c); observed but not predicted
-  # 0 = true negative (d); not predicted, not observed
-  a = length(prediction[prediction==2])
-  b = length(prediction[prediction==-1]) 
-  c = length(prediction[prediction==1]) 
-  d = length(prediction[prediction==0])
-  # calculate TSS
-  # TSS = (a*d - b*c)/((a+c)*(b+d))
-  tss = (a*d - b*c)/((a+c)*(b+d))
-  tss
-}
-# function to remove rel.abundance products < threshold
-rm_neutral <- function(Nij, threshold){
-  Nij[Nij > threshold] <-  1
-  Nij[Nij < 1] <-  0 
-  Nij
-}
-# function to remove links from niche forbidden taxa
-rm_niche <- function(inf, taxa){
-  for(name in (
-    colnames(inf)[colnames(inf) %in% taxa])){
-    inf[,name] <- 0
-  }
-  inf
-}
-# calc AUC using logistic model
-get_auc <- function(observed, inferred){
-  require(ROCR)
-  y = as.factor(as.numeric(observed))
-  x = as.factor(as.numeric(inferred))
-  if(length(levels(x))== 1){ 
-    auc = NA
-    return(auc)
-  }
-  mod = glm(y ~ x, family = binomial(link = "logit"))
-  mod.pred = predict(mod, x, type = "response")
-  prob = prediction(mod.pred, y)
-  auc = performance(prob, measure = "auc")@y.values[[1]]
-  return(auc)
-}
+# useful functions
+source("Inference_MS_functions.R")
 # fish abundance "correction"
 f_ab_corr <- function(Nij, taxa, cf){
   for(f in which(colnames(Nij) %in% taxa)){
@@ -102,7 +47,7 @@ threshold2 <- c(
   1.0e-03, 1.5e-3, 3.0e-03, 5.9e-03,
   1.0e-02, 1.5e-2, 3.0e-02, 5.9e-02)
 cf <- c(10^seq(from = 0, to = 4))
-# # correction factor ####
+# correction factor ####
 # # takes forever to run, commented out ####
 # # examine how different correction factors influence inferences
 # auc.cf <- NULL
@@ -145,11 +90,6 @@ cf <- c(10^seq(from = 0, to = 4))
 #   scale_colour_brewer(palette = "Set1")
 # ggsave("figs for MS\\post poisot\\fish corr factor.png",
 #        width = 420, height = 200, units = "mm")
-# 
-# ldply(auc.cf) %>%
-#   group_by(.id, thresh) %>%
-#   summarize(mean.auc = mean(na.omit(auc))) %>%
-#   arrange(desc(mean.auc), .id)
 
 # fish corrected ####
 # fish relative abundance * 1000
@@ -159,10 +99,11 @@ rel.ab.fish <- map(rel.ab.matr,
                    cf = 1000)
 saveRDS(rel.ab.fish, "rel ab fish x 1000.RDS")
 
-# local fish neutral ####
+# relative abundane matrices (N) with "corrected" fish
 fish.neutral.list <- map(threshold2, function (x){
   map(rel.ab.fish, rm_neutral, threshold = x)})
 names(fish.neutral.list) <- threshold2
+# multiply N  by inferred matrices (Ainf)
 fish.neutral.list <- map(fish.neutral.list, function (x){
   map2(x, inf, ~.x*.y)
 })
@@ -174,7 +115,6 @@ local_tss <- function (n, inf){
   out <- ldply(map(x,  get_tss, obs = obs[[n]]))
   out
 }
-
 # calculate tss for each threshold by site
 local.tss.f.ab <- NULL
 for(i in 1:length(obs)){
