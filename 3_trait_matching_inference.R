@@ -231,11 +231,7 @@ auc.neutral.df <- data.frame(auc = flatten_dbl(auc.neutral),
                  stringsAsFactors = FALSE)
 
 
-# local max auc Neutral
-local.thresh.neutral <- auc.neutral.df %>% 
-  group_by(site) %>%
-  top_n(1, wt = auc) %>% 
-  .[match(unique(.$site), .$site),]
+
 # global max AUC Neutral
 global.thresh.neutral <- auc.neutral.df %>%
   group_by(thresh) %>%
@@ -262,12 +258,6 @@ auc.niche.neutral.df <- data.frame(auc =
                                    each =
                                      length(threshold)),
                              stringsAsFactors = FALSE)
-
-# local max auc 
-local.thresh.nn <- auc.niche.neutral.df %>% group_by(site) %>%
-  top_n(1, wt = auc) %>% 
-  .[match(unique(.$site), .$site),]
-
 
 # global max auc
 global.thresh.nn <- auc.niche.neutral.df %>%
@@ -443,14 +433,3 @@ write_csv(data.frame(inference =
 # # TSS ~ threshold
 # # colored by site
 # # size = max TSS
-# ggplot(local.tss.thresh, 
-#        aes(x = log10(as.numeric(thresh)),
-#            y = tss,
-#            color = .id,
-#            size = is.max)) +
-#   scale_size_manual(values = c(1, 5)) +
-#   geom_point() +
-#   stat_smooth(aes(x = log10(as.numeric(thresh)),
-#                   y = tss, color = .id),
-#               alpha = 0, inherit.aes = F)+
-#   theme_classic()
