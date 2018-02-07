@@ -135,7 +135,7 @@ global.thresh.ab <- local.tss.f.ab %>%
   top_n(1, wt = mean.tss)
 
 # local fish neutral + niche ####
-#local remove neutral forbidden
+# remove niche forbidden
 fish.nn.list <- map(fish.neutral.list, function (x){
   map(x, rm_niche, taxa = taxa.forbid)})
 
@@ -152,7 +152,6 @@ local.tss.f.nn <- ldply(local.tss.f.nn) %>%
   group_by(.id) %>%
   mutate(max.tss = max(na.omit(tss)), 
          is.max = tss == max.tss)
-
 
 # global max tss
 global.thresh.nn <- local.tss.f.nn %>%
@@ -217,43 +216,10 @@ global.f.nn <- f.auc.nn.df %>%
 
 
 # fn & fp ####
-false_prop <- function(obs, inf){
-  stopifnot(dim(obs) == dim(inf), 
-            identical(colnames(obs), colnames(inf)))
-  
-  # subtract inferred from observed
-  minus <- obs - inf
-  # multiply observed and inferred
-  multiply <- obs * inf
-  # change values of 1 in multiplied matrix to 2
-  multiply[multiply == 1] <- 2
-  # add minus and multiply matrices
-  prediction <- minus + multiply
-  # prediction outcome matrix now has all 4 possibilities repreented as different integer values
-  # 2 = true positive (a); links both obserevd & predicted
-  # -1 = false positive (b); predicted but not observed
-  # 1 = false negative (c); observed but not predicted
-  # 0 = true negative (d); not predicted, not observed
-  tss.vars <- data.frame(
-    a = length(prediction[prediction==2]),
-    b = length(prediction[prediction==-1]), 
-    c = length(prediction[prediction==1]), 
-    d = length(prediction[prediction==0]),
-    S = ncol(prediction)
-  )
-  # calculate TSS
-  # TSS = (a*d - b*c)/((a+c)*(b+d))
-  # also decompose TSS to see proportion of positive and negative predictions
-  # abar = proportion of links correctly predicted
-  # dbar = proportion of links correctly not predicted
-  # bc = proportion of links incorrectly predicted
-  tss <- tss.vars %>%
-    transmute(fp = b / S**2,
-              fn = c / S**2)
-  tss
-}
+# neutral abundance 1.5e-4 (e.g. fish.neutral.list[[18]])
 f.neutral <- fish.neutral.list[[18]]
 saveRDS(f.neutral, "fish correction neutral.RDS")
+# niche + neutral = same neutral threshold, 1.5e-4
 f.nn <- fish.nn.list[[18]]
 saveRDS(f.nn, "tm nn fish for PCA.RDS")
 
@@ -267,8 +233,6 @@ nn.false <- ldply(map2(obs, f.nn, false_prop)) %>%
 false.tab <- rbind(neutral.false, nn.false)
 false.tab$inference <- c("Neutral", "Niche + Neutral")
 
-false.tab <- gather(false.tab, "var", "val", 1:4) %>%
-  spread(var, val)
 # AUC TSS threshold table
 write_csv(data.frame(inference = c("Fish corrected neutral", "Fish corrected niche + Neutral"),
            AUC = c(as.double(global.f.neutral[2]),
