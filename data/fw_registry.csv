@@ -1,0 +1,623 @@
+consumer,resource,res.category,res.order,res.family,res.subfamily,res.genus,res.species,res.method,con.category,con.order,con.family,con.subfamily,con.genus,con.species,con.method,linkevidence,source.id
+Paranephrops zealandicus,Acanthophlebia,Invertebrate,Ephemeroptera,Leptophlebiidae,,Acanthophlebia,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla,Acari,Invertebrate,Acari,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Archichauliodes diversus,Acari,Invertebrate,Acari,,,,,order,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Paranephrops zealandicus,Acari,Invertebrate,Acari,,,,,order,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Paranephrops zealandicus,Acroperla,Invertebrate,Plecoptera,Gripopterygidae,,Acroperla,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Archichauliodes diversus,Acroperla trivacuatus,Invertebrate,Plecoptera,Gripopterygidae,,Acroperla,Acroperla trivacuatus,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Stenoperla prasina,Acroperla trivacuatus,Invertebrate,Plecoptera,Gripopterygidae,,Acroperla,Acroperla trivacuatus,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Paranephrops zealandicus,Actinastrum,Diatom,,,,,,,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Acanthophlebia,Algae,Algae,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Acanthophlebia,,genus,direct,4
+Aoteapsyche,Algae,Algae,,,,,,category,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,direct,4
+Aphrophila,Algae,Algae,,,,,,category,Invertebrate,Diptera,Tipulidae,,Aphrophila,,genus,direct,4
+Austroperla,Algae,Algae,,,,,,category,Invertebrate,Plecoptera,Austroperlidae,,Austroperla,,genus,direct,4
+Chironomidae,Algae,Algae,,,,,,category,Invertebrate,Diptera,Chironomidae,,,,family,direct,4
+Coloburiscus,Algae,Algae,,,,,,category,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,direct,4
+Deleatidium,Algae,Algae,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,direct,4
+Diamesinae,Algae,Algae,,,,,,category,Invertebrate,Diptera,Chironomidae,Diamesinae,,,subfamily,direct,4
+Elmidae,Algae,Algae,,,,,,category,Invertebrate,Coleoptera,Elmidae,,Hydora.larvae,,genus,direct,4
+Eriopterini,Algae,Algae,,,,,,category,Invertebrate,Diptera,Tipulidae,,Eriopterini,,genus,direct,4
+Hydrobiosella,Algae,Algae,,,,,,category,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,,genus,direct,4
+Orthopsyche,Algae,Algae,,,,,,category,Invertebrate,Trichoptera,Hydropsychidae,,Orthopsyche,,genus,direct,4
+Platyhelminthes,Algae,Algae,,,,,,category,Invertebrate,Platyhelminthes,,,,,order,direct,4
+Polyplectropus,Algae,Algae,,,,,,category,Invertebrate,Trichoptera,Polycentropidae,,Polyplectropus,,genus,direct,4
+Ptylidactylidae,Algae,Algae,,,,,,category,Invertebrate,Coleoptera,Ptylidactylidae,,,,family,direct,4
+Pycnocentria,Algae,Algae,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,,genus,direct,4
+Pycnocentrodes,Algae,Algae,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,,genus,direct,4
+Spaniocerca,Algae,Algae,,,,,,category,Invertebrate,Plecoptera,Notonemouridae,,Spaniocerca,,genus,direct,4
+Tanypodinae,Algae,Algae,,,,,,category,Invertebrate,Diptera,Chironomidae,Tanypodinae,,,subfamily,direct,4
+Zelandobius,Algae,Algae,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,direct,4
+Zelandoperla,Algae,Algae,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,direct,4
+Zephlebia,Algae,Algae,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Zephlebia,,genus,direct,4
+Philanis plebeius,Algae,Algae,,,,,,category,Invertebrate,Trichoptera,Chathamidae,,Philanis,Philanis plebeius,genus,,8
+Pycnocentrodes aeris,Algae,Algae,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,Pycnocentrodes aeris,genus,,8
+Pycnocentrodes aureola,Algae,Algae,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,Pycnocentrodes aureola,genus,,8
+Zelolessica,Algae,Algae,,,,,,category,Invertebrate,Trichoptera,Helicophidae,,Zelolessica,,genus,,8
+Anguilla,Ameletopsis,Invertebrate,Ephemeroptera,Ameletopsidae,,Ameletopsis,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Anguilla,Ameletopsis,Invertebrate,Ephemeroptera,Ameletopsidae,,Ameletopsis,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Ameletopsis,Invertebrate,Ephemeroptera,Ameletopsidae,,Ameletopsis,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Ameletopsis,Invertebrate,Ephemeroptera,Ameletopsidae,,Ameletopsis,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Paranephrops zealandicus,Ameletopsis,Invertebrate,Ephemeroptera,Ameletopsidae,,Ameletopsis,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias argenteus,Amphipoda,Invertebrate,Amphipoda,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Anguilla australis,Anguilla,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Anguilla,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Galaxias argenteus,Anisops,Invertebrate,Hemiptera,Notonectidae,,Anisops,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Anguilla australis,Anisops,Invertebrate,Hemiptera,Notonectidae,,Anisops,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla australis,Anisoptera,Invertebrate,Odonata,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Anisoptera,Invertebrate,Odonata,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Anguilla,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Gobiomorphus,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Archichauliodes,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,direct,4
+Anguilla dieffenbachii,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,direct,5
+Galaxias southern,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,5
+Galaxias vulgaris,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Gobiomorphus breviceps,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Gobiomorphus cotidianus,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus cotidianus,genus,direct,5
+Salmo trutta,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Paranephrops zealandicus,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Aoteapsyche,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,15
+Galaxias argenteus,Aoteapsyche colonica,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,Aoteapsyche colonica,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Anguilla,Aphrophila,Invertebrate,Diptera,Tipulidae,,Aphrophila,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Gobiomorphus breviceps,Aphrophila,Invertebrate,Diptera,Tipulidae,,Aphrophila,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Anguilla,Archichauliodes,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Archichauliodes,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Archichauliodes,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Galaxias argenteus,Archichauliodes diversus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Archichauliodes diversus,Archichauliodes diversus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Anguilla dieffenbachii,Archichauliodes diversus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla australis,Archichauliodes diversus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,15
+Anguilla dieffenbachii,Archichauliodes diversus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,15
+Paranephrops zealandicus,Atalophlebioides,Invertebrate,Ephemeroptera,Leptophlebiidae,,Atalophlebioides,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Gobiomorphus breviceps,Austroclima,Invertebrate,Ephemeroptera,Leptophlebiidae,,Austroclima,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Salmo trutta,Austroclima,Invertebrate,Ephemeroptera,Leptophlebiidae,,Austroclima,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Galaxias argenteus,Austroclima,Invertebrate,Ephemeroptera,Leptophlebiidae,,Austroclima,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Austroclima,Invertebrate,Ephemeroptera,Leptophlebiidae,,Austroclima,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Paranephrops zealandicus,Austroperla,Invertebrate,Plecoptera,Austroperlidae,,Austroperla,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Austroperla,Invertebrate,Plecoptera,Austroperlidae,,Austroperla,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla,Austrosimulium,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Austrosimulium,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Austrosimulium,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Cheimarrichthys fosteri,Austrosimulium,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,Fish,Perciformes,Cheimarrichthyidae,,Cheimarrichthys,Cheimarrichthys fosteri,species,direct,5
+Galaxias brevipinnis,Austrosimulium,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias brevipinnis,genus,direct,5
+Galaxias vulgaris,Austrosimulium,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Gobiomorphus breviceps,Austrosimulium,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Salmo trutta,Austrosimulium,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Aoteapsyche colonica,Austrosimulium,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,Aoteapsyche colonica,genus,,8
+Paranephrops zealandicus,Austrosimulium,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias argenteus,Austrosimulium tillyardianum Larvae,Invertebrate,Diptera,Simuliidae,,Austrosimulium,Austrosimulium tillyardianum Larvae,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias argenteus,Austrosimulium tillyardianum Pupae,Invertebrate,Diptera,Simuliidae,,Austrosimulium,Austrosimulium tillyardianum Pupae,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Hydrobiosis parumbripennis,Austrosimulium tilyardianum,Invertebrate,Diptera,Simuliidae,,Austrosimulium,Austrosimulium tilyardianum,genus,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,Hydrobiosis parumbripennis,genus,,9
+Hydropsyche colonica,Austrosimulium tilyardianum,Invertebrate,Diptera,Simuliidae,,Austrosimulium,Austrosimulium tilyardianum,genus,Invertebrate,Trichoptera,Hydropsychidae,,Hydropsyche,Hydropsyche colonica,genus,,9
+Galaxias vulgaris,Beraeoptera,Invertebrate,Trichoptera,Conoesucidae,,Beraeoptera,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Salmo trutta,Beraeoptera,Invertebrate,Trichoptera,Conoesucidae,,Beraeoptera,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Paranephrops zealandicus,Beraeoptera,Invertebrate,Trichoptera,Conoesucidae,,Beraeoptera,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias brevipinnis,Beraeoptera,Invertebrate,Trichoptera,Conoesucidae,,Beraeoptera,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias brevipinnis,genus,,15
+Galaxias argenteus,Beraeoptera roria,Invertebrate,Trichoptera,Conoesucidae,,Beraeoptera,Beraeoptera roria,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias argenteus,Ceratopogonidae,Invertebrate,Diptera,Ceratopogonidae,,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Ameletopsis,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Ephemeroptera,Ameletopsidae,,Ameletopsis,,genus,direct,2
+Anguilla,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Aoteapsyche,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,direct,2
+Archichauliodes,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,direct,2
+Costachorema,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Hydrobiosidae,,Costachorema,,genus,direct,2
+Galaxias,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Hydrobiosis,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,direct,2
+Psilochorema,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Hydrobiosidae,,Psilochorema,,genus,direct,2
+Salmo,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Stenoperla,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,2
+Tanypodinae,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Diptera,Chironomidae,Tanypodinae,,,subfamily,direct,2
+Costachorema,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Hydrobiosidae,,Costachorema,,genus,direct,3
+Edpercivalia,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Hydrobiosidae,,Edpercivalia,,genus,direct,3
+Polyplectropus,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Polycentropidae,,Polyplectropus,,genus,direct,3
+Stenoperla,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,3
+Aphrophila,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Diptera,Tipulidae,,Aphrophila,,genus,direct,4
+Archichauliodes,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,direct,4
+Hydrobiosella,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,,genus,direct,4
+Platyhelminthes,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Platyhelminthes,,,,,order,direct,4
+Stenoperla,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,4
+Galaxias argenteus,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias argenteus,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias argenteus,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Aoteapsyche colonica,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,Aoteapsyche colonica,genus,,8
+Hydrobiosis parumbripennis,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,Hydrobiosis parumbripennis,genus,,9
+Hydropsyche colonica,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Trichoptera,Hydropsychidae,,Hydropsyche,Hydropsyche colonica,genus,,9
+Archichauliodes diversus,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Stenoperla prasina,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Anguilla dieffenbachii,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla australis,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla australis,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,15
+Gobiomorphus huttoni,Chironomidae,Invertebrate,Diptera,Chironomidae,,,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus huttoni,genus,,15
+Gobiomorphus breviceps,Chironominae,Invertebrate,Diptera,Chironomidae,Chironominae,,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Galaxias argenteus,Coleoptera,Invertebrate,Coleoptera,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias argenteus,Coleoptera,Invertebrate,Coleoptera,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Anguilla,Coloburiscus,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Coloburiscus,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Coloburiscus,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Coloburiscus,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Stenoperla,Coloburiscus,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,4
+Gobiomorphus breviceps,Coloburiscus,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Gobiomorphus huttoni,Coloburiscus,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus huttoni,genus,,15
+Galaxias argenteus,Coloburiscus humeralis,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,Coloburiscus humeralis,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Archichauliodes diversus,Coloburiscus humeralis,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,Coloburiscus humeralis,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Stenoperla prasina,Coloburiscus humeralis,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,Coloburiscus humeralis,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Anguilla dieffenbachii,Colobursicus,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla,Costachorema,Invertebrate,Trichoptera,Hydrobiosidae,,Costachorema,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Gobiomorphus,Costachorema,Invertebrate,Trichoptera,Hydrobiosidae,,Costachorema,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Costachorema,Invertebrate,Trichoptera,Hydrobiosidae,,Costachorema,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Gobiomorphus breviceps,Costachorema,Invertebrate,Trichoptera,Hydrobiosidae,,Costachorema,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Salmo trutta,Costachorema,Invertebrate,Trichoptera,Hydrobiosidae,,Costachorema,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Cheimarrichthys fosteri,Costachorema xanthopterum,Invertebrate,Trichoptera,Hydrobiosidae,,Costachorema,,genus,Fish,Perciformes,Cheimarrichthyidae,,Cheimarrichthys,Cheimarrichthys fosteri,species,direct,5
+Salmo trutta,Costachorema xanthopterum,Invertebrate,Trichoptera,Hydrobiosidae,,Costachorema,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Aoteapsyche,CPOM,CPOM,,,,,,category,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,direct,4
+Chironomidae,CPOM,CPOM,,,,,,category,Invertebrate,Diptera,Chironomidae,,,,family,direct,4
+Diamesinae,CPOM,CPOM,,,,,,category,Invertebrate,Diptera,Chironomidae,Diamesinae,,,subfamily,direct,4
+Eriopterini,CPOM,CPOM,,,,,,category,Invertebrate,Diptera,Tipulidae,,Eriopterini,,genus,direct,4
+Hydrobiosella,CPOM,CPOM,,,,,,category,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,,genus,direct,4
+Hydrophilidae,CPOM,CPOM,,,,,,category,Invertebrate,Coleoptera,Hydrophilidae,,,,family,direct,4
+Spaniocerca,CPOM,CPOM,,,,,,category,Invertebrate,Plecoptera,Notonemouridae,,Spaniocerca,,genus,direct,4
+Zelandobius,CPOM,CPOM,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,direct,4
+Zelandoperla,CPOM,CPOM,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,direct,4
+Anguilla,Cricotopus,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Paranephrops zealandicus,Cricotopus,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla australis,Culicidae,Invertebrate,Diptera,Culicidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Deleatidium,Cymbella,Diatom,Cymbellales,Cymbellaceae,,Cymbella,,,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,direct,2
+Ameletopsis,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Ephemeroptera,Ameletopsidae,,Ameletopsis,,genus,direct,2
+Anguilla,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Archichauliodes,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,direct,2
+Galaxias,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Stenoperla,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,2
+Archichauliodes,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,direct,3
+Costachorema,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Trichoptera,Hydrobiosidae,,Costachorema,,genus,direct,3
+Edpercivalia,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Trichoptera,Hydrobiosidae,,Edpercivalia,,genus,direct,3
+Hydrobiosis,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,direct,3
+Polyplectropus,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Trichoptera,Polycentropidae,,Polyplectropus,,genus,direct,3
+Stenoperla,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,3
+Aphrophila,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Diptera,Tipulidae,,Aphrophila,,genus,direct,4
+Archichauliodes,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,direct,4
+Hydrobiosella,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,,genus,direct,4
+Stenoperla,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,4
+Anguilla dieffenbachii,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,direct,5
+Cheimarrichthys fosteri,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Perciformes,Cheimarrichthyidae,,Cheimarrichthys,Cheimarrichthys fosteri,species,direct,5
+Galaxias southern,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,5
+Galaxias brevipinnis,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias brevipinnis,genus,direct,5
+Galaxias paucispondylus,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias paucispondylus,genus,direct,5
+Galaxias vulgaris,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Gobiomorphus breviceps,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Salmo trutta,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Galaxias argenteus,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Hydrobiosis parumbripennis,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,Hydrobiosis parumbripennis,genus,,9
+Archichauliodes diversus,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Stenoperla prasina,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Paranephrops zealandicus,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla australis,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,15
+Anguilla dieffenbachii,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,15
+Cheimarrichthys fosteri,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Perciformes,Cheimarrichthyidae,,Cheimarrichthys,Cheimarrichthys fosteri,species,,15
+Gobiomorphus breviceps,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,,15
+Gobiomorphus huttoni,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus huttoni,genus,,15
+Gobiomorphus huttoni,Deleatidium,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus huttoni,genus,,15
+Aoteapsyche colonica,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,Aoteapsyche colonica,genus,,8
+Oeconesus similis,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Trichoptera,Oeconesidae,,Oeconesus,Oeconesus similis,genus,,8
+Philanis plebeius,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Trichoptera,Chathamidae,,Philanis,Philanis plebeius,genus,,8
+Pycnocentrodes aeris,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,Pycnocentrodes aeris,genus,,8
+Pycnocentrodes aureola,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,Pycnocentrodes aureola,genus,,8
+Triplectides obsoleta,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Trichoptera,Leptoceridae,,Triplectides,Triplectides obsoleta,genus,,8
+Zelolessica cheira,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Trichoptera,Helicophidae,,Zelolessica,Zelolessica cheira,genus,,8
+Hydrobiosis parumbripennis,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,Hydrobiosis parumbripennis,genus,,9
+Hydropsyche colonica,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Trichoptera,Hydropsychidae,,Hydropsyche,Hydropsyche colonica,genus,,9
+Archichauliodes diversus,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Stenoperla prasina,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Aphrophila neozelandica,Detritus,Detritus,Detritus,,,,,order,Invertebrate,Diptera,Tipulidae,,Aphrophila,Aphrophila neozelandica,genus,,17
+Stenoperla,Diamesinae,Invertebrate,Diptera,Chironomidae,Diamesinae,,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,2
+Stenoperla,Diamesinae,Invertebrate,Diptera,Chironomidae,Diamesinae,,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,4
+Galaxias argenteus,Diaprepocoris zealndiae,Invertebrate,Hemiptera,Corixidae,,Diaprepocoris,Diaprepocoris zealndiae,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Acanthophlebia,Diatom,Diatom,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Acanthophlebia,,genus,direct,4
+Aoteapsyche,Diatom,Diatom,,,,,,category,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,direct,4
+Aphrophila,Diatom,Diatom,,,,,,category,Invertebrate,Diptera,Tipulidae,,Aphrophila,,genus,direct,4
+Archichauliodes,Diatom,Diatom,,,,,,category,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,direct,4
+Austroperla,Diatom,Diatom,,,,,,category,Invertebrate,Plecoptera,Austroperlidae,,Austroperla,,genus,direct,4
+Austrosimulium,Diatom,Diatom,,,,,,category,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,direct,4
+Chironomidae,Diatom,Diatom,,,,,,category,Invertebrate,Diptera,Chironomidae,,,,family,direct,4
+Coloburiscus,Diatom,Diatom,,,,,,category,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,direct,4
+Deleatidium,Diatom,Diatom,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,direct,4
+Diamesinae,Diatom,Diatom,,,,,,category,Invertebrate,Diptera,Chironomidae,Diamesinae,,,subfamily,direct,4
+Elmidae,Diatom,Diatom,,,,,,category,Invertebrate,Coleoptera,Elmidae,,Hydora.larvae,,genus,direct,4
+Eriopterini,Diatom,Diatom,,,,,,category,Invertebrate,Diptera,Tipulidae,,Eriopterini,,genus,direct,4
+Hydrobiosella,Diatom,Diatom,,,,,,category,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,,genus,direct,4
+Hydrophilidae,Diatom,Diatom,,,,,,category,Invertebrate,Coleoptera,Hydrophilidae,,,,family,direct,4
+Orthopsyche,Diatom,Diatom,,,,,,category,Invertebrate,Trichoptera,Hydropsychidae,,Orthopsyche,,genus,direct,4
+Platyhelminthes,Diatom,Diatom,,,,,,category,Invertebrate,Platyhelminthes,,,,,order,direct,4
+Polyplectropus,Diatom,Diatom,,,,,,category,Invertebrate,Trichoptera,Polycentropidae,,Polyplectropus,,genus,direct,4
+Ptylidactylidae,Diatom,Diatom,,,,,,category,Invertebrate,Coleoptera,Ptylidactylidae,,,,family,direct,4
+Pycnocentria,Diatom,Diatom,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,,genus,direct,4
+Pycnocentrodes,Diatom,Diatom,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,,genus,direct,4
+Tanypodinae,Diatom,Diatom,,,,,,category,Invertebrate,Diptera,Chironomidae,Tanypodinae,,,subfamily,direct,4
+Zelandobius,Diatom,Diatom,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,direct,4
+Zelandoperla,Diatom,Diatom,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,direct,4
+Zephlebia,Diatom,Diatom,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Zephlebia,,genus,direct,4
+Aoteapsyche colonica,Diatom,Diatom,,,,,,category,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,Aoteapsyche colonica,genus,,8
+Pycnocentrodes aeris,Diatom,Diatom,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,Pycnocentrodes aeris,genus,,8
+Austroperla cyrene,Diatom,Diatom,,,,,,category,Invertebrate,Plecoptera,Austroperlidae,,Austroperla,Austroperla cyrene,genus,,16
+Deleatidium,Diatom,Diatom,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,,16
+Nesameletus ornatus,Diatom,Diatom,,,,,,category,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,Nesameletus ornatus,genus,,16
+Olinga feredayi,Diatom,Diatom,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Olinga,Olinga feredayi,genus,,16
+Spaniocerca zelandica,Diatom,Diatom,,,,,,category,Invertebrate,Plecoptera,Notonemouridae,,Spaniocerca,Spaniocerca zelandica,genus,,16
+Zelandoperla agnetis,Diatom,Diatom,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,Zelandoperla agnetis,genus,,16
+Aphrophila neozelandica,Diatom,Diatom,,,,,,category,Invertebrate,Diptera,Tipulidae,,Aphrophila,Aphrophila neozelandica,genus,,17
+Galaxias vulgaris,Elmidae,Invertebrate,Coleoptera,Elmidae,,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Archichauliodes diversus,Elmidae,Invertebrate,Coleoptera,Elmidae,,,,family,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Stenoperla prasina,Elmidae,Invertebrate,Coleoptera,Elmidae,,,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Aoteapsyche colonica,Ephemeroptera,Invertebrate,Ephemeroptera,,,,,order,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,Aoteapsyche colonica,genus,,8
+Anguilla,Eukiefferiella,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Gobiomorphus,Eukiefferiella,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Eukiefferiella,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Paranephrops zealandicus,Eukiefferiella,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Deleatidium,Eunotia,Diatom,Eunotiales,Eunotiaceae,,Eunotia,,genus,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,direct,2
+Aoteapsyche colonica,Filamentous Algae,Filamentous Algae,,,,,,category,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,Aoteapsyche colonica,genus,,8
+Austroperla cyrene,Filamentous Algae,Filamentous Algae,,,,,,category,Invertebrate,Plecoptera,Austroperlidae,,Austroperla,Austroperla cyrene,genus,,16
+Coloburiscus humeralis,Filamentous Algae,Filamentous Algae,,,,,,category,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,Coloburiscus humeralis,genus,,16
+Nesameletus ornatus,Filamentous Algae,Filamentous Algae,,,,,,category,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,Nesameletus ornatus,genus,,16
+Olinga feredayi,Filamentous Algae,Filamentous Algae,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Olinga,Olinga feredayi,genus,,16
+Spaniocercoides cowleyi,Filamentous Algae,Filamentous Algae,,,,,,category,Invertebrate,Plecoptera,Notonemouridae,,Spaniocerca,Spaniocercoides cowleyi,genus,,16
+Zelandobius confusus,Filamentous Algae,Filamentous Algae,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,Zelandobius confusus,genus,,16
+Zelandoperla agnetis,Filamentous Algae,Filamentous Algae,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,Zelandoperla agnetis,genus,,16
+Aphrophila neozelandica,Filamentous Algae,Filamentous Algae,,,,,,category,Invertebrate,Diptera,Tipulidae,,Aphrophila,Aphrophila neozelandica,genus,,17
+Acanthophlebia,FPOM,FPOM,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Acanthophlebia,,genus,direct,4
+Aoteapsyche,FPOM,FPOM,,,,,,category,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,,genus,direct,4
+Aphrophila,FPOM,FPOM,,,,,,category,Invertebrate,Diptera,Tipulidae,,Aphrophila,,genus,direct,4
+Archichauliodes,FPOM,FPOM,,,,,,category,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,direct,4
+Austroperla,FPOM,FPOM,,,,,,category,Invertebrate,Plecoptera,Austroperlidae,,Austroperla,,genus,direct,4
+Austrosimulium,FPOM,FPOM,,,,,,category,Invertebrate,Diptera,Simuliidae,,Austrosimulium,,genus,direct,4
+Chironomidae,FPOM,FPOM,,,,,,category,Invertebrate,Diptera,Chironomidae,,,,family,direct,4
+Coloburiscus,FPOM,FPOM,,,,,,category,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,,genus,direct,4
+Diamesinae,FPOM,FPOM,,,,,,category,Invertebrate,Diptera,Chironomidae,Diamesinae,,,subfamily,direct,4
+Elmidae,FPOM,FPOM,,,,,,category,Invertebrate,Coleoptera,Elmidae,,Hydora.larvae,,genus,direct,4
+Eriopterini,FPOM,FPOM,,,,,,category,Invertebrate,Diptera,Tipulidae,,Eriopterini,,genus,direct,4
+Hydrobiosella,FPOM,FPOM,,,,,,category,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,,genus,direct,4
+Orthopsyche,FPOM,FPOM,,,,,,category,Invertebrate,Trichoptera,Hydropsychidae,,Orthopsyche,,genus,direct,4
+Platyhelminthes,FPOM,FPOM,,,,,,category,Invertebrate,Platyhelminthes,,,,,order,direct,4
+Polyplectropus,FPOM,FPOM,,,,,,category,Invertebrate,Trichoptera,Polycentropidae,,Polyplectropus,,genus,direct,4
+Ptylidactylidae,FPOM,FPOM,,,,,,category,Invertebrate,Coleoptera,Ptylidactylidae,,,,family,direct,4
+Pycnocentrodes,FPOM,FPOM,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,,genus,direct,4
+Zelandobius,FPOM,FPOM,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,direct,4
+Zelandoperla,FPOM,FPOM,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,direct,4
+Zephlebia,FPOM,FPOM,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Zephlebia,,genus,direct,4
+Acanthophlebia,FPOM,FPOM,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Acanthophlebia,,genus,,7
+Aoteapsyche raruraru,FPOM,FPOM,,,,,,category,Invertebrate,Trichoptera,Hydropsychidae,,Aoteapsyche,Aoteapsyche raruraru,genus,,16
+Austroclima sepia,FPOM,FPOM,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Austroclima,Austroclima sepia,genus,,16
+Austroperla cyrene,FPOM,FPOM,,,,,,category,Invertebrate,Plecoptera,Austroperlidae,,Austroperla,Austroperla cyrene,genus,,16
+Coloburiscus humeralis,FPOM,FPOM,,,,,,category,Invertebrate,Ephemeroptera,Coloburiscidae,,Coloburiscus,Coloburiscus humeralis,genus,,16
+Deleatidium,FPOM,FPOM,,,,,,category,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,,16
+Hydrobiosella stenocerca,FPOM,FPOM,,,,,,category,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,Hydrobiosella stenocerca,genus,,16
+Nesameletus ornatus,FPOM,FPOM,,,,,,category,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,Nesameletus ornatus,genus,,16
+Olinga feredayi,FPOM,FPOM,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Olinga,Olinga feredayi,genus,,16
+Pycnocentrella eruensis,FPOM,FPOM,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrella,Pycnocentrella eruensis,genus,,16
+Pycnocentria sylvestris,FPOM,FPOM,,,,,,category,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,Pycnocentria sylvestris,genus,,16
+Spaniocerca zelandica,FPOM,FPOM,,,,,,category,Invertebrate,Plecoptera,Notonemouridae,,Spaniocerca,Spaniocerca zelandica,genus,,16
+Spaniocercoides cowleyi,FPOM,FPOM,,,,,,category,Invertebrate,Plecoptera,Notonemouridae,,Spaniocerca,Spaniocercoides cowleyi,genus,,16
+Zelandobius confusus,FPOM,FPOM,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,Zelandobius confusus,genus,,16
+Zelandoperla agnetis,FPOM,FPOM,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,Zelandoperla agnetis,genus,,16
+Zelandoperla fenestrata,FPOM,FPOM,,,,,,category,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,Zelandoperla fenestrata,genus,,16
+Deleatidium,Fragilaria,Diatom,Fragilariales,Fragilariaceae,,Fragilaria,,genus,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,direct,2
+Anguilla dieffenbachii,Gobiomorphus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla australis,Gobiomorphus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Gobiomorphus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Deleatidium,Gomphonema,Diatom,Cymbellales,Gomphonemataceae,,Gomphonema,,genus,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,direct,2
+Galaxias argenteus,Gyraulus corinna,Invertebrate,Mollusca,Planorbidae,,Gyraulus,Gyraulus corinna,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Gyrinus,Invertebrate,Coleoptera,Gyrinidae,,Gyrinus,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Gobiomorphus,Helicopsyche,Invertebrate,Trichoptera,Helicopyshidae,,Helicopsyche,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Helicopsyche,Invertebrate,Trichoptera,Helicopyshidae,,Helicopsyche,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Galaxias argenteus,Helicopsyche,Invertebrate,Trichoptera,Helicopyshidae,,Helicopsyche,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Helicopsyche,Invertebrate,Trichoptera,Helicopyshidae,,Helicopsyche,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias postvectis,Helicopsyche,Invertebrate,Trichoptera,Helicopyshidae,,Helicopsyche,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias postvectis,genus,,14
+Archichauliodes,Homalaena,invertebrate,Coleoptera,Hydraenidae,,Homalaena,,family,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,,genus,direct,2
+Galaxias,Homalaena,invertebrate,Coleoptera,Hydraenidae,,Homalaena,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Homalaena,invertebrate,Coleoptera,Hydraenidae,,Homalaena,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Paranephrops zealandicus,Hudsonema,Invertebrate,Trichoptera,Leptoceridae,,Hudsonema,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Salmo trutta,Hudsonema amabile,Invertebrate,Trichoptera,Leptoceridae,,Hudsonema,Hudsonema amabile,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Galaxias argenteus,Hudsonema amabilis,Invertebrate,Trichoptera,Leptoceridae,,Hudsonema,Hudsonema amabilis,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Stenoperla prasina,Hudsonema amabilis,Invertebrate,Trichoptera,Leptoceridae,,Hudsonema,Hudsonema amabilis,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Anguilla,Hydora,Invertebrate,Coleoptera,Elmidae,,Hydora,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Hydora,Invertebrate,Coleoptera,Elmidae,,Hydora,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Hydora,Invertebrate,Coleoptera,Elmidae,,Hydora,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Paranephrops zealandicus,Hydora,Invertebrate,Coleoptera,Elmidae,,Hydora,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Paranephrops zealandicus,Hydraena,Invertebrate,Coleoptera,Hydraenidae,,Hydraena,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias,Hydrobiosella,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Hydrobiosella,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Stenoperla,Hydrobiosella,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,2
+Paranephrops zealandicus,Hydrobiosella,Invertebrate,Trichoptera,Philopotamidae,,Hydrobiosella,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Stenoperla,Hydrobiosidae,Invertebrate,Trichoptera,Hydrobiosidae,,,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,3
+Archichauliodes diversus,Hydrobiosidae,Invertebrate,Trichoptera,Hydrobiosidae,,,,family,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Stenoperla prasina,Hydrobiosidae,Invertebrate,Trichoptera,Hydrobiosidae,,,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Anguilla,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Anguilla dieffenbachii,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,direct,5
+Cheimarrichthys fosteri,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Perciformes,Cheimarrichthyidae,,Cheimarrichthys,Cheimarrichthys fosteri,species,direct,5
+Galaxias southern,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,5
+Galaxias brevipinnis,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias brevipinnis,genus,direct,5
+Galaxias vulgaris,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Gobiomorphus breviceps,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Gobiomorphus cotidianus,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus cotidianus,genus,direct,5
+Salmo trutta,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Galaxias argenteus,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Hydrobiosis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Archichauliodes diversus,Hydrobiosis clavigera,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,Hydrobiosis clavigera,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Stenoperla prasina,Hydrobiosis clavigera,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,Hydrobiosis clavigera,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Galaxias argenteus,Hydrobiosis spatulata,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,Hydrobiosis spatulata,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias argenteus,Hydrobiosis umbripennis,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,Hydrobiosis umbripennis,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias,Hydrochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Hydrochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Archichauliodes diversus,Hydropsyche colonica,Invertebrate,Trichoptera,Hydropsychidae,,Hydropsyche,,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Stenoperla prasina,Hydropsyche colonica,Invertebrate,Trichoptera,Hydropsychidae,,Hydropsyche,,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Anguilla dieffenbachii,Hyridella,Invertebrate,Mollusca,Unionidae,,Hyridella,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla dieffenbachii,Ichthybotus,Invertebrate,Ephemeroptera,Ephemeridae,,Ichthybotus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,15
+Paranephrops zealandicus,Isopod,Invertebrate,Isopoda,,,,,order,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Paranephrops zealandicus,Larsia,Invertebrate,Diptera,Chironomidae,Tanypodinae,Larsia,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias,Limonia,Invertebrate,Diptera,Tipulidae,,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Limonia,Invertebrate,Diptera,Tipulidae,,,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Anguilla dieffenbachii,Lymnaea,Invertebrate,Mollusca,Lymnaeidae,,Lymnaea,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla,Maoridiamesa,Invertebrate,Diptera,Chironomidae,Diamesinae,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias brevipinnis,Maoridiamesa,Invertebrate,Diptera,Chironomidae,Diamesinae,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias brevipinnis,genus,direct,5
+Galaxias vulgaris,Maoridiamesa,Invertebrate,Diptera,Chironomidae,Diamesinae,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Gobiomorphus breviceps,Maoridiamesa,Invertebrate,Diptera,Chironomidae,Diamesinae,,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Gobiomorphus cotidianus,Maoridiamesa,Invertebrate,Diptera,Chironomidae,Diamesinae,,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus cotidianus,genus,direct,5
+Salmo trutta,Maoridiamesa,Invertebrate,Diptera,Chironomidae,Diamesinae,,,family,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Paranephrops zealandicus,Maoridiamesa,Invertebrate,Diptera,Chironomidae,Diamesinae,,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Paranephrops zealandicus,Megaleptoperla,Invertebrate,Plecoptera,Gripopterygidae,,Megaleptoperla,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla australis,Microvelia,Invertebrate,Hemiptera,Veliidae,,Microvelia,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Galaxias argenteus,Microvelia macgregori,Invertebrate,Hemiptera,Veliidae,,Microvelia,Microvelia macgregori,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Mischoderus,Invertebrate,Diptera,Tanyderidae,,Mischoderus,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias vulgaris,Muscidae,Invertebrate,Diptera,Muscidae,,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Gobiomorphus cotidianus,Muscidae,Invertebrate,Diptera,Muscidae,,,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus cotidianus,genus,direct,5
+Galaxias argenteus,Muscidae,Invertebrate,Diptera,Muscidae,,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Anguilla dieffenbachii,Muscidae,Invertebrate,Diptera,Muscidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,15
+Anguilla australis,Mutelidae,Invertebrate,Mollusca,Mutelidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla,Naonella,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Paranephrops zealandicus,Naonella,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Deleatidium,Navicula,Diatom,Naviculales,Naviculaceae,,Navicula,,genus,Invertebrate,Ephemeroptera,Leptophlebiidae,,Deleatidium,,genus,direct,2
+Galaxias,Nematode,Invertebrate,Nematoda,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Nematode,Invertebrate,Nematoda,,,,,order,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Nematode,Invertebrate,Nematoda,,,,,order,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Galaxias argenteus,Nematode,Invertebrate,Nematoda,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Nematode,Invertebrate,Nematoda,,,,,order,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias postvectis,Nematode,Invertebrate,Nematoda,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias postvectis,genus,,14
+Galaxias,Nesameletus,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Nesameletus,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Nesameletus,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Galaxias southern,Nesameletus,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,5
+Galaxias vulgaris,Nesameletus,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Gobiomorphus breviceps,Nesameletus,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Salmo trutta,Nesameletus,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Paranephrops zealandicus,Nesameletus,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Gobiomorphus breviceps,Nesameletus,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,,15
+Stenoperla prasina,Nesameletus ornatus,Invertebrate,Ephemeroptera,Nesameletidae,,Nesameletus,Nesameletus ornatus,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Galaxias,Neurochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Neurochorema,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Neurochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Neurochorema,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Neurochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Neurochorema,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Gobiomorphus breviceps,Neurochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Neurochorema,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Salmo trutta,Neurochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Neurochorema,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Anguilla dieffenbachii,Neuroptera,Invertebrate,Neuroptera,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Galaxias argenteus,Odonata ,Invertebrate,Odonata,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Odonata ,Invertebrate,Odonata,,,,,order,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Paranephrops zealandicus,Oecetis,Invertebrate,Trichoptera,Leptoceridae,,,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Oecetis,Invertebrate,Trichoptera,Leptoceridae,,,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Gobiomorphus,Oeconesus,Invertebrate,Trichoptera,Oeconesidae,,Oeconesus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Oeconesus,Invertebrate,Trichoptera,Oeconesidae,,Oeconesus,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Anguilla dieffenbachii,Oeconesus,Invertebrate,Trichoptera,Oeconesidae,,Oeconesus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla,Oligochaetae,Invertebrate,Oligochaetae,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Oligochaetae,Invertebrate,Oligochaetae,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Oligochaetae,Invertebrate,Oligochaetae,,,,,order,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Gobiomorphus breviceps,Oligochaetae,Invertebrate,Oligochaetae,,,,,order,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Anguilla australis,Oligochaetae,Invertebrate,Oligochaetae,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Oligochaetae,Invertebrate,Oligochaetae,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Galaxias postvectis,Oligochaetae,Invertebrate,Oligochaetae,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias postvectis,genus,,14
+Anguilla australis,Oligochaetae,Invertebrate,Oligochaetae,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,15
+Anguilla dieffenbachii,Oligochaetae,Invertebrate,Oligochaetae,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,15
+Anguilla,Olinga,Invertebrate,Trichoptera,Conoesucidae,,Olinga,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Olinga,Invertebrate,Trichoptera,Conoesucidae,,Olinga,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Olinga,Invertebrate,Trichoptera,Conoesucidae,,Olinga,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo trutta,Olinga,Invertebrate,Trichoptera,Conoesucidae,,Olinga,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Hudsonema aliena,Olinga,Invertebrate,Trichoptera,Conoesucidae,,Olinga,,genus,Invertebrate,Trichoptera,Leptoceridae,,Hudsonema,Hudsonema aliena,genus,,8
+Anguilla dieffenbachii,Olinga,Invertebrate,Trichoptera,Conoesucidae,,Olinga,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Galaxias postvectis,Olinga,Invertebrate,Trichoptera,Conoesucidae,,Olinga,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias postvectis,genus,,14
+Anguilla dieffenbachii,Olinga,Invertebrate,Trichoptera,Conoesucidae,,Olinga,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,15
+Galaxias argenteus,Olinga feredayi,Invertebrate,Trichoptera,Conoesucidae,,Olinga,Olinga feredayi,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Archichauliodes diversus,Olinga feredayi,Invertebrate,Trichoptera,Conoesucidae,,Olinga,Olinga feredayi,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Galaxias argenteus,Oniscigaster wakefieldi,Invertebrate,Ephemeroptera,Oniscigastridae,,Oniscigaster,Oniscigaster wakefieldi,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Stenoperla,Orthocladiinae,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,2
+Cheimarrichthys fosteri,Orthocladiinae,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Perciformes,Cheimarrichthyidae,,Cheimarrichthys,Cheimarrichthys fosteri,species,direct,5
+Gobiomorphus breviceps,Orthocladiinae,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Salmo trutta,Orthocladiinae,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Galaxias southern,Orthocladinae,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,5
+Galaxias brevipinnis,Orthocladinae,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias brevipinnis,genus,direct,5
+Galaxias vulgaris,Orthocladinae,Invertebrate,Diptera,Chironomidae,Orthocladiinae,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Stenoperla,Orthopsyche,Invertebrate,Trichoptera,Hydropsychidae,,Orthopsyche,,family,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,4
+Anguilla,Oxyethira,Invertebrate,Trichoptera,Hydroptilidae,,Oxyethira,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Oxyethira,Invertebrate,Trichoptera,Hydroptilidae,,Oxyethira,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Oxyethira,Invertebrate,Trichoptera,Hydroptilidae,,Oxyethira,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Oxyethira,Invertebrate,Trichoptera,Hydroptilidae,,Oxyethira,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Galaxias postvectis,Oxyethira,Invertebrate,Trichoptera,Hydroptilidae,,Oxyethira,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias postvectis,genus,,14
+Gobiomorphus huttoni,Oxyethira,Invertebrate,Trichoptera,Hydroptilidae,,Oxyethira,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus huttoni,genus,,15
+Galaxias brevipinnis,Oxyethira albiceps,Invertebrate,Trichoptera,Hydroptilidae,,Oxyethira,Oxyethira albiceps,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias brevipinnis,genus,direct,5
+Gobiomorphus breviceps,Oxyethira albiceps,Invertebrate,Trichoptera,Hydroptilidae,,Oxyethira,Oxyethira albiceps,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Gobiomorphus cotidianus,Oxyethira albiceps,Invertebrate,Trichoptera,Hydroptilidae,,Oxyethira,Oxyethira albiceps,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus cotidianus,genus,direct,5
+Galaxias argenteus,Oxyethira albiceps,Invertebrate,Trichoptera,Hydroptilidae,,Oxyethira,Oxyethira albiceps,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias brevipinnis,Paracalliope,Invertebrate,Amphipoda,Paracalliopiidae,,Paracalliope,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias brevipinnis,genus,direct,5
+Salmo trutta,Paracalliope,Invertebrate,Amphipoda,Paracalliopiidae,,Paracalliope,,order,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Paranephrops zealandicus,Paracalliope,Invertebrate,Amphipoda,Paracalliopiidae,,Paracalliope,,order,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla australis,Paracalliope,Invertebrate,Amphipoda,Paracalliopiidae,,Paracalliope,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Paracalliope,Invertebrate,Amphipoda,Paracalliopiidae,,Paracalliope,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Anguilla australis,Paraleptamphopus,Invertebrate,Amphipoda,Paraleptamphopidae,,Paraleptamphopus,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Paraleptamphopus,Invertebrate,Amphipoda,Paraleptamphopidae,,Paraleptamphopus,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Anguilla dieffenbachii,Paralimnophila,Invertebrate,Diptera,Tipulidae,,Paralimnophila,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Galaxias,Paranephrops,Invertebrate,Decapoda,Parastacidae,,Paranephrops,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Paranephrops,Invertebrate,Decapoda,Parastacidae,,Paranephrops,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Anguilla australis,Paranephrops,Invertebrate,Decapoda,Parastacidae,,Paranephrops,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Paranephrops,Invertebrate,Decapoda,Parastacidae,,Paranephrops,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Galaxias argenteus,Paranephrops zealandicus,Invertebrate,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Paratanytarsus,Invertebrate,Diptera,Chironomidae,Chironominae,Paratanytarsus,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias argenteus,Paratya curvirostris,Invertebrate,Decapoda,Atyidae,,Paratyra,Paratya curvirostris,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias argenteus,Paroxyethira hendersoni,Invertebrate,Trichoptera,Hydroptilidae,,Paroxyethira,Paroxyethira hendersoni,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Paryoxethira,Invertebrate,Trichoptera,Hydroptilidae,,Paroxyethira,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Paryoxethira,Invertebrate,Trichoptera,Hydroptilidae,,Paroxyethira,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla australis,Paryoxethira,Invertebrate,Trichoptera,Hydroptilidae,,Paroxyethira,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Paryoxethira,Invertebrate,Trichoptera,Hydroptilidae,,Paroxyethira,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Paranephrops zealandicus,Paucispinigera,Invertebrate,Diptera,Chironomidae,,,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla,Pentaneurini,Invertebrate,Diptera,Chironomidae,Tanypodinae,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Anguilla australis,Perca,Fish,Perciformes,Percidae,,Perca,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Perca,Fish,Perciformes,Percidae,,Perca,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Galaxias argenteus,Philorheithrus,Invertebrate,Trichoptera,Philorheithridae,,Philorheithrus,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Gobiomorphus breviceps,Physa,Invertebrate,Mollusca,Physidae,,Physa,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Gobiomorphus cotidianus,Physa,Invertebrate,Mollusca,Physidae,,Physa,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus cotidianus,genus,direct,5
+Salmo trutta,Physa,Invertebrate,Mollusca,Physidae,,Physa,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Anguilla dieffenbachii,Physastra,Invertebrate,Mollusca,Planorbidae,,Physastra,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla australis,Physastra,Invertebrate,Mollusca,Planorbidae,,Physastra,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Physastra,Invertebrate,Mollusca,Planorbidae,,Physastra,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Anguilla australis,Planorbis,Invertebrate,Mollusca,Planorbidae,,Planorbis,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Planorbis,Invertebrate,Mollusca,Planorbidae,,Planorbis,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Alloecentrella magnicornis,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Helicophidae,,Alloecentrella,Alloecentrella magnicornis,genus,,8
+Hudsonema aliena,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Leptoceridae,,Hudsonema,Hudsonema aliena,genus,,8
+Oeconesus maori,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Oeconesidae,,Oeconesus,Oeconesus maori,genus,,8
+Oeconesus similis,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Oeconesidae,,Oeconesus,Oeconesus similis,genus,,8
+Olinga feredayi,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Conoesucidae,,Olinga,Olinga feredayi,genus,,8
+Pycnocentria sylvestris,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,Pycnocentria sylvestris,genus,,8
+Triplectides obsoleta,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Leptoceridae,,Triplectides,Triplectides obsoleta,genus,,8
+Triplectidina oreolimnetes,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Leptoceridae,,Triplectidina,Triplectidina oreolimnetes,genus,,8
+Zelandopsyche,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,,8
+Zelolessica cheira,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Helicophidae,,Zelolessica,Zelolessica cheira,genus,,8
+Hydrobiosis parumbripennis,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Hydrobiosidae,,Hydrobiosis,Hydrobiosis parumbripennis,genus,,9
+Hydropsyche colonica,Plant.material,Plant.material,Plant.material,,,,,order,Invertebrate,Trichoptera,Hydropsychidae,,Hydropsyche,Hydropsyche colonica,genus,,9
+Anguilla dieffenbachii,Plant.material,Plant.material,Plant.material,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla australis,Plant.material,Plant.material,Plant.material,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Plant.material,Plant.material,Plant.material,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Anguilla,Plectrocnemia,Invertebrate,Trichoptera,Polycentropidae,,Plectrocnemia,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Plectrocnemia,Invertebrate,Trichoptera,Polycentropidae,,Plectrocnemia,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Plectrocnemia,Invertebrate,Trichoptera,Polycentropidae,,Plectrocnemia,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Paranephrops zealandicus,Podaena,Invertebrate,Coleoptera,Hydraenidae,,Podaena,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla,Polypedilum,Invertebrate,Diptera,Chironomidae,Chironominae,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Polypedilum,Invertebrate,Diptera,Chironomidae,Chironominae,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Polypedilum,Invertebrate,Diptera,Chironomidae,Chironominae,,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Paranephrops zealandicus,Polypedilum,Invertebrate,Diptera,Chironomidae,Chironominae,,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Gobiomorphus,Polyplectropus,Invertebrate,Trichoptera,Polycentropidae,,Polyplectropus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Polyplectropus,Invertebrate,Trichoptera,Polycentropidae,,Polyplectropus,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Galaxias argenteus,Polyplectropus,Invertebrate,Trichoptera,Polycentropidae,,Polyplectropus,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Polyplectropus,Invertebrate,Trichoptera,Polycentropidae,,Polyplectropus,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Polyplectropus,Invertebrate,Trichoptera,Polycentropidae,,Polyplectropus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Gobiomorphus breviceps,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Gobiomorphus cotidianus,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus cotidianus,genus,direct,5
+Salmo trutta,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Hudsonema aliena,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Invertebrate,Trichoptera,Leptoceridae,,Hudsonema,Hudsonema aliena,genus,,8
+Paranephrops zealandicus,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla australis,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Potamopyrgus,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Galaxias argenteus,Potamopyrgus antipodarum,Invertebrate,Mollusca,Hydrobiidae,,Potamopyrgus,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Anguilla dieffenbachii,Procordulia,Invertebrate,Odonata,Corduliidae,,Procordulia,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Galaxias,Psilochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Psilochorema,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Psilochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Psilochorema,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Psilochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Psilochorema,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Gobiomorphus breviceps,Psilochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Psilochorema,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Galaxias argenteus,Psilochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Psilochorema,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Archichauliodes diversus,Psilochorema,Invertebrate,Trichoptera,Hydrobiosidae,,Psilochorema,,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Paranephrops zealandicus,Psychoda,Invertebrate,Diptera,Psychodidae,,Psychoda,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla,Pycnocentria,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Gobiomorphus,Pycnocentria,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Pycnocentria,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Galaxias vulgaris,Pycnocentria,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Salmo trutta,Pycnocentria,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Galaxias argenteus,Pycnocentria,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Pycnocentria,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias argenteus,Pycnocentria evecta,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentria,Pycnocentria evecta,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias brevipinnis,Pycnocentrodes,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias brevipinnis,genus,direct,5
+Galaxias vulgaris,Pycnocentrodes,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias vulgaris,genus,direct,5
+Salmo trutta,Pycnocentrodes,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Galaxias argenteus,Pycnocentrodes,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Anguilla dieffenbachii,Pycnocentrodes,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Galaxias postvectis,Pycnocentrodes,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias postvectis,genus,,14
+Anguilla dieffenbachii,Pycnocentrodes,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,15
+Archichauliodes diversus,Pycnocentrodes aureola,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,Pycnocentrodes aureola,genus,Invertebrate,Megaloptera,Corydalidae,,Archichauliodes,Archichauliodes diversus,genus,,10
+Stenoperla prasina,Pycnocentrodes aureola,Invertebrate,Trichoptera,Conoesucidae,,Pycnocentrodes,Pycnocentrodes aureola,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Anguilla,Rakiura,Invertebrate,Trichoptera,Helicopsyche,,Rakiura,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Rakiura,Invertebrate,Trichoptera,Helicopsyche,,Rakiura,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Rakiura,Invertebrate,Trichoptera,Helicopsyche,,Rakiura,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Galaxias postvectis,Rakiura vernale,Invertebrate,Trichoptera,Helicopsyche,,Rakiura,Rakiura vernale,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias postvectis,genus,,14
+Anguilla dieffenbachii,Salmo,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Galaxias argenteus,Sigara,Invertebrate,Hemiptera,Corixidae,,,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Anguilla australis,Sigara,Invertebrate,Hemiptera,Corixidae,,,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Sigara,Invertebrate,Hemiptera,Corixidae,,,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Anguilla australis,Sphaeridae,Invertebrate,Mollusca,Spaeridae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Olinga,Spirogyra,Diatom,Zygnematales,Zygnemataceae,,Spirogyra,,genus,Invertebrate,Trichoptera,Conoesucidae,,Olinga,,genus,direct,2
+Anguilla,Stenoperla,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Stenoperla,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Stenoperla,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Stenoperla,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Stenoperla,Stenoperla,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,2
+Paranephrops zealandicus,Stenoperla,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Stenoperla,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Stenoperla prasina,Stenoperla prasina,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Galaxias argenteus,Stratiomyidae,Invertebrate,Diptera,Stratiomyidae,,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Anguilla australis,Stratiomyidae,Invertebrate,Diptera,Stratiomyidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Stratiomyidae,Invertebrate,Diptera,Stratiomyidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Anguilla dieffenbachii,Syrphidae,Invertebrate,Diptera,Syrphidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Galaxias,Tanypodinae,Invertebrate,Diptera,Chironomidae,Tanypodinae,,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Paranephrops zealandicus,Tanytarsus,Invertebrate,Diptera,Chironomidae,Chironominae,,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Paranephrops zealandicus,Temnocephala,Invertebrate,Temnocephalida,,,,,order,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Galaxias argenteus,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla australis,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Galaxias postvectis,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias postvectis,genus,,14
+Anguilla australis,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,15
+Anguilla dieffenbachii,Terrestrial.invertebrates,Terrestrial.invertebrates,Terrestrial.invertebrates,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,15
+Anguilla australis,Tipulidae,Invertebrate,Diptera,Tipulidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Tipulidae,Invertebrate,Diptera,Tipulidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Anguilla dieffenbachii,Tricladida,Invertebrate,Tricladida,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13
+Anguilla,Triplectides,Invertebrate,Trichoptera,Leptoceridae,,Triplectides,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Triplectides,Invertebrate,Trichoptera,Leptoceridae,,Triplectides,,family,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Triplectides,Invertebrate,Trichoptera,Leptoceridae,,Triplectides,,family,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Paranephrops zealandicus,Triplectides,Invertebrate,Trichoptera,Leptoceridae,,Triplectides,,family,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Galaxias argenteus,Triplectides cephalotes,Invertebrate,Trichoptera,Leptoceridae,,Triplectides,Triplectides cephalotes,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Galaxias argenteus,Triplectides obsoleta,Invertebrate,Trichoptera,Leptoceridae,,Triplectides,Triplectides obsoleta,family,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Anguilla dieffenbachii,Xanthocnemis,Invertebrate,Odonata,Coenagrionidae,,,,family,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Anguilla,Zelandobius,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Zelandobius,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Zelandobius,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Zelandobius,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Edpercivalia,Zelandobius,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,Invertebrate,Trichoptera,Hydrobiosidae,,Edpercivalia,,genus,direct,3
+Galaxias southern,Zelandobius,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,5
+Gobiomorphus breviceps,Zelandobius,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus breviceps,genus,direct,5
+Gobiomorphus cotidianus,Zelandobius,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,Gobiomorphus cotidianus,genus,direct,5
+Salmo trutta,Zelandobius,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,5
+Paranephrops zealandicus,Zelandobius,Invertebrate,Plecoptera,Gripopterygidae,,Zelandobius,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla,Zelandoperla,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Galaxias,Zelandoperla,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,,genus,direct,2
+Gobiomorphus,Zelandoperla,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Stenoperla,Zelandoperla,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,,genus,direct,4
+Paranephrops zealandicus,Zelandoperla,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla dieffenbachii,Zelandoperla,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,12
+Galaxias brevipinnis,Zelandoperla,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias brevipinnis,genus,,15
+Galaxias argenteus,Zelandoperla decorata,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,Zelandoperla decorata,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Stenoperla prasina,Zelandoperla maculata,Invertebrate,Plecoptera,Gripopterygidae,,Zelandoperla,Zelandoperla maculata,genus,Invertebrate,Plecoptera,Eustheniidae,,Stenoperla,Stenoperla prasina,genus,,10
+Galaxias argenteus,Zelandopsyche,Invertebrate,Trichoptera,Oeconesidae,,Zelandopsyche,,genus,Fish,Osmeriformes,Galaxidae,,Galaxias,Galaxias argenteus,genus,,6
+Paranephrops zealandicus,Zelandotipula,Invertebrate,Diptera,Tipulidae,,Zelandotipula,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla,Zelolessica,Invertebrate,Trichoptera,Helicophidae,,Zelolessica,,genus,Fish,Anguilliformes,Anguillidae,,Anguilla,,genus,direct,2
+Gobiomorphus,Zelolessica,Invertebrate,Trichoptera,Helicophidae,,Zelolessica,,genus,Fish,Perciformes,Eleotridae,,Gobiomorphus,,genus,direct,2
+Salmo,Zelolessica,Invertebrate,Trichoptera,Helicophidae,,Zelolessica,,genus,Fish,Salmoniformes,Salmonidae,,Salmo,,genus,direct,2
+Paranephrops zealandicus,Zephlebia,Invertebrate,Ephemeroptera,Leptophlebiidae,,Zephlebia,,genus,Crayfish,Decapoda,Parastacidae,,Paranephrops,Paranephrops zealandicus,genus,,11
+Anguilla australis,Zygoptera,Invertebrate,Odonata,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla australis,species,,13
+Anguilla dieffenbachii,Zygoptera,Invertebrate,Odonata,,,,,order,Fish,Anguilliformes,Anguillidae,,Anguilla,Anguilla dieffenbachii,species,,13

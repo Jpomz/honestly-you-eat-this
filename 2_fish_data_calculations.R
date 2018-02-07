@@ -26,7 +26,7 @@ get_fish_dw <- function(l, a, b){
 }
 
 #downloaded fish data
-fish <- read_csv("Taieri NZ Fish datbase.csv")
+fish <- read_csv("data/Taieri NZ Fish datbase.csv")
 
 # vector of spcodes to keep
 # species codes are in "NZFFD species codes.csv"

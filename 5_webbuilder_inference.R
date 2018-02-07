@@ -44,7 +44,7 @@ register.list <- register.list %>%
   })
 
 # read in file with taxonomy information
-taxonomy <- read_csv("taxonomy.csv")
+taxonomy <- read_csv("data/taxonomy.csv")
 
 # add taxonomy information for resource and consumers
 for (i in 1:length(register.list)){
@@ -63,7 +63,7 @@ for (i in 1:length(register.list)){
 }
 
 # read in registry made from other sources
-other.registry <- read_csv("fw_registry.csv")
+other.registry <- read_csv("data/fw_registry.csv")
 other.registry$source.id <- as.character(other.registry$source.id)
 # subset other.registry object to match with registry list
 other.registry <- other.registry[,
@@ -85,7 +85,7 @@ for (i in names(register.list)){
   register.list[[i]] <- subset(register.list[[i]], source.id != i)
 }
 
-write.csv(complete.registry, "complete webbuilder registry.csv")
+write.csv(complete.registry, "figs for MS/post poisot/complete webbuilder registry.csv")
 # registry info ####
 # write csv of registry info
 # modify in excel to make table for publication
@@ -93,7 +93,7 @@ write_csv(register.list %>%
             ldply(function (x){
               data.frame(n = nrow(x))
             }),
-          "C:/Users/Justin/Google Drive/Data/Predicting NZ Food Webs/figs for MS/webbuilder registry info from R.csv")
+          "C:/Users/Justin/Google Drive/Data/Predicting NZ Food Webs/figs for MS/post poisot/webbuilder registry info from R.csv")
 
 # infer links ####
 # get a list of taxa from web.list

@@ -33,7 +33,7 @@ recoderFunc <- function(data, oldvalue, newvalue) {
 # read in original adj_matr
 # make list of adj_matr
 adj.list <- NULL
-for(f in list.files(path="All Thompson 2004", full.names=T)){
+for(f in list.files(path="data/raw_data/Adjacency_matrices", full.names=T)){
   A = as.matrix(read.csv(f, h=T, row.names=1))
   row.names(A) <- colnames(A)
   adj.list[f] <- list(A)
@@ -52,9 +52,9 @@ adj.list.names <- llply(adj.list,
                         })
 
 # translation "dictionary" for recoder function 
-translate <- read_csv("translation.csv") 
+translate <- read_csv("data/translation.csv") 
 # species to genus / category data
-sp.gen <- read_csv("species genus category ffg.csv")
+sp.gen <- read_csv("data/species genus category ffg.csv")
 
 # translate list of names
 names.cor <- llply(adj.list.names, function (x){
@@ -129,7 +129,7 @@ for (i in 1:length(adj.list)){
 saveRDS(adj.list, "observed pred-prey.RDS")
 
 # Community Data ####
-taieri.comm <- read_csv("Taieri_community_data.csv")
+taieri.comm <- read_csv("data/Taieri_community_data.csv")
 #replacing " " with a "." to match old tranlsation file which read spaces in as a period
 taieri.comm$taxa <- gsub(" ", "\\.", taieri.comm$taxa)
 
@@ -148,7 +148,7 @@ taieri.comm <- taieri.comm %>%
 # estimate biomass ####
 # read in formula
 # file from Helen, modified containing all variable values
-formula <- read_csv("C:\\Users\\Justin\\Documents\\Data\\Length DW conversion\\FWsurvey\\invert_meas_CJP\\length_weight_formulas.csv")[,c(4,5,6,7)] %>% distinct
+formula <- read_csv("data/length_weight_formulas.csv")[,c(4,5,6,7)] %>% distinct
 
 # merge tables
 taieri.comm <- left_join(taieri.comm, formula, by = c("taxa" = "Name"))
