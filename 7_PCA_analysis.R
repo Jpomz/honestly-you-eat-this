@@ -31,28 +31,28 @@ names(wb.tm.n) <- names(obs) # need to go back to original script and fix names
 pc.dat <- ldply(list(
   obs = ldply(obs, function (x){
     Get.web.stats(x, which.stats = 1)
-    })[,c(1, 3:7, 12:13)],
+    })[,c(1, 3:7, 11:12)],
   wb.raw = ldply(wb.raw, function (x){
     Get.web.stats(x, which.stats = 1)
-  })[,c(1, 3:7, 12:13)],
+  })[,c(1, 3:7, 11:12)],
   wb.n = ldply(wb.n, function (x){
     Get.web.stats(x, which.stats = 1)
-  })[,c(1, 3:7, 12:13)],
+  })[,c(1, 3:7, 11:12)],
   tm = ldply(tm, function (x){
     Get.web.stats(x, which.stats = 1)
-  })[,c(1, 3:7, 12:13)],
+  })[,c(1, 3:7, 11:12)],
   tm.niche = ldply(tm.niche, function (x){
     Get.web.stats(x, which.stats = 1)
-  })[,c(1, 3:7, 12:13)],
+  })[,c(1, 3:7, 11:12)],
   tm.nn = ldply(tm.nn, function (x){
     Get.web.stats(x, which.stats = 1)
-  })[,c(1, 3:7, 12:13)],
+  })[,c(1, 3:7, 11:12)],
   wb.tm = ldply(wb.tm, function (x){
   Get.web.stats(x, which.stats = 1)
-    })[,c(1, 3:7, 12:13)],
+    })[,c(1, 3:7, 11:12)],
   wb.tm.n = ldply(wb.tm.n, function (x){
     Get.web.stats(x, which.stats = 1)
-  })[,c(1, 3:7, 12:13)]
+  })[,c(1, 3:7, 11:12)]
   ))
 # add grouping variable
 pc.dat$grp <- as.factor(rep(c("obs","wb.raw","wb.n", "tm", "tm.niche", "tm.nn", "wb.tm", "wb.tm.n"), each = 17))
@@ -77,6 +77,69 @@ ordihull(pca.obj, groups=pc.dat$grp, draw="polygon",
 # wb.n= skyblue; wb.raw= slategray 
 #wb.tm = plum; wb.tm.n = green
 
+# pca figure of individual models
+ordiplot(pca.obj)
+orditorp(pca.obj, display="species", col="red", cex = 1.25, air = 0.0005)
+ordihull(pca.obj, groups=pc.dat$grp, draw="polygon", 
+         col=c("black","gold", NA, NA,
+               NA, NA,
+               NA, NA),
+         label=F)
+title("TM vs. Observed")
+
+ordiplot(pca.obj)
+orditorp(pca.obj, display="species", col="red", cex = 1.25, air = 0.0005)
+ordihull(pca.obj, groups=pc.dat$grp, draw="polygon", 
+         col=c("black", NA, "gold", NA,
+               NA, NA,
+               NA, NA),
+         label=F)
+title("TM, Niche pruned vs. Observed")
+
+ordiplot(pca.obj)
+orditorp(pca.obj, display="species", col="red", cex = 1.25, air = 0.0005)
+ordihull(pca.obj, groups=pc.dat$grp, draw="polygon", 
+         col=c("black", NA, NA, "gold",
+               NA, NA,
+               NA, NA),
+         label=F)
+title("TM, Niche + Neutral pruned vs. Observed")
+
+ordiplot(pca.obj)
+orditorp(pca.obj, display="species", col="red", cex = 1.25, air = 0.0005)
+ordihull(pca.obj, groups=pc.dat$grp, draw="polygon", 
+         col=c("black", NA, NA, NA,
+               NA, "gold",
+               NA, NA),
+         label=F)
+title("WB vs. Observed")
+
+ordiplot(pca.obj)
+orditorp(pca.obj, display="species", col="red", cex = 1.25, air = 0.0005)
+ordihull(pca.obj, groups=pc.dat$grp, draw="polygon", 
+         col=c("black", NA, NA, NA,
+               "gold", NA,
+               NA, NA),
+         label=F)
+title("WB, Neutral pruned vs. Observed")
+
+ordiplot(pca.obj)
+orditorp(pca.obj, display="species", col="red", cex = 1.25, air = 0.0005)
+ordihull(pca.obj, groups=pc.dat$grp, draw="polygon", 
+         col=c("black", NA, NA, NA, 
+               NA, NA,
+               "gold", NA),
+         label=F)
+title("WB*TM vs. Observed")
+
+ordiplot(pca.obj)
+orditorp(pca.obj, display="species", col="red", cex = 1.25, air = 0.0005)
+ordihull(pca.obj, groups=pc.dat$grp, draw="polygon", 
+         col=c("black", NA, NA, NA, 
+               NA, NA,
+               NA, "gold"),
+         label=F)
+title("WB*TM, Neutral pruned vs. Observed")
 # distance
 # surely I could come up with a function that does all of this in one go.... ####
 distance2 <- function(x,y) sum((x-y)^2)
