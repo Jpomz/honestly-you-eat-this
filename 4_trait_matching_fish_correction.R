@@ -79,15 +79,18 @@ cf <- c(10^seq(from = 0, to = 4))
 #                    site = rep(names(obs),
 #                               each = length(threshold2)),
 #                    stringsAsFactors = FALSE)})
-# plot.corr.fact <- ldply(auc.cf) %>%
+# auc.cf.df <- ldply(auc.cf)
+# auc.cf.df$cf <- auc.cf.df$.id
+# (plot.corr.fact <- auc.cf.df %>%
 #   ggplot(aes(x = thresh,
-#              y = auc, color = .id)) +
+#              y = auc, color = cf)) +
 #   geom_point() +
 #   scale_color_discrete(name = "cf") +
 #   stat_smooth(alpha = 0, size = 1.5)+
-#   theme_classic() +
-#   labs(y = "AUC", x = expression(Log["10"]~Threshold))+
-#   scale_colour_brewer(palette = "Set1")
+#   theme_classic(base_size = 20) +
+#   labs(y = "AUC", x = expression(Log["10"]~Threshold)) +
+#   scale_colour_brewer(palette = "Set1"))
+# 
 # ggsave("figs for MS\\post poisot\\fish corr factor.png",
 #        width = 420, height = 200, units = "mm")
 
@@ -317,7 +320,7 @@ write_csv(data.frame(inference = c("Fish corrected neutral", "Fish corrected nic
 #   theme_classic()
 # 
 # AUC fish corrected Neutral + Niche
-(f.auc.nn.plot <- f.auc.nn.df %>%
+f.auc.nn.plot <- f.auc.nn.df %>%
   ggplot(aes(x = thresh, y = auc)) +
   geom_point() +
   stat_summary(aes(y = auc,group=1),
@@ -326,7 +329,8 @@ write_csv(data.frame(inference = c("Fish corrected neutral", "Fish corrected nic
                geom="line",
                size = 2,
                group= 1) +
-  theme_classic()) +
+  theme_classic(base_size = 20) +
   labs(y = "AUC", x = expression(Log["10"]~Threshold))
+
 ggsave("figs for MS\\post poisot\\TM fish corr nn auc.png",
        width = 420, height = 200, units = "mm")

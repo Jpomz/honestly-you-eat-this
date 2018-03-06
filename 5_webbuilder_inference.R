@@ -207,12 +207,13 @@ for(web in 1:length(web.match)){
 
 # data frame of AUC Fish
 auc.f.neutral.df <- data.frame(auc = 
-                                 flatten_dbl(auc.f.neutral),
+                          flatten_dbl(auc.f.neutral),
                              thresh = 
-                               log10(as.numeric(threshold)),
+                          log10(as.numeric(threshold)),
                              site = 
-                               rep(names(web.match),
-                                   each = length(threshold)),
+                          rep(names(web.match),
+                               each = 
+                          length(threshold)),
                              stringsAsFactors = FALSE)
 
 # global max AUC Fish Neutral
@@ -220,6 +221,20 @@ global.thresh.neutral.f <- auc.f.neutral.df %>%
   group_by(thresh) %>%
   summarize(mean.auc = mean(na.omit(auc))) %>%
   top_n(1, wt = mean.auc)
+# plot for suplemental
+ggplot(auc.f.neutral.df, aes(x =thresh, y = auc))+
+  geom_point() +
+  stat_summary(aes(y = auc,group=1),
+               fun.y=mean,
+               colour="grey",
+               geom="line",
+               size = 2,
+               group= 1) +
+  theme_classic(base_size = 20) +
+  labs(y = "AUC", x = expression(Log["10"]~Threshold))
+
+ggsave("figs for MS\\post poisot\\wb fish corr auc.png",
+       width = 420, height = 200, units = "mm")
 
 
 # TSS ####
