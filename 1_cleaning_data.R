@@ -10,10 +10,8 @@
 library(plyr)
 library(tidyverse)
 
-# recoder function 
-# found this online somewhere, I think the reference information is in one of my oiginal webbuilder scripts
-# takes a character vector from "data", and replaces "oldvalue" with "newvalue"
-# I have a translation "dictionary" that I made by hand
+# recoder function from: 
+# https://gist.github.com/IronistM/7601734
 recoderFunc <- function(data, oldvalue, newvalue) {
   # convert any factors to characters
   if (is.factor(data)) data <- as.character(data)
