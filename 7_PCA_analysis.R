@@ -1,6 +1,6 @@
 # code pulled from webbuilder inference.R
 # useful food web functions from petchey
-source("C:\\Users\\Justin\\Documents\\Data\\FW modelling Petchey Github\\ttl-resources-master\\food_web\\FoodWebFunctions.r")
+source("FoodWebFunctions.r")
 library(plyr)
 library(tidyverse)
 library(vegan)
@@ -56,9 +56,9 @@ pc.dat <- ldply(list(
   ))
 # add grouping variable
 pc.dat$grp <- as.factor(rep(c("obs","wb.raw","wb.n", "tm", "tm.niche", "tm.nn", "wb.tm", "wb.tm.n"), each = 17))
-pc.dat$land <- rep(c("Pn", "Pn", "T","T","T","Pn","T",
-                      "T","T","T","T","Pn", "Pn", "Pn",
-                      "T","T","Pn"), 8)
+# pc.dat$land <- rep(c("Pn", "Pn", "T","T","T","Pn","T",
+#                       "T","T","T","T","Pn", "Pn", "Pn",
+#                       "T","T","Pn"), 8)
 
 
 pca.obj <- prcomp(pc.dat[,c(2:8)], center = T, scale. = T)

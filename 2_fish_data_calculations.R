@@ -18,7 +18,7 @@
 library(tidyverse)
 # functions
 # calculate dry weight of fish based on length measure
-# Jellyman 2013
+# Jellyman et al. 2013
 get_fish_dw <- function(l, a, b){
   x = log(a) + (b * log(l))
   dw = exp(1)^x

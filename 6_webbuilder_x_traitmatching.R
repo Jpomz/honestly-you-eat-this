@@ -4,8 +4,8 @@ library(plyr)
 library(tidyverse)
 # webbuilder functions
 source("Useful WebBuilder functions.R")
-# useful food web functions from petchey
-source("C:\\Users\\Justin\\Documents\\Data\\FW modelling Petchey Github\\ttl-resources-master\\food_web\\FoodWebFunctions.r")
+# useful food web functions, modified from petchey
+source("FoodWebFunctions.r")
 # useful functions 
 source("Inference_MS_functions.R")
 # TSS function
