@@ -99,3 +99,20 @@ saveRDS(dw.list, "estimated fish bodymass and abundance.RDS")
 # note 19 Jan 2018
 # I ran all of the trait matching scripts with no.m2 = dw^-1 and none of the results changed much. Still need to do a relative abundance correction for fish. AUC, TSS, threshholds, FP and FN results were all ~ the same
 
+
+mean.min <- fish.list$mean.min
+get_fish_dw(mean.min, a, b)
+fish.ab <- data.frame(taxa = c("Anguilla", "Galaxias",
+                               "Gobiomorphus", "Salmo"),
+                      dw = get_fish_dw(mean.min, a, b))
+
+fish.ab <- fish.ab %>%
+  mutate(no.05 = dw^-0.5,
+         no.06 = dw^-0.6,
+         no.07 = dw^-0.7,
+         no.08 = dw^-0.8,
+         no.09 = dw^-0.9,
+         no.1 = dw^-1,
+         no.11 = dw^-1.1,
+         no.12 = dw^-1.2)
+rowMeans(fish.ab[,3:10])
