@@ -47,7 +47,7 @@ threshold2 <- c(
   1.0e-03, 1.5e-3, 3.0e-03, 5.9e-03,
   1.0e-02, 1.5e-2, 3.0e-02, 5.9e-02)
 cf <- c(10^seq(from = 0, to = 4))
-# correction factor ####
+# # correction factor ####
 # # takes forever to run, commented out ####
 # # examine how different correction factors influence inferences
 # auc.cf <- NULL
@@ -86,11 +86,20 @@ cf <- c(10^seq(from = 0, to = 4))
 #              y = auc, color = cf)) +
 #   geom_point() +
 #   scale_color_discrete(name = "cf") +
-#   stat_smooth(alpha = 0, size = 1.5)+
+#   #stat_smooth(alpha = 0, size = 1.5)+
+#     stat_summary(aes(y = auc
+#                      #group=1
+#                      ),
+#                  fun.y=mean,
+#                  #colour="grey",
+#                  geom="line",
+#                  size = 2,
+#                  #group= 1,
+#                  alpha = 0.5) +
 #   theme_classic(base_size = 20) +
 #   labs(y = "AUC", x = expression(Log["10"]~Threshold)) +
 #   scale_colour_brewer(palette = "Set1"))
-# 
+# # 
 # ggsave("figs for MS\\post poisot\\fish corr factor.png",
 #        width = 420, height = 200, units = "mm")
 
