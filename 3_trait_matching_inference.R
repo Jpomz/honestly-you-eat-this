@@ -91,7 +91,7 @@ names(training.list) <- names(dw.pairs)
 pars.list <- map(training.list, function(x){
   Bprey = log10(x$prey)
   Bpred = log10(x$pred)
-  out <- reg_fn(Bprey, Bpred, quartil = c(0.01, 0.97))
+  out <- reg_fn(Bprey, Bpred, quartil = c(0.01, 0.99))
 })
 # web params ####
 # list of all body sizes at a site

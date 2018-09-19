@@ -84,7 +84,8 @@ cf <- c(10^seq(from = 0, to = 4))
 # (plot.corr.fact <- auc.cf.df %>%
 #   ggplot(aes(x = thresh,
 #              y = auc, color = cf)) +
-#   geom_point() +
+#   geom_point(position = 
+#                position_jitter(width = 0.05)) +
 #   scale_color_discrete(name = "cf") +
 #   #stat_smooth(alpha = 0, size = 1.5)+
 #     stat_summary(aes(y = auc
@@ -99,7 +100,7 @@ cf <- c(10^seq(from = 0, to = 4))
 #   theme_classic(base_size = 20) +
 #   labs(y = "AUC", x = expression(Log["10"]~Threshold)) +
 #   scale_colour_brewer(palette = "Set1"))
-# # 
+# # # 
 # ggsave("figs for MS\\post poisot\\fish corr factor.png",
 #        width = 420, height = 200, units = "mm")
 
