@@ -31,7 +31,7 @@ write.csv(tab, "Results/Figures/Table_1.csv",
 
 # plots of Adj matrices
 # useful food web functions, modified from petchey
-source("FoodWeb_Functions.R")
+source("Functions/FoodWeb_Functions.R")
 
 obs <- readRDS("Results/observed_matrices_matched_to_inferred.RDS")
 # wb.raw == initial WB inference

@@ -10,13 +10,14 @@ library(ggplot2)
 
 # webbuilder functions 
 # source code available in the supplementary material of Gray et al. 2015. Joinng the dots: An automated method for constructing food webs from compendia of published interactions https://doi.org/10.1016/j.fooweb.2015.09.001
-source("Useful WebBuilder functions.R")
+# if using, please cite Gray et al. 2015. 
+source("Functions/Useful WebBuilder functions.R")
 
 # useful food web functions, modified from code by Owen Petchey:
 # Original source code can be found here: https://github.com/opetchey/ttl-resources/blob/master/food_web/FoodWebFunctions.r
-source("Foodweb_functions.R")
+source("Functions/Foodweb_functions.R")
 # functions written for this manuscript
-source("Inference_MS_functions.R")
+source("Functions/Inference_MS_functions.R")
 
 # All observed pred-prey adjacency matrices for registry construction
 web.list <- readRDS("Data/Raw_data/observed_pred_prey_A.RDS")

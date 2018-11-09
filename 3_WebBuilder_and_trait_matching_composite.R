@@ -8,11 +8,11 @@ library(dplyr)
 library(ggplot2)
 library(purrr)
 # webbuilder functions
-source("Useful WebBuilder functions.R")
+source("Functions/Useful WebBuilder functions.R")
 # useful food web functions, modified from petchey
-source("FoodWeb_Functions.R")
+source("Functions/FoodWeb_Functions.R")
 # functions written for this manuscript
-source("Inference_MS_functions.R")
+source("Functions/Inference_MS_functions.R")
 
 # data ####
 web.match <- readRDS("Results/observed_matrices_matched_to_inferred.RDS")

@@ -8,7 +8,7 @@ library(dplyr)
 library(purrr)
 library(ggplot2)
 # functions written for this manuscript
-source("Inference_MS_functions.R")
+source("Functions/Inference_MS_functions.R")
 
 # data
 # observed adjacency matrices, matched to inferences

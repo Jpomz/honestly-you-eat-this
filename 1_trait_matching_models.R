@@ -16,14 +16,15 @@ library(plyr)
 library(dplyr)
 library(purrr)
 # functions written for this manuscript
-source("Inference_MS_functions.R")
+source("Functions/Inference_MS_functions.R")
 
 # functions from Gravel et al. 2013 supporting information
 # if using, please cite original publication:
 # Gravel, D., Poisot, T., Albouy, C., Velez, L., & Mouillot, D. (2013). Inferring food web structure from predator-prey body size relationships. Methods in Ecology and Evolution, 4, 1083-1090. doi:10.1111/2041-210X.12103
-source("gravel_functions.R")
+source("Functions/gravel_functions.R")
 
 # 1) Preliminary data setup ####
+#first, download data from figshare [DOI here], and put int Data/Raw_data folder. 
 # read in raw data
 dw <- readRDS("Data/Raw_data/fish_invert_dw.RDS")
 obs.A <- readRDS("Data/Raw_data/observed_pred_prey_A.rds")

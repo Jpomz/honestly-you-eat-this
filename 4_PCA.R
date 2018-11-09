@@ -5,9 +5,9 @@ library(ggplot2)
 library(purrr)
 library(vegan)
 # useful food web functions, modified from petchey
-source("FoodWeb_Functions.R")
+source("Functions/FoodWeb_Functions.R")
 # functions written for this manuscript
-source("Inference_MS_functions.R")
+source("Functions/Inference_MS_functions.R")
 
 obs <- readRDS("Results/observed_matrices_matched_to_inferred.RDS")
 # wb.raw == initial WB inference
