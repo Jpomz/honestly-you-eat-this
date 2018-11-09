@@ -1,5 +1,6 @@
 # code pulled from webbuilder inference.R
 # useful food web functions from petchey
+# original functions can be found here: https://github.com/opetchey/ttl-resources/blob/master/food_web/FoodWebFunctions.r
 source("FoodWebFunctions.r")
 library(plyr)
 library(tidyverse)
