@@ -24,10 +24,37 @@ source("Functions/Inference_MS_functions.R")
 source("Functions/gravel_functions.R")
 
 # 1) Preliminary data setup ####
-#first, download data from figshare [DOI here], and put int Data/Raw_data folder. 
-# read in raw data
-dw <- readRDS("Data/Raw_data/fish_invert_dw.RDS")
-obs.A <- readRDS("Data/Raw_data/observed_pred_prey_A.rds")
+#first, download data from DataDryad [doi:10.5061/dryad.k59m37f], and put into Data/Raw_data folder. 
+# read in estimated dry weight and abundance data
+dw <- read.csv("Data/Raw_data/Taxa_dry_weight_abundance.csv")
+# split dw by food.web column into a list
+dw <- dw %>%
+  split(list(.$food.web))
+
+# read in modified adjacency matrices to a list
+# see main text in manuscript for description of how adjacency matrices have been modified from originals
+# get path directories for all adjacency matrices
+path.dir <- list.files("Data/Raw_data/Adjacency_matrices", 
+                       full.names = TRUE)
+# make vector of food web names
+names.A <- gsub(pattern = ".csv",
+                replacement = "",
+                x = list.files(
+                  "Data/Raw_data/Adjacency_matrices"))
+# make empty object for files to get listed into
+obs.A <- NULL
+# read in each file in path directory to make list of adjacency matrices
+for(i in 1:length(path.dir)){
+  obs.A[[i]] <- read.csv(path.dir[[i]],
+                         row.names = 1)
+}
+# name each element in object to match food web names
+names(obs.A) <- names.A
+
+# save obs.A as .RDS data types
+# this makes loading data easier in further analyses
+saveRDS(obs.A, "Data/Raw_data/observed_pred_prey_A.RDS")
+
 
 # subset obs.A to only include webs with bodymass data
 obs.A <- obs.A[names(obs.A) %in% names(dw)]
@@ -138,7 +165,13 @@ saveRDS(obs, "Results/observed_matrices_matched_to_inferred.RDS")
 # niche forbidden ####
 # read in vector of niche forbidden taxa
 # See supplemental table S1
-taxa.forbid <- readRDS("Data/Raw_data/niche_forbidden_taxa.rds")
+taxa.forbid <- as.character(
+  read.csv("Data/Raw_data/niche_forbidden_taxa.csv",
+           stringsAsFactors = FALSE,
+           header = FALSE)[[1]])
+# save as .RDS filetype for easier loading in further analyses
+saveRDS(taxa.forbid, 
+        "Data/Raw_data/niche_forbidden_taxa.RDS")
 
 # remove niche forbidden links from inferred adjacency matrices
 # see rm_niche() in Inference_MS_functions.R for more info
