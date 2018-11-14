@@ -24,7 +24,12 @@ source("Functions/Inference_MS_functions.R")
 source("Functions/gravel_functions.R")
 
 # 1) Preliminary data setup ####
-#first, download data from DataDryad [doi:10.5061/dryad.k59m37f], and put into Data/Raw_data folder. 
+#first, download data from DataDryad  https://doi.org/10.5061/dryad.k59m37f, and put into Data/Raw_data folder. 
+
+# all adjacency matrices should be put into "Data/Raw_data/Adjacency_matrices" folder. 
+
+# all other data should be put into Data/Raw_data folder
+
 # read in estimated dry weight and abundance data
 dw <- read.csv("Data/Raw_data/Taxa_dry_weight_abundance.csv")
 # split dw by food.web column into a list
