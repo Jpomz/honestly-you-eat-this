@@ -1,14 +1,3 @@
----
-title: "README"
-author: "Justin Pomeranz - J Pomz"
-date: "November 27, 2018"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 # Inferring predator-prey interactions in food webs
 
 The code included in this project reproduces the analysis presented in: Pomeranz et al. _Inferring predator-prey interactions in food webs. Methods in Ecology and Evolution_
