@@ -2,7 +2,7 @@
 
 The code included in this project reproduces the analysis presented in: Pomeranz et al. _Inferring predator-prey interactions in food webs. Methods in Ecology and Evolution_
 
-The full dataset is available on DataDryad [doi:10.5061/dryad.k59m37f]. 
+The full dataset is available at DataDryad [here](https://datadryad.org/resource/doi:10.5061/dryad.k59m37f). 
 
 To run the full analysis, download the data and place the files in the Data/Raw_data folder. 
 
@@ -32,6 +32,14 @@ example.data <- readRDS("Data/example_data.RDS")
 
 ```r
 summary(example.data)
+```
+
+```
+                Length Class      Mode     
+observed.A      1089   -none-     numeric  
+dw.ab              4   data.frame list     
+tm.initial      1089   -none-     numeric  
+niche.forbidden   11   -none-     character
 ```
 
 `example.data$observed.A` is the empirical adjacency matrix. Note that this matrix has been modified from the original, as described in the main text. 
@@ -69,6 +77,16 @@ list(auc = get_auc(observed = example.data$observed.A,
                    inferred = example.data$tm.initial))
 
 ```
+![plot of chunk unnamed-chunk-4](Results/Example_figs/ex1.png)
+
+![plot of chunk unnamed-chunk-4](Results/Example_figs/ex2.png)
+```r
+$`auc`
+[1] 0.5986068
+
+$tss
+[1] 0.1972137
+```
 
 As we can see from the plot, the initial inference greatly over predicts the number of links. Likewise, the AUC is 0.59 (e.g. only slightly better than a coin toss), and the TSS is low. In order to improve our inference, we remove "niche forbidden" links using the function `rm_niche()` found in `Inference_MS_functions.R`. This function requires a vector of taxa names that we want to restrict.
 
@@ -85,6 +103,15 @@ list(auc = get_auc(observed = example.data$observed.A,
                    inferred = tm.niche),
      tss = get_tss(observed = example.data$observed.A,
                    inferred = tm.niche))
+```
+![plot of chunk unnamed-chunk-4](Results/Example_figs/ex3.png)
+
+```r
+$`auc`
+[1] 0.7005241
+
+$tss
+[1] 0.4010482
 ```
 
 Now our AUC and TSS are both much higher, indicating a better predicition. 
@@ -106,6 +133,11 @@ N <- get_rel_ab(vec = example.data$dw.ab$no.m2,
 # make sure rownames of N match rownames of observed
 identical(rownames(N),
           rownames(example.data$observed.A))
+```
+
+```r
+#[1] TRUE
+#[1] TRUE
 ```
 
 Now we need to "correct" fish abundances as described in the main text. We use the `f_ab_corr()` function in the `Inference_MS_functions.R`
@@ -142,6 +174,20 @@ list(auc = get_auc(observed = example.data$observed.A,
                    inferred = tm.niche.neutral),
      tss = get_tss(observed = example.data$observed.A,
                    inferred = tm.niche.neutral))
+```
+
+```r
+# [1] TRUE
+# [1] TRUE
+```
+![plot of chunk unnamed-chunk-4](Results/Example_figs/ex4.png)
+
+```r
+$`auc`
+[1] 0.665685
+
+$tss
+[1] 0.3313701
 ```
 
 In this case the AUC and TSS decrease slightly when restricting links at this neutral abundance threshold. The threshold was selected by averaging the AUC and TSS across all sites. Therefore, if you were trying to maximize predictive power at this site, a slightly different threshold or fish correction factor may need to be used. 
