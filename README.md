@@ -58,28 +58,34 @@ Read in scripts which contain useful functions for this example.
 # load function scripts
 # useful food web functions, modified from Petchey
 source("Functions/FoodWeb_Functions.R")
+
 # functions written for this manuscript
 source("Functions/Inference_MS_functions.R")
 ```
 
 Plot the empirical and initial trait-matching inference adjacency matrices, and caluclate the TSS and AUC:
 ```r
+# observed matrix
 Plot.matrix2(example.data$observed.A,
              sp.pt.ch = 18, point.cex = 1)
 title(main = "Observed")
+
+# initial inferred matrix
 Plot.matrix2(example.data$tm.initial,
              sp.pt.ch = 18, point.cex = 1)
 title(main = "TM initial")
 
+# calculate AUC and TSS
 list(auc = get_auc(observed = example.data$observed.A,
                    inferred = example.data$tm.initial),
      tss = get_tss(observed = example.data$observed.A,
                    inferred = example.data$tm.initial))
 
 ```
-![plot of chunk unnamed-chunk-4](Results/Example_figs/ex1.png)
+![ex1](Results/Example_figs/ex1.png)
 
-![plot of chunk unnamed-chunk-4](Results/Example_figs/ex2.png)
+![ex4](Results/Example_figs/ex2.png)
+
 ```r
 $`auc`
 [1] 0.5986068
@@ -94,11 +100,13 @@ As we can see from the plot, the initial inference greatly over predicts the num
 # remove niche forbidden taxa
 tm.niche <- rm_niche(inf = example.data$tm.initial,
                      taxa = example.data$niche.forbidden)
+
 # plot new inference
 Plot.matrix2(tm.niche,
              sp.pt.ch = 18, point.cex = 1)
 title(main = "TM Niche")
 
+# calculate AUC and TSS
 list(auc = get_auc(observed = example.data$observed.A,
                    inferred = tm.niche),
      tss = get_tss(observed = example.data$observed.A,
@@ -145,8 +153,7 @@ Now we need to "correct" fish abundances as described in the main text. We use t
 ```r
 # only multiply column names that match the "taxa" vector
 N.fish <- f_ab_corr(Nij = N,
-                    taxa = c("Salmo", "Galaxias",
-                             "Anguilla", "Gobiomorphus"),
+                    taxa = c("Salmo", "Galaxias", "Anguilla", "Gobiomorphus"),
                     cf = 1000)
 ```
 
@@ -162,14 +169,22 @@ N.binary <- rm_neutral(Nij = N.fish,
 Now we multiply `N.binary` by `tm.niche` to remove neutrally forbidden links. e.g. only retaining links which appear in both. First, make sure that both matrices are the same dimensions, and have the same rownames
 
 ```r
+
 identical(dim(tm.niche), dim(N.binary))
+
 identical(rownames(tm.niche), rownames(N.binary))
+
+
 # multiply two matrices together
 tm.niche.neutral <- tm.niche * N.binary
+
+
 # plot new inference matrix
 Plot.matrix2(tm.niche.neutral,
              sp.pt.ch = 18, point.cex = 1)
 title(main = "TM niche + neutral")
+
+# caluclate AUC and TSS
 list(auc = get_auc(observed = example.data$observed.A,
                    inferred = tm.niche.neutral),
      tss = get_tss(observed = example.data$observed.A,
@@ -180,7 +195,7 @@ list(auc = get_auc(observed = example.data$observed.A,
 # [1] TRUE
 # [1] TRUE
 ```
-![plot of chunk unnamed-chunk-4](Results/Example_figs/ex4.png)
+![ex4](Results/Example_figs/ex4.png)
 
 ```r
 $`auc`
