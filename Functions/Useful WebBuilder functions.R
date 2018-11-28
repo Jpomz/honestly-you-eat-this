@@ -1,3 +1,12 @@
+######################################################
+# this script was copied exactly from the supplementary material of Gray et al 2015, Food Webs. http://dx.doi.org/10.1016/j.fooweb.2015.09.001. 
+
+# if using, please cite the original publication
+# J Pomeranz 27 Nov 2018
+
+# original script below this line
+#####################################################
+
 # Functions for synthesising food webs from a registry of 
 # known trophic links
 #Gray et al. 2015
