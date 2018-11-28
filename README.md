@@ -1,14 +1,3 @@
----
-title: "README"
-author: "Justin Pomeranz - J Pomz"
-date: "November 27, 2018"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 # Inferring predator-prey interactions in food webs
 
 The code included in this project reproduces the analysis presented in: Pomeranz et al. _Inferring predator-prey interactions in food webs. Methods in Ecology and Evolution_
@@ -34,14 +23,14 @@ The supplementary information for Gravel et al. 2013 contains functions and an e
 
 Read in the example data.
 
-```{r}
+```r
 # load example data
 example.data <- readRDS("Data/example_data.RDS")
 ```
 
 `example.data` is a list containing data for the Demspters Creek site. 
 
-```{r}
+```r
 summary(example.data)
 ```
 
@@ -57,7 +46,7 @@ summary(example.data)
 
 Read in scripts which contain useful functions for this example.
 
-```{r}
+```r
 # load function scripts
 # useful food web functions, modified from Petchey
 source("Functions/FoodWeb_Functions.R")
@@ -66,7 +55,7 @@ source("Functions/Inference_MS_functions.R")
 ```
 
 Plot the empirical and initial trait-matching inference adjacency matrices, and caluclate the TSS and AUC:
-```{r}
+```r
 Plot.matrix2(example.data$observed.A,
              sp.pt.ch = 18, point.cex = 1)
 title(main = "Observed")
@@ -83,7 +72,7 @@ list(auc = get_auc(observed = example.data$observed.A,
 
 As we can see from the plot, the initial inference greatly over predicts the number of links. Likewise, the AUC is 0.59 (e.g. only slightly better than a coin toss), and the TSS is low. In order to improve our inference, we remove "niche forbidden" links using the function `rm_niche()` found in `Inference_MS_functions.R`. This function requires a vector of taxa names that we want to restrict.
 
-```{r}
+```r
 # remove niche forbidden taxa
 tm.niche <- rm_niche(inf = example.data$tm.initial,
                      taxa = example.data$niche.forbidden)
@@ -105,7 +94,7 @@ Next, we want to restrict "neutrally forbidden" links based on taxa densities. H
 The `get_rel_ab()` function in the `Inference_MS_functions.R` script calculates relative abundances for each taxa, and then creates a matrix of their crossproducts. The arguments for the function are `vec`, which is a vector of numerical abundances, and `taxa`, which is a vector of taxa names.  
 __Make sure that the order of the two vectors matches the order of the adjacency matrices!!!__  
 
-```{r}
+```r
 # make sure order of taxa names in dw_ab object match order in adjaceny matrix
 identical(rownames(example.data$observed.A),
           example.data$dw.ab$taxa)
@@ -121,7 +110,7 @@ identical(rownames(N),
 
 Now we need to "correct" fish abundances as described in the main text. We use the `f_ab_corr()` function in the `Inference_MS_functions.R`
 
-```{r}
+```r
 # only multiply column names that match the "taxa" vector
 N.fish <- f_ab_corr(Nij = N,
                     taxa = c("Salmo", "Galaxias",
@@ -133,14 +122,14 @@ Next we convert values in N.fish to a binary matrix by setting values < n' to 0,
 
 __Make sure to multiply the right relative abundance matrix!__
 
-```{r}
+```r
 N.binary <- rm_neutral(Nij = N.fish,
                        threshold = 3.0e-04)
 ```
 
 Now we multiply `N.binary` by `tm.niche` to remove neutrally forbidden links. e.g. only retaining links which appear in both. First, make sure that both matrices are the same dimensions, and have the same rownames
 
-```{r}
+```r
 identical(dim(tm.niche), dim(N.binary))
 identical(rownames(tm.niche), rownames(N.binary))
 # multiply two matrices together
