@@ -1,3 +1,13 @@
+#####################################################
+# this script was copied exactly from the supplementary material of Gravel et al 2013, Methods in Ecology and Evolution. doi: 10.1111/2041-210X.12103
+
+# if using, please cite the original publication
+# J Pomeranz 27 Nov 2018
+
+# original script below this line
+#####################################################
+
+
 ##############################################
 ##############################################
 #

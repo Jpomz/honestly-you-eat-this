@@ -88,7 +88,7 @@ for (i in 1:length(register.list)){
 
 # write csv of complete register of NZ feeding interactions
 # this will be submitted to the WebBuilder registry database as described in Gray et al. 2015
-write.csv(register.list[[1]][,c(-7,-11)],
+write.csv(register.list[[1]][,c(-11)],
           "Data/complete_NZ_trophic_links.csv",
           row.names = FALSE)
 
