@@ -92,12 +92,12 @@ names(A.pairs) <- names(obs.A)
 dw.pairs <- NULL
 for(web in 1:length(dw)){
   datout <- merge(A.pairs[[web]],
-                  dw[[web]][,1:2],
+                  dw[[web]][,2:3],
                   by.x = "pred",
                   by.y = "taxa",
                   all.x = T)
   datout <- merge(datout,
-                  dw[[web]][,1:2],
+                  dw[[web]][,2:3],
                   by.x = "prey",
                   by.y = "taxa",
                   all.x = T)
