@@ -50,8 +50,8 @@ names.A <- gsub(pattern = ".csv",
 obs.A <- NULL
 # read in each file in path directory to make list of adjacency matrices
 for(i in 1:length(path.dir)){
-  obs.A[[i]] <- read.csv(path.dir[[i]],
-                         row.names = 1)
+  obs.A[[i]] <- as.matrix(read.csv(path.dir[[i]],
+                         row.names = 1))
 }
 # name each element in object to match food web names
 names(obs.A) <- names.A
